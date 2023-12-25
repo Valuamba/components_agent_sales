@@ -1,0 +1,25 @@
+from pydantic_settings import BaseSettings
+from pydantic import Field
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv("../env"))
+
+
+class AppSettings(BaseSettings):
+    openai_api_key: str = Field(env='OPENAI_API_KEY')
+    serper_api_key: str = Field(env='SERPER_API_KEY')
+    famaga_db_url: str = Field(env='FAMAGA_DB_URL')
+
+    vector_collection_name: str = 'details'
+    similarity_search_limit: float = 0.1
+    embeddings_model: str = 'text-embedding-ada-002'
+    index_dimensions: int = 1536
+    top_k: int = 6
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = 'utf-8'
+        extra='allow'
+
+
+app_settings = AppSettings()
