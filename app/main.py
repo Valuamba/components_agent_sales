@@ -1,11 +1,23 @@
 from fastapi import FastAPI, Depends
 from config import app_settings
-from services import DetailInfoRepository
+from services import DetailInfoRepository, LoggerService, ClassifyEmailAgent 
+from models import EmailRequest
 
+from opentelemetry import trace
+from openai import OpenAI
 import psycopg2
 
 
 app = FastAPI()
+
+
+def get_openai_client():
+    return OpenAI(api_key = app_settings.openai_api_key)
+
+
+class RequestContext:
+    def __init__(self, trace_id: str):
+        self.trace_id = trace_id
 
 
 def get_db_connection():
@@ -27,6 +39,44 @@ def get_famaga_repository(db_connection=Depends(get_db_connection)):
         yield repository
     finally:
         db_cursor.close()
+
+
+def get_request_context() -> RequestContext:
+    current_span = trace.get_current_span()
+    context = current_span.get_span_context()
+    trace_id = format(context.trace_id, "032x")
+    return RequestContext(trace_id)
+
+def get_logger(context = Depends(get_request_context)):
+    return LoggerService(
+        context
+    )
+
+def get_classify_email_agent(
+        openai_client = Depends(get_openai_client),
+        logger = Depends(get_logger),
+        repo = Depends(get_famaga_repository)
+):
+    return ClassifyEmailAgent(
+        openai_client=openai_client,
+        logger=logger,
+        famaga_repo=repo
+    )
+
+
+
+@app.post("/price/")
+async def get_client_request_price(client_request: EmailRequest,
+                             classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
+    
+        details = await classify_email_agent.classify_client_response(client_request.body)
+
+        return {
+            "count": len(details)
+        }
+
+
+
 
 @app.get("/")
 async def root(famaga_repo: DetailInfoRepository = Depends(get_famaga_repository)):
