@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from config import app_settings
-from services import DetailInfoRepository, LoggerService, ClassifyEmailAgent 
+from services import OpenAIClient, DetailInfoRepository, LoggerService, ClassifyEmailAgent 
 from models import EmailRequest
 
 from opentelemetry import trace
@@ -11,13 +11,15 @@ import psycopg2
 app = FastAPI()
 
 
-def get_openai_client():
-    return OpenAI(api_key = app_settings.openai_api_key)
-
 
 class RequestContext:
     def __init__(self, trace_id: str):
         self.trace_id = trace_id
+
+
+def get_openai_client():
+    client = OpenAI(api_key = app_settings.openai_api_key)
+    return OpenAIClient(client)
 
 
 def get_db_connection():
@@ -64,7 +66,6 @@ def get_classify_email_agent(
     )
 
 
-
 @app.post("/price/")
 async def get_client_request_price(client_request: EmailRequest,
                              classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
@@ -74,8 +75,6 @@ async def get_client_request_price(client_request: EmailRequest,
         return {
             "count": len(details)
         }
-
-
 
 
 @app.get("/")

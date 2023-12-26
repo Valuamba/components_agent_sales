@@ -3,6 +3,14 @@ from typing import List, Optional
 import datetime
 
 
+class CompletionResponse(BaseModel):
+    completion_tokens: int
+    prompt_tokens: int
+    content: str
+    model: str
+    usage_cost_usd: float
+
+
 class EmailRequest(BaseModel):
     body: str
     subject: str | None
