@@ -4,7 +4,7 @@ from utility import select_json_block
 from openai import OpenAI
 
 from services.detail_info_repository import DetailInfoRepository
-from services.logger_service import LoggerService
+from services.logger_service import LoggingService
 from services.openai_client import OpenAIClient
 
 
@@ -94,7 +94,7 @@ class ClassifyEmailAgent:
 
     def __init__(self, 
                  openai_client: OpenAIClient, 
-                 logger: LoggerService, 
+                 logger: LoggingService, 
                  famaga_repo: DetailInfoRepository):
         self.openai_client = openai_client
         self.logger = logger
@@ -134,7 +134,7 @@ class ClassifyEmailAgent:
         # await ctx.sendMessage('\n\n'.join([ f'<b>Amount:</b> {detail.amount}\n<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Country:</b> {detail.country}'  
         #                             for detail in classified_details]))
 
-        return classified_details
+        return classified_details, completion.usage_cost_usd
     
     def find_suitable_items(self, search_response, query: str, detail: DetailRequest, model = 'gpt-4'):
         google_search_output = ''

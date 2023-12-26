@@ -2,21 +2,6 @@ version: "3.7"
 
 
 services:
-    pg:
-        container_name: famaga-pg
-        image: postgres:13.3
-        volumes:
-            - postgres_db:/var/lib/postgresql/data
-        env_file: .env
-        environment:
-            - POSTGRES_USER=admin
-            - POSTGRES_PASSWORD=5tgb%TGB
-            - POSTGRES_DB=famaga
-        ports:
-            - "45048:5432"
-        networks:
-            - famaga-net
-
     db:
         container_name: famaga-pg
         hostname: db
