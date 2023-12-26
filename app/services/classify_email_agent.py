@@ -203,7 +203,7 @@ class ClassifyEmailAgent:
         brands_response = self.famaga_repo.get_top_relevant_messages(self.get_embeddings_vector(brand))
         return [brand['document'][0] for brand in brands_response]
 
-    def search_detail_at_db(self, detail: DetailRequest):
+    def search_detail_at_db(self, detail: DetailRequest, model='gpt-4'):
         details = []
         if detail.part_number:
             details = self.famaga_repo.select_detail_by_part_number(detail.part_number)
@@ -217,7 +217,7 @@ class ClassifyEmailAgent:
                 table_details_str = '\n'.join(table_details)
 
                 prompt = f"""
-        Select detail ids, by part numbers that most suitable for this 'CD1-K-400/30"
+        Select detail ids, by part numbers that most suitable for this '{detail.part_number}"
 
 
         Your response should be a list of comma separated values, eg: `foo, bar, baz`
@@ -230,20 +230,18 @@ class ClassifyEmailAgent:
 
         {table_details_str}
         """
+                completion = self.openai_client.create_completion(model, [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt}
+                ], temperature=0)
 
-                resp = self.openai_client.chat.completions.create(
-                            model="gpt-4",
-                            messages=[
-                                {"role": "system", "content": system_prompt},
-                                {"role": "user", "content": prompt}
-                            ],
-                            temperature=0
-                )
-
-                json_data = select_json_block(resp.choices[0].message.content)
+                json_data = select_json_block(completion.content)
 
                 details = self.famaga_repo.select_detail_by_ids(json_data)
-            except:
-                return []
 
-        return details
+                return details, completion.usage_cost_usd
+            except Exception as exc:
+                self.logger.error(str(exc))
+                return [], 0
+            
+        return details, 0

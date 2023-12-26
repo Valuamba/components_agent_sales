@@ -55,10 +55,11 @@ class OpenAIClient:
 
         return (completion_tokens * model_pricing_info['output'] + prompt_tokens * model_pricing_info['input']) / 1000
 
-    def create_completion(self, model: str, messages):
+    def create_completion(self, model: str, messages, **kwargs):
         resp = self.openai_client.chat.completions.create(
             model=model,
-            messages=messages
+            messages=messages,
+            **kwargs
         )
 
         choice = resp.choices[0]

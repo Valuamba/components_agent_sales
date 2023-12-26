@@ -10,10 +10,10 @@ class LoggingService:
         self.logger.info(f'[{self.context.trace_id}] {message}')
 
     def error(self, message: str):
-        self.logger.error(message)
+        self.logger.error(f'[{self.context.trace_id}] {message}')
 
     def debug(self, message: str):
-        self.logger.debug(message)
+        self.logger.debug(f'[{self.context.trace_id}] {message}')
 
     def warning(self, message: str):
-        self.logger.warning(message)
+        self.logger.warning(f'[{self.context.trace_id}] {message}')

@@ -126,13 +126,21 @@ async def get_client_request_price(client_request: EmailRequest,
         return JSONResponse(content=details_dicts, headers=headers)
 
 
-@app.get("/")
-async def root(famaga_repo: DetailInfoRepository = Depends(get_famaga_repository)):
+@app.post("/detail/get_from_famaga_table")
+def root(
+    detail: DetailRequest,
+    logger = Depends(get_logger), 
+    classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
 
-    details = famaga_repo.select_detail_by_part_number('snM-98-1E8')
+    presneted_db_details, usage_cost_usd = classify_email_agent.search_detail_at_db(detail)
 
-    return {
-        "message": "Hello World",
-        "key": app_settings.openai_api_key,
-        "count": len(details)
-    }
+    if len(presneted_db_details):
+        logger.info('<b>Details at company table</b>\n\n' + '\n\n'.join([ 
+                f"<b>ID</b>: {detail.id}\n" +
+                f"<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Description:</b> {detail.description}"  
+                                    for detail in presneted_db_details]))
+
+    details_dicts = [detail.model_dump() for detail in presneted_db_details]
+
+    headers = {'openai-usage-cost-usd': str(usage_cost_usd)}
+    return JSONResponse(content=details_dicts, headers=headers)
