@@ -1,22 +1,30 @@
-version: "3.7"
-
-
 services:
     db:
-        container_name: famaga-pg
+        container_name: famaga-pg0
         hostname: db
         image: ankane/pgvector
         ports:
-        - 45048:5432
+        - 45047:5432
         environment:
             - POSTGRES_DB=famaga
             - POSTGRES_USER=admin
             - POSTGRES_PASSWORD=5tgb%TGB
             - POSTGRES_HOST_AUTH_METHOD=trust
         volumes:
-            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ${HOME}/dumps/init.sql:/docker-entrypoint-initdb.d/init.sql
             - postgres_db:/var/lib/postgresql/data
-        
+        networks:
+            - famaga-net
+
+    fastapi-app:
+        container_name: famaga-app
+        build:
+            context: ../../
+            dockerfile: ./docker/Dockerfile
+        ports:
+        - "45045:80"
+        networks:
+            - famaga-net
 
 networks:
   famaga-net:

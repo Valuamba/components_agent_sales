@@ -3,7 +3,6 @@ from config import app_settings
 from services import OpenAIClient, DetailInfoRepository, LoggingService, ClassifyEmailAgent, GoogleSearch
 from models import EmailRequest, DetailRequest, GoogleSearchItems
 
-from opentelemetry import trace
 from openai import OpenAI
 import psycopg2
 

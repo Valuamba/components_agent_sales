@@ -1,8 +1,6 @@
 from models import DetailRequest, SuitableDetail
 from utility import select_json_block
 
-from openai import OpenAI
-
 from services.detail_info_repository import DetailInfoRepository
 from services.logger_service import LoggingService
 from services.openai_client import OpenAIClient

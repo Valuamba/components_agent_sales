@@ -1,0 +1,7 @@
+openai
+pydantic
+pydantic_settings
+fastapi
+uvicorn
+psycopg2-binary
+requests

@@ -3,7 +3,7 @@ from pydantic import Field
 from dotenv import find_dotenv, load_dotenv
 from typing import List
 
-load_dotenv(find_dotenv("../env"))
+load_dotenv()
 
 
 class AppSettings(BaseSettings):
