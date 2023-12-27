@@ -26,6 +26,15 @@ class DetailRequest(BaseModel):
     country: Optional[str] = None
 
 
+class GoogleSearchItems(BaseModel):
+    title: str
+    snippet: str
+    link: str
+    currency: str | None
+    price: float | None
+    relevance: List[str]
+
+
 class Detail(BaseModel):
     id: int
     brand_name: str

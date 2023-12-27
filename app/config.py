@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from pydantic import Field
 from dotenv import find_dotenv, load_dotenv
+from typing import List
 
 load_dotenv(find_dotenv("../env"))
 
@@ -15,6 +16,12 @@ class AppSettings(BaseSettings):
     embeddings_model: str = 'text-embedding-ada-002'
     index_dimensions: int = 1536
     top_k: int = 6
+    search_4price_restricted_websites: List[str] = [
+        'alibaba.com',
+        'youtube.com',
+        'ebay.com',
+        'famaga.de'
+    ]
 
     class Config:
         env_file = ".env"

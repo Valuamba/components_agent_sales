@@ -136,9 +136,9 @@ class ClassifyEmailAgent:
 
         return classified_details, completion.usage_cost_usd
     
-    def find_suitable_items(self, search_response, query: str, detail: DetailRequest, model = 'gpt-4'):
+    def find_suitable_items(self, search_itmes, query: str, detail: DetailRequest, model = 'gpt-4'):
         google_search_output = ''
-        for idx, google_item in enumerate(search_response['organic']):
+        for idx, google_item in enumerate(search_itmes):
             text = f"""
     ID: {idx}
     Title: {google_item['title']}
@@ -177,22 +177,21 @@ class ClassifyEmailAgent:
     """
 
                 
-        resp = self.openai_client.chat.completions.create(
+        completion = self.openai_client.create_completion(
                 model=model,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": find_suitable_items_prompt}
                 ],
-                stream=False,
             )
         
-        self.logger.info(f'Suitable details: {resp.choices[0].message.content}')
+        self.logger.info(f'Suitable details: {completion.content}')
 
-        suitable_details_json_data = select_json_block(resp.choices[0].message.content)
+        suitable_details_json_data = select_json_block(completion.content)
 
         suitable_details = [SuitableDetail(**item) for item in suitable_details_json_data]
 
-        return suitable_details
+        return suitable_details, completion.usage_cost_usd
     
     def get_embeddings_vector(self, text: str, openai_embeddings_model: str = 'text-embedding-ada-002'):
         res = self.openai_client.embeddings.create(input = [text], model=openai_embeddings_model)

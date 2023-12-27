@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Response, Request
 from config import app_settings
-from services import OpenAIClient, DetailInfoRepository, LoggingService, ClassifyEmailAgent 
-from models import EmailRequest, DetailRequest
+from services import OpenAIClient, DetailInfoRepository, LoggingService, ClassifyEmailAgent, GoogleSearch
+from models import EmailRequest, DetailRequest, GoogleSearchItems
 
 from opentelemetry import trace
 from openai import OpenAI
@@ -113,6 +113,9 @@ def get_classify_email_agent(
         famaga_repo=repo
     )
 
+def get_google_search(logger = Depends(get_logger)):
+    return GoogleSearch(logger, app_settings.serper_api_key)
+
 
 @app.post("/price/",response_model=List[DetailRequest])
 async def get_client_request_price(client_request: EmailRequest,
@@ -127,7 +130,7 @@ async def get_client_request_price(client_request: EmailRequest,
 
 
 @app.post("/detail/get_from_famaga_table")
-def root(
+def get_detail_from_table(
     detail: DetailRequest,
     logger = Depends(get_logger), 
     classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
@@ -144,3 +147,38 @@ def root(
 
     headers = {'openai-usage-cost-usd': str(usage_cost_usd)}
     return JSONResponse(content=details_dicts, headers=headers)
+
+
+@app.post("/detail/search_price_at_google", response_model=List[GoogleSearchItems])
+def search_detail_at_google(
+        detail: DetailRequest,
+        google_search: GoogleSearch = Depends(get_google_search),
+        classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)
+):
+    restricted_websites_query = ' AND '.join([f'-site:{domain}' for domain in app_settings.search_4price_restricted_websites])
+    query = f'{detail.brand_name} {detail.part_number} AND {restricted_websites_query} AND -filetype:pdf'
+
+    search_itmes = google_search.search(query, pages=2)
+    suitable_items, usage_cost_usd = classify_email_agent.find_suitable_items(search_itmes, query, detail)
+
+
+    google_search_items = []
+    for suitable_item in suitable_items:
+        full_item_info = search_itmes[suitable_item.id]
+
+        google_search_items.append(GoogleSearchItems(
+            title=full_item_info['title'],
+            snippet=full_item_info['snippet'],
+            link=full_item_info['link'],
+            currency=full_item_info.get('currency', None),
+            price=full_item_info.get('price', None),
+            relevance=suitable_item.relevance
+        ))
+                
+    filtered_google_search_items = sorted(google_search_items, key=lambda item: (0, item.price) if item.price is not None else (1,))
+
+
+    item_dicts = [item.model_dump() for item in filtered_google_search_items]
+
+    headers = {'openai-usage-cost-usd': str(usage_cost_usd)}
+    return JSONResponse(content=item_dicts, headers=headers)
