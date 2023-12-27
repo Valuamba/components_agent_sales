@@ -1,6 +1,6 @@
 services:
     db:
-        container_name: famaga-pg0
+        container_name: famaga-pg
         hostname: db
         image: ankane/pgvector
         ports:
@@ -11,7 +11,7 @@ services:
             - POSTGRES_PASSWORD=5tgb%TGB
             - POSTGRES_HOST_AUTH_METHOD=trust
         volumes:
-            - ${HOME}/dumps/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ${HOME}/dumps/famaga_dump.sql:/docker-entrypoint-initdb.d/init.sql
             - postgres_db:/var/lib/postgresql/data
         networks:
             - famaga-net
