@@ -116,7 +116,7 @@ def get_google_search(logger = Depends(get_logger)):
     return GoogleSearch(logger, app_settings.serper_api_key)
 
 
-@app.post("/price/",response_model=List[DetailRequest])
+@app.post("/request/classify",response_model=List[DetailRequest])
 async def get_client_request_price(client_request: EmailRequest,
                              classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
     
