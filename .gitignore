@@ -6,6 +6,9 @@
 **/logs/*
 
 
+**/*.sqlite3
+
+**/autogen_config.json
 # Dependencies (ignores 'node_modules' in any subdirectory)
 **/node_modules
 
