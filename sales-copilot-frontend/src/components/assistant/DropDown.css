@@ -1,0 +1,43 @@
+.dropdown-button {
+    background-color: #FFFFFF; /* Fill color */
+    border: none;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    border-radius: 5px; /* Corner radius */
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25); /* Drop shadow */
+    height: 30px; /* Height */
+    margin-bottom: 5px; /* Space between dropdowns */
+  }
+  
+  .dropdown-arrow {
+    /* You can use a Unicode arrow or a custom icon */
+  }
+  
+  .dropdown-content {
+    display: none;
+    border-left: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .dropdown {
+    width: 70%;
+    background-color: #FFFFFF; /* Background color for the entire dropdown */
+    border-radius: 5px; /* Corner radius for the outer container */
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25); /* Drop shadow for the outer container */
+    margin-bottom: 10px; /* Space between dropdowns */
+    overflow: hidden; /* Ensures the border radius is applied to child elements */
+  }
+
+  .dropdown .dropdown-content {
+    display: block;
+    padding-left: 20px; /* Indent content */
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left: 2px solid #ccc; /* Optional: if you want a line before the content */
+  }

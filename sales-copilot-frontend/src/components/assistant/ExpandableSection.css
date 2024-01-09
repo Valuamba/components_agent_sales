@@ -1,0 +1,58 @@
+.pre-formatted {
+    white-space: pre-wrap; /* Wraps the text and preserves whitespace and line-breaks */
+    word-wrap: break-word; /* Breaks long words to prevent overflow */
+    overflow-wrap: break-word; /* Alternative to word-wrap for newer browsers */
+    margin: 0; /* Adjust the margin as needed */
+    padding: 0; /* Adjust the padding as needed */
+
+  }
+
+.expandable-section button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    width: 100%;
+  }
+
+  .expandable-section .toggleButton {
+    text-align: left;
+}
+
+  .tools-container {
+    /* display: flex;
+    align-items: start;
+    flex-direction: column; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+  }
+  
+
+  .expandable-section {
+    padding-left: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section-content {
+    padding-left: 20px; /* Indentation for the content */
+    border-left: 2px solid #ccc; /* Vertical line for visual structure */
+    margin-left: 10px; /* Space from the vertical line to text */
+    padding-top: 5px; /* Space between header and content */
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+  .section-detail {
+    margin-bottom: 5px; /* Space between details */
+  }

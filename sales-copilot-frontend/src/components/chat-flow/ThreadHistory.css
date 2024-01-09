@@ -1,0 +1,121 @@
+.customer-service-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    /* width: 60%; */
+    margin-top: 20px;
+    /* margin: auto; */
+    background-color: #e0e0e0;
+    /* max-width: 600px; */
+    /* margin: auto; */
+
+    /* border: 1px solid #ccc;
+    flex: 70%;
+    display: flex;
+    justify-content: center; */
+  }
+  
+.chat-flow {
+  width: 60%;
+}
+
+  .assistant-container {
+    display: flex;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    background-color: #F0F3F7;
+  }
+
+  .center-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Center vertically */
+    height: 100vh; /* Take full viewport height */
+    width: 100vw;
+}
+
+  .reasoning-flow-container {
+    margin-bottom: 20px;
+  }
+  
+  .reasoning-flow-header {
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .reasoning-flow-content {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  
+  .summary-container {
+    margin-bottom: 20px;
+  }
+  
+  .summary-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .summary-content {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .details-container {
+    margin-bottom: 20px;
+    /* Add styles for your detail fields */
+  }
+  
+  .submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Add responsiveness if necessary */
+  @media (max-width: 768px) {
+    .customer-service-container {
+      width: 90%;
+      padding: 10px;
+    }
+  }
+
+
+  .email-header {
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .email-subject {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      font-weight: bold;
+  }
+
+  .email-info {
+    color: gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 10px
+  }
+
+  .email-date-time {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  
