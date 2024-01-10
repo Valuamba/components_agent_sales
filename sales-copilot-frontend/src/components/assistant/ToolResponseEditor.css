@@ -1,0 +1,62 @@
+/* ToolResponseEditor.css */
+
+.part-info-editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto 40px; /* Adjust the '40px' to fit the size of the delete button */
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+  }
+  
+  .part-info-editor input,
+  .part-info-editor span {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .delete-part-button {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: red; /* Color for the trash icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    width: 100%;
+  }
+  
+  .delete-part-button:hover {
+    color: darkred; /* Darker color on hover */
+  }
+  
+
+
+
+  /* Add Part Button Styles */
+.add-part-button {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* A greenish background color for add button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    width: 100%;
+  }
+  
+  .add-part-button:hover {
+    background-color: #67c55d; /* Lighter green on hover for add button */
+  }

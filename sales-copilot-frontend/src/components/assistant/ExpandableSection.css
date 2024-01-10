@@ -7,7 +7,7 @@
 
   }
 
-.expandable-section button {
+.expandable-section .toggleButton {
     background-color: transparent;
     border: none;
     cursor: pointer;

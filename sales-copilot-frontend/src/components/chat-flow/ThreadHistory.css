@@ -24,7 +24,8 @@
     padding-left: 20px;
     padding-bottom: 20px;
     margin-top: 20px;
-    background-color: #F0F3F7;
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .center-container {

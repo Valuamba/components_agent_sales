@@ -1,0 +1,12 @@
+.email {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .email-container {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #e8f3c2;
+  }

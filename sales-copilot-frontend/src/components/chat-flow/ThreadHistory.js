@@ -1,16 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ThreadHistory.css';
 import AssistantContainer from '../assistant/AssistantContainer';
+import {EmailContainer, EmailComponent} from '../assistant/EmailContainer';
 
 function ThreadHistory() {
   const [isReasoningFlowVisible, setIsReasoningFlowVisible] = useState(false);
+
+  const getMessageComponent = (message) => {
+    switch (message.type) {
+      case 'email':
+        return <EmailComponent email={message} />;
+      case 'customer_service':
+        return <AssistantContainer />;
+      default:
+        return null;
+    }
+  };
+
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8000/ws');
+
+    ws.onmessage = (message) => {
+      console.log('New EVENT!!')
+      // Parse the incoming message to a JSON object
+      const parsedMessage = JSON.parse(message.data);
+
+      // Update the state to include the new message
+      setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   const toggleReasoningFlow = () => {
     setIsReasoningFlowVisible(!isReasoningFlowVisible);
   };
 
+
   return (
-    <div class="center-container">
+    <div className="center-container">
       <div className="chat-flow">
         <div className="customer-service-container">
           <div className="email-header">
@@ -23,7 +63,12 @@ function ThreadHistory() {
           </div>
         </div>
         <div className='assistant-container'>
-          <AssistantContainer/>
+          
+            {messages.map((message, index) => (
+              getMessageComponent(message)
+          ))}
+          {/* <AssistantContainer/>
+          <EmailContainer></EmailContainer> */}
         </div>
       </div>
     </div>
