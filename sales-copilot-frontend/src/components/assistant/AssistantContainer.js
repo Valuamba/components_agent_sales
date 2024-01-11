@@ -7,6 +7,8 @@ import { marked } from "marked";
 import PartsListEditor from './ToolResponseEditor.js'
 import './ToolResponseEditor.css'
 import EmailContainer from "./EmailContainer.js";
+import DraftEmailWidget from "../Widgets/draft-email/DraftEmailWidget.js";
+
 
 const Dropdown = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,10 +43,17 @@ function MarkdownContent({ className, markdown }) {
   );
 }
 
+const CustomerServiceState = Object.freeze({
+  CLASSIFY: "classify",
+  DRAFT_EMAIL: "draft_email",
+});
+
 function ExpandableSection({ title }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
+
+  const state = CustomerServiceState.DRAFT_EMAIL;
 
   const message = `**System message:** You are a sales manager trained on base tasks to find manufacturer detail information at images.\n**User:** Please generate a message that asks the client about giving more details for detail Endress+Hauser\n\nFew shot: Hey sir/madam, could you please help me?`;
   const stepsDescription =
@@ -57,31 +66,37 @@ function ExpandableSection({ title }) {
       <button class="toggleButton" onClick={toggleExpand}>
         {isExpanded ? "-" : "+"} {title}
       </button>
-      {isExpanded && (
-        <div className="section-content">
-          {/* <SectionDetail title="Metadata">some metadata info</SectionDetail>
-            <SectionDetail title="Tools">...</SectionDetail> */}
-
-          <Dropdown title="Sources">{/* Content for Sources */}</Dropdown>
-          <Dropdown title="Reasoning flow">
-            <div className="system-message">
-              <MarkdownContent
-                markdown={stepsDescription}
-                className="pre-formatted"
-              />
-            </div>
-          </Dropdown>
-          <Dropdown title="Metadata">
-            <div className="system-message">
-              <MarkdownContent markdown={message} className="pre-formatted" />
-
-              {/* <pre className="pre-formatted">{MarkdownContent(message)}</pre> */}
-            </div>
-          </Dropdown>
-
-          <PartsListEditor/>
-        </div>
-      )}
+      {isExpanded && 
+            state === CustomerServiceState.CLASSIFY ? (
+                <div className="section-content">
+                    <Dropdown title="Sources">{/* Content for Sources */}</Dropdown>
+                    <Dropdown title="Reasoning flow">
+                      <div className="system-message">
+                        <MarkdownContent
+                          markdown={stepsDescription}
+                          className="pre-formatted"
+                        />
+                      </div>
+                    </Dropdown>
+                    <Dropdown title="Metadata">
+                      <div className="system-message">
+                        <MarkdownContent markdown={message} className="pre-formatted" />
+          
+                        {/* <pre className="pre-formatted">{MarkdownContent(message)}</pre> */}
+                      </div>
+                    </Dropdown>
+                    <PartsListEditor/>
+                </div>
+              )
+              : state === CustomerServiceState.DRAFT_EMAIL ? (
+                <div className="section-content">
+                    <DraftEmailWidget></DraftEmailWidget>
+                  </div>
+              )
+              : (
+                <div></div>
+              )
+            }
     </div>
   );
 }

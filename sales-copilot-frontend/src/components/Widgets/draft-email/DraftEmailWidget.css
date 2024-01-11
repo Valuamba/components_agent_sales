@@ -1,0 +1,111 @@
+.email-field {
+    background-color: white;
+    border-radius: 5px;
+    width: 80%;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 8px;
+    margin-bottom: 8px;
+
+}
+
+.email-draft-body {
+    height: 400px;
+    background-color: white;
+    border-radius: 5px;
+    width: 80%;
+    border: 0;
+    padding: 8px;
+
+    color: rgb(57, 61, 61);
+
+}
+
+.email-draft-body:focus {
+    border: none;
+    outline: none;
+}
+
+.email-field-input {
+    border-style: none;
+    font-size: 16px;
+    color: rgb(57, 61, 61);
+}
+
+.email-field-input:focus {
+    border: none;
+    outline: none;
+}
+
+.email-draft-items-container {
+    /* display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 8px; */
+    width: 100%;
+}
+
+.email-field-label {
+    background-color: white;
+    border-radius: 4px;
+    color: rgb(148, 151, 151);
+    font-size: 16px;
+    margin-right: 8px;
+    padding: 3px;
+}
+
+
+/* FEEDBACK */
+
+.feedback-container {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .feedback-button {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    padding: 5px 5px; /* Reduced padding */
+    border-radius: 5px;
+    border-style: none;
+    font-size: 14px; /* Reduced font size for the text */
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .feedback-button.active {
+    border-color: #007bff;
+    background-color: #75a6d8;
+  }
+  
+  .feedback-button:focus {
+    outline: none;
+  }
+  
+  .feedback-button svg {
+    margin-right: 2px;
+    font-size: 16px; /* Keep original icon size */
+  }
+
+  .feedback-email-actions-container {
+    display: flex;
+    justify-content: space-between; /* Aligns children to the edges with max space in between */
+    align-items: center; /* Aligns children vertically in the center */
+    width: 80%;
+    padding-left: 20px;
+  }
+
+  .email-action-button {
+    margin-right: 5px;
+    font-size: 16px;
+  }
+
+  .email-submit {
+    background-color: #10A37F;
+    color: white;
+  }

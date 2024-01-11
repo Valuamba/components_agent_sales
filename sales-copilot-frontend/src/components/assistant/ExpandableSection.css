@@ -53,6 +53,10 @@
     box-sizing: border-box; /* Ensures padding is included in the width */
 }
 
+/* .section-content div {
+  width: 100%;
+} */
+
   .section-detail {
     margin-bottom: 5px; /* Space between details */
   }
