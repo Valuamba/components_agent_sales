@@ -17,11 +17,12 @@
   
 .chat-flow {
   width: 60%;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  padding: 10px; 
 }
 
   .assistant-container {
     display: flex;
-    padding-left: 20px;
     padding-bottom: 20px;
     margin-top: 20px;
     align-items: flex-start;
@@ -114,7 +115,7 @@
     gap: 10px
   }
 
-  .email-date-time {
+  .thread-date-time {
     position: absolute;
     bottom: 0;
     right: 0;

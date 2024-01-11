@@ -1,12 +1,43 @@
 .email {
-    border: 1px solid #ddd;
-    padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
   }
   
   .email-container {
+    box-sizing: border-box;
     margin-top: 20px;
     width: 100%;
     background-color: #e8f3c2;
+    padding: 20px;
+  }
+
+  .email-from-to {
+    margin-bottom: 10px;
+  }
+
+  .email-from-to-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 0 70%;
+    margin-bottom: 20px;
+    width: 80%;
+  }
+
+  .email-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .email-details > .email-date-time {
+    flex: 0 0 30%; /* Takes up 20% of the space */
+    text-align: right; 
+    font-size: 14px;
+  }
+
+  .email-container h1 {
+    font-weight: bold;
+    font-size: larger;
+    text-align: left;
   }

@@ -58,7 +58,7 @@ function ThreadHistory() {
             <div className="email-info">
               <span className="email-from-to">From: Ramees Khan | AREC</span>
               <span className="email-from-to">To: Recipient</span>
-              <span className="email-date-time">2024-01-01 08:12PM</span>
+              <span className="thread-date-time">2024-01-01 08:12PM</span>
             </div>
           </div>
         </div>
@@ -67,8 +67,10 @@ function ThreadHistory() {
             {messages.map((message, index) => (
               getMessageComponent(message)
           ))}
-          {/* <AssistantContainer/>
-          <EmailContainer></EmailContainer> */}
+
+          <EmailComponent></EmailComponent>
+          <AssistantContainer/>
+          {/* <EmailContainer></EmailContainer> */} 
         </div>
       </div>
     </div>

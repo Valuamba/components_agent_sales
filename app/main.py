@@ -12,6 +12,7 @@ from logging.handlers import TimedRotatingFileHandler
 import os
 
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from typing import List
 
@@ -42,10 +43,24 @@ console_handler.setFormatter(console_formatter)
 logger.addHandler(console_handler)
 
 
-
 app = FastAPI()
 
+origins = [
+    "https://famaga",
+    "https://crmfamaga.prod",
+    "https://famaga.org",
+    "https://api.famaga.org",
+    "http://localhost:3001"
+    # Add 'https://' variants if needed
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # List of origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 @app.middleware("http")
 async def add_trace_id(request: Request, call_next):
     trace_id = str(uuid.uuid4())
