@@ -50,7 +50,8 @@ origins = [
     "https://crmfamaga.prod",
     "https://famaga.org",
     "https://api.famaga.org",
-    "http://localhost:3001"
+    "http://localhost:3001",
+    "http://famaga"
     # Add 'https://' variants if needed
 ]
 
