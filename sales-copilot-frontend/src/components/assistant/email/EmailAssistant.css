@@ -1,3 +1,15 @@
+
+.formatted-text {
+    /* Additional styling here */
+    border-style: none;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow: hidden; /* or 'auto' if you want to allow scrolling */
+    margin: 0;
+    max-width: 100%; 
+}
+
+
 .email {
     margin-bottom: 10px;
     border-radius: 5px;
@@ -28,6 +40,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    border-style: none;
   }
 
   .email-details > .email-date-time {

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './ThreadHistory.css';
-import AssistantContainer from '../assistant/AssistantContainer';
-import {EmailContainer, EmailComponent} from '../assistant/EmailContainer';
+// import AssistantContainer from '../assistant/AssistantContainer';
+import EmailComponent from '../assistant/email/EmailAssistant';
+import CustomerServiceAssistant from '../assistant/customer-service/CustomerServiceAssistant';
+import CustomerServiceState from '../utils/states';
 
 function ThreadHistory() {
   const [isReasoningFlowVisible, setIsReasoningFlowVisible] = useState(false);
@@ -11,7 +13,7 @@ function ThreadHistory() {
       case 'email':
         return <EmailComponent email={message} />;
       case 'customer_service':
-        return <AssistantContainer />;
+        return <div></div> //<AssistantContainer />;
       default:
         return null;
     }
@@ -68,8 +70,12 @@ function ThreadHistory() {
               getMessageComponent(message)
           ))}
 
+
+          <CustomerServiceAssistant state={CustomerServiceState.CLASSIFY}></CustomerServiceAssistant>
           <EmailComponent></EmailComponent>
-          <AssistantContainer/>
+          <CustomerServiceAssistant state={CustomerServiceState.DRAFT_EMAIL}></CustomerServiceAssistant>
+          {/* <AssistantContainer/> */}
+          
           {/* <EmailContainer></EmailContainer> */} 
         </div>
       </div>
