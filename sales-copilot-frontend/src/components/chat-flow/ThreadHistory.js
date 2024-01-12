@@ -4,6 +4,8 @@ import './ThreadHistory.css';
 import EmailComponent from '../assistant/email/EmailAssistant';
 import CustomerServiceAssistant from '../assistant/customer-service/CustomerServiceAssistant';
 import CustomerServiceState from '../utils/states';
+import ManagerAssistatant from '../assistant/manager/ManagerAssistant';
+
 
 function ThreadHistory() {
   const [isReasoningFlowVisible, setIsReasoningFlowVisible] = useState(false);
@@ -73,6 +75,7 @@ function ThreadHistory() {
 
           <CustomerServiceAssistant state={CustomerServiceState.CLASSIFY}></CustomerServiceAssistant>
           <EmailComponent></EmailComponent>
+          <ManagerAssistatant/>
           <CustomerServiceAssistant state={CustomerServiceState.DRAFT_EMAIL}></CustomerServiceAssistant>
           {/* <AssistantContainer/> */}
           

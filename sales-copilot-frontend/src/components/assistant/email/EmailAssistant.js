@@ -9,18 +9,20 @@ const emailContent = "Dear Sir/Ma'am,\n\nWe’re currently enquiring for Supply 
 const EmailComponent = ({ email }) => {
   return (
     <AssistantContainer name="Email Assistant">
-        <div className='email-details'>
-            <div className="email-from-to-container">
-                <span className="email-from-to"><strong>From:</strong> Ramees Khan | AREC</span>
-                <span className="email-from-to"><strong>To:</strong> Recipient</span>
+        <div className='email-container'>
+            <div className='email-details'>
+                <div className="email-from-to-container">
+                    <span className="email-from-to"><strong>From:</strong> Ramees Khan | AREC</span>
+                    <span className="email-from-to"><strong>To:</strong> Recipient</span>
+                </div>
+                <div className='email-date-time'>
+                    <span>2024-01-01 08:12PM</span>
+                </div>
             </div>
-            <div className='email-date-time'>
-                <span>2024-01-01 08:12PM</span>
-            </div>
+                <div class="formatted-text">
+                    {emailContent}
+                </div>    
         </div>
-            <div class="formatted-text">
-                {emailContent}
-            </div>
     </AssistantContainer>
   );
 };
