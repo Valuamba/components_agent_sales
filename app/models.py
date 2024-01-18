@@ -20,7 +20,7 @@ class EmailRequest(BaseModel):
 
 
 class DetailRequest(BaseModel):
-    amount: int
+    amount: int | None
     brand_name: str
     part_number: str
     country: Optional[str] = None
