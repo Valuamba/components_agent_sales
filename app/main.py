@@ -52,8 +52,7 @@ origins = [
     "https://api.famaga.org",
     "http://localhost:3001",
     "http://famaga",
-    "http://crm.haveamint.online"
-    # Add 'https://' variants if needed
+    "https://crm.haveamint.online"
 ]
 
 app.add_middleware(
