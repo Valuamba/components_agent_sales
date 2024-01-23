@@ -50,25 +50,30 @@ You are manufacturer sales specialist. You know many brands, models, articles of
 
 
 suitable_items_few_shot = """
-Answer could contain comma separated list of json objects, like in following example:
+Answer could contain comma separated list of json objects, like in following example for query "E+E EE741":
 ```json
-[
 {
-   "id": 0
-   "relevance": [
-      "equal part number",
-      "has price"
-   ]
-},
-{
-   "id": 3
-   "relevance": [
-      "equal part number",
-      "has price",
-      "equal brand name",
-      "equal model"
-   ]
-},
+    "google_items": [
+        {
+           "id": 0
+           "relevance": [
+              "equal part number",
+              "has price"
+           ]
+        },
+        {
+           "id": 3
+           "relevance": [
+              "equal part number",
+              "has price",
+              "equal brand name",
+              "equal model"
+           ]
+        }
+    ],
+    "metadata": {
+        "full_brand": ""E+E Elektronik"
+    }
 ]
 ```
 """
@@ -79,12 +84,17 @@ Your response should be a list of comma separated values, eg: `foo, bar, baz`
 The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
-[
 {
-   "id": int // This is the Id of item
-   "relevance": string[] // This is relevant string array that shows relevant parameters
+    "google_items": [
+        {
+           "id": int // This is the Id of item
+           "relevance": string[] // This is relevant string array that shows relevant parameters
+        }
+    ],
+    "metadata": {
+        "full_brand": string
+    }
 }
-]
 ```
 """
 
@@ -167,6 +177,8 @@ class ClassifyEmailAgent:
     - equal brand_name
     - contains price
 
+    Fullbrand -  full manufacturer or supplier brand without details about parts finded in items.
+
     {suitable_items_schema}
 
     {suitable_items_few_shot}
@@ -187,9 +199,9 @@ class ClassifyEmailAgent:
 
         suitable_details_json_data = select_json_block(completion.content)
 
-        suitable_details = [SuitableDetail(**item) for item in suitable_details_json_data]
+        suitable_details = [SuitableDetail(**item) for item in suitable_details_json_data["google_items"]]
 
-        return suitable_details, completion.usage_cost_usd
+        return suitable_details, completion.usage_cost_usd, suitable_details_json_data["metadata"]
     
     def get_embeddings_vector(self, text: str, openai_embeddings_model: str = 'text-embedding-ada-002'):
         res = self.openai_client.embeddings.create(input = [text], model=openai_embeddings_model)

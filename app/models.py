@@ -35,6 +35,14 @@ class GoogleSearchItems(BaseModel):
     relevance: List[str]
 
 
+class Metadata(BaseModel):
+    full_brand: str
+
+class GoogleSearchResponse(BaseModel):
+    google_items: List[GoogleSearchItems]
+    metadata: Metadata
+
+
 class Detail(BaseModel):
     id: int
     brand_name: str

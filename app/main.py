@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Response, Request
 from config import app_settings
 from services import OpenAIClient, DetailInfoRepository, LoggingService, ClassifyEmailAgent, GoogleSearch
-from models import EmailRequest, DetailRequest, GoogleSearchItems
+from models import EmailRequest, DetailRequest, GoogleSearchItems, GoogleSearchResponse
 
 from openai import OpenAI
 import psycopg2
@@ -174,7 +174,7 @@ def search_detail_at_google(
     query = f'{detail.brand_name} {detail.part_number} AND {restricted_websites_query} AND -filetype:pdf'
 
     search_itmes = google_search.search(query, pages=2)
-    suitable_items, usage_cost_usd = classify_email_agent.find_suitable_items(search_itmes, query, detail)
+    suitable_items, usage_cost_usd, metadata = classify_email_agent.find_suitable_items(search_itmes, query, detail)
 
 
     google_search_items = []
@@ -192,8 +192,7 @@ def search_detail_at_google(
                 
     filtered_google_search_items = sorted(google_search_items, key=lambda item: (0, item.price) if item.price is not None else (1,))
 
-
-    item_dicts = [item.model_dump() for item in filtered_google_search_items]
+    response = GoogleSearchResponse(metadata=metadata, google_items=filtered_google_search_items)
 
     headers = {'openai-usage-cost-usd': str(usage_cost_usd)}
-    return JSONResponse(content=item_dicts, headers=headers)
+    return JSONResponse(content=response.model_dump(), headers=headers)
