@@ -21,9 +21,20 @@ class EmailRequest(BaseModel):
 
 class DetailRequest(BaseModel):
     amount: int | None
-    brand_name: str
+    brand_name: str | None
     part_number: str
+
+
+class ClientInfo(BaseModel):
     country: Optional[str] = None
+    domain: Optional[str] = None
+    email: Optional[str] = None
+    office_country: Optional[str] = None
+
+
+class ClassifiedMessageData(BaseModel):
+    parts: List[DetailRequest]
+    client: ClientInfo
 
 
 class GoogleSearchItems(BaseModel):

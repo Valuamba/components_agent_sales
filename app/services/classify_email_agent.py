@@ -1,4 +1,4 @@
-from models import DetailRequest, SuitableDetail
+from models import DetailRequest, SuitableDetail, ClassifiedMessageData, EmailRequest
 from utility import select_json_block
 
 from services.detail_info_repository import DetailInfoRepository
@@ -12,14 +12,21 @@ Your response should be a list of comma separated values, eg: `foo, bar, baz`
 The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
-[
 {
-   "amount": int // This is the amount of details
-   "brand_name": string // This is thr brand  name of detail
-   "part_number": string // This is the part number of detail
-   "country": string // This is the country of detail
+    "parts": [
+        {
+           "amount": int // This is the amount of details
+           "brand_name": string // This is thr brand  name of detail
+           "part_number": string // This is the part number of detail
+        }
+    ],
+    "client": {
+        "country": string // This is the country of detail,
+        "domain": string // customer company domain
+        "email": string // customer email,
+        "office_country": string // country of customer office
+    }
 }
-]
 ```
 """
 
@@ -27,20 +34,26 @@ detail_classification_few_shot = """
 Answer could contain comma separated list of json objects, like in following example:
 
 ```json
-[
 {
-   "amount": 1,
-   "brand_name": "Airtac",
-   "part_number": "A05-DMSE-020",
-   "country": "Romania"
-},
-{
-   "amount": 15,
-   "brand_name": "Clayton",
-   "part_number": "0039042",
-   "country": "null
+    "parts": [
+        {
+           "amount": 1,
+           "brand_name": "Airtac",
+           "part_number": "A05-DMSE-020"
+        },
+        {
+           "amount": 15,
+           "brand_name": "Clayton",
+           "part_number": "0039042"
+        }
+    ],
+    "client": {
+        "country": "Romania",
+        "domain": "epno.com.mx",
+        "email": "roberto.sosa@epno.com.mx",
+        "office_country": "Mexico"
+    }
 }
-]
 ```
 """
 
@@ -108,11 +121,14 @@ class ClassifyEmailAgent:
         self.logger = logger
         self.famaga_repo = famaga_repo
 
-    async def classify_client_response(self, request: str, model = 'gpt-4'):
+    async def classify_client_response(self, request: EmailRequest, model = 'gpt-4'):
         classify_prompt = f"""
         Try to extract from text brand name, amount, detail name, part number from the text. Also recognize country by text.
         <<<>>>
-        {request}
+        Subject: {request.body}
+        From: {request.from_client}
+        
+        {request.body}
         <<<>>>
 
         If you cannot recognize specified parameters please put `null` value.
@@ -136,13 +152,14 @@ class ClassifyEmailAgent:
             
 
         classified_json_data = select_json_block(completion.content)
+        order = ClassifiedMessageData.model_validate(classified_json_data)
 
-        classified_details = [DetailRequest(**item) for item in classified_json_data]
+        # classified_details = [DetailRequest(**item) for item in classified_json_data]
 
         # await ctx.sendMessage('\n\n'.join([ f'<b>Amount:</b> {detail.amount}\n<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Country:</b> {detail.country}'  
         #                             for detail in classified_details]))
 
-        return classified_details, completion.usage_cost_usd
+        return order, completion.usage_cost_usd
     
     def find_suitable_items(self, search_itmes, query: str, detail: DetailRequest, model = 'gpt-4'):
         google_search_output = ''
@@ -254,3 +271,5 @@ class ClassifyEmailAgent:
                 return [], 0
             
         return details, 0
+
+

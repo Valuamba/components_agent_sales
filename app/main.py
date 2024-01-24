@@ -136,12 +136,12 @@ def get_google_search(logger = Depends(get_logger)):
 async def get_client_request_price(client_request: EmailRequest,
                              classify_email_agent: ClassifyEmailAgent = Depends(get_classify_email_agent)):
     
-        details, usage_cost_usd = await classify_email_agent.classify_client_response(client_request.body)
+        order, usage_cost_usd = await classify_email_agent.classify_client_response(client_request)
 
-        details_dicts = [detail.model_dump() for detail in details]
+        # details_dicts = [detail.model_dump() for detail in details]
 
         headers = {'openai-usage-cost-usd': str(usage_cost_usd)}
-        return JSONResponse(content=details_dicts, headers=headers)
+        return JSONResponse(content=order.model_dump(), headers=headers)
 
 
 @app.post("/detail/get_from_famaga_table")
