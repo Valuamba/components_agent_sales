@@ -1,0 +1,644 @@
+{
+    "deals": [
+        {
+            "deal": {
+                "subject": "Reminder FAMAGA Group GmbH & Co. KG \u2116 KP440822",
+                "from": "magazyn@landoia.pl",
+                "id": "cbfcee9f-ac2b-4d91-ab6e-53f18c827e24",
+                "deal_id": "fa844641-5db1-4857-92ef-7b7cab0a777d"
+            },
+            "messages": [
+                {
+                    "from": "manager",
+                    "body": "Very dear Mr. Janura, attached is an updated proforma with the delivery price added. Please send me the payment confirmation after it will be made and we will send your order as fast as possible. Wish you a nice day!",
+                    "id": 13,
+                    "peer_id": "37ea1147-1df2-497c-bb36-0a291bf07918",
+                    "intents": [
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Invoice Sending",
+                            "branch": "Finance"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Confirmation Request",
+                            "branch": "Finance"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Shipping Confirmation",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello We decide to deliver our order using your transport. Please send me a pro-forma invoice",
+                    "id": 12,
+                    "peer_id": "bada7628-4279-45f4-a012-dd4699a3b427",
+                    "intents": [
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Method Confirmation",
+                            "branch": "Logistics"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Invoice Request",
+                            "branch": "Finance"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Janura, sure, we have calculated shipping and it made by us is will be 159.24 euro. If you would like us to made it I will prepare you an updated proforma and after you pay the shipping amount we will proceed with shipping",
+                    "id": 11,
+                    "peer_id": "1b159c94-9b05-4d83-ac8b-304c808fdb4f",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Transport Cost Update",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Shipping Cost Update",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Good morning Dear Sawwa Vronskiy. Thank you for the nice message that our order is ready for collection. We talked earlier that you will provide the cost of transporting the goods by your company once you have the data. If it is possible, please provide such cost. Then we will analyze what type of transport will be more beneficial for us. Regards Adam",
+                    "id": 10,
+                    "peer_id": "7f0b12ff-94db-4c7b-8425-7f9427941c07",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Transport Cost Inquiry",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Method Discussion",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Janura,we have received your order! Goods are ready for collection. EUR-Pallet Weight: 37 kg Dimensions: 120x83x55 cm Address for Pickup: FAMAGA Group GmbH & Co. KG Hinter den Kirschkaten 83 23560, L\u00fcbeck Germany Contact Person: Irina Piltschik irina.p@famaga.de Please, put in CC logistics@famaga.de +49 (0) 451 98 92 06 81 Please send me the label after it will be prepared to inform our logistics. Wish you a nice day!",
+                    "id": 9,
+                    "peer_id": "c0ede47b-2d4d-4007-a4b1-0766855ce696",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Completion Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Pickup Information",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Janura, thanks you for your order! Proforma invoice for payment in archive. Please send me a payment confirmation after it will be made to start processing your order as fast as possible. Wish you a nice day!",
+                    "id": 8,
+                    "peer_id": "f37e76b3-a054-4c4c-9b36-d2dcb506b069",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Acceptance Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Confirmation Request",
+                            "branch": "Finance"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello So as not to waste precious time. We order devices from offer no. 440822 of friday, 29 september 2023 . If possible, please provide an additional discount on your purchase. Please confirm acceptance of our order. In the meantime, once you know what the transport cost will be, we will discuss how to deliver the parcel to us or whether we will collect it ourselves",
+                    "id": 7,
+                    "peer_id": "d22580bc-2975-4580-8a97-7dbe5dc3620d",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Placement Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Acceptance Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Discount Inquiry",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Transport Cost Inquiry",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Method Discussion",
+                            "branch": "Logistics"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Discussing Logistics",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Janura, I am waiting for a dimmensions of package from a manufacturer and then I will inform you, what shipping price will be",
+                    "id": 6,
+                    "peer_id": "2b04f4f7-9e19-494b-b3e6-e4d225a78ebf",
+                    "intents": [
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Shipping Cost Update",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Good morning I am waiting for information about transport costs. This determines whether we will order with delivery or collect ourselves. I am asking for a quick answer",
+                    "id": 5,
+                    "peer_id": "40056f91-b6a5-4999-852f-f22fb15e6c8f",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Transport Cost Inquiry",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Method Discussion",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello. Thank you for confirming the offer. Please provide transport costs.",
+                    "id": 4,
+                    "peer_id": "eb424e08-e4c9-4545-a1a7-43d03c1a48c6",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Transport Cost Inquiry",
+                            "branch": "Sales"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Janura, we have received the confirmation. Our offer is still valid. I will send you a proforma invoice for payment. May I just ask you- can you please tell me, would you like to collect your order from our warehouse in Germany by your courier or you would like us to add transport costs? In the second case, may I ask you the address for shipping? Thanks you for your reply in advance!",
+                    "id": 3,
+                    "peer_id": "0e036275-654f-4f16-8f85-c4bf2dec4b34",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Acceptance Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Method Discussion",
+                            "branch": "Logistics"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello Due to the fact that our client has accepted our offer for the device which includes your Tsubaki cable guides, please confirm that the offer is valid. An additional discount from you will be appreciated. A quick response will allow us to place an order with your company for the offered items.",
+                    "id": 2,
+                    "peer_id": "8e176a09-a44b-443e-9ac7-503c58dc829d",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Placement Confirmation",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Discount Inquiry",
+                            "branch": "Sales"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Dear Sir/ Madam, I would like to follow up on quotation, which was sent in response to your inquiry. Our company would be glad to provide any additional information and make every effort to fulfill your requirements and receive an order! Please take into consideration, that our portfolio not limited to this brand only. One of our distinctive features is close cooperation with various manufacturers from Europe, United States, Japan and other countries around the world. Famaga Group OHG works directly with them, avoiding a long chain of agents, which allows us to provide the best prices to our customers. If you require any more information, please do not hesitate to ask or call us. We look forward to receiving your valuable feedback!",
+                    "id": 1,
+                    "peer_id": "11b57dc4-9ac1-4c64-b136-551eb9312b1e",
+                    "intents": [
+                        {
+                            "intent": "Sales Follow-up",
+                            "sub_intent": "Quotation Follow-up",
+                            "branch": "Sales"
+                        },
+                        {
+                            "intent": "Product Information",
+                            "sub_intent": "Product Portfolio Information",
+                            "branch": "Product Information"
+                        },
+                        {
+                            "intent": "Customer Service",
+                            "sub_intent": "Offering Assistance",
+                            "branch": "Customer Support"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Witam ZAPYTANIE ODNO\u015aNIE DOST\u0118PNO\u015aCI N/W ARTYKU\u0141\u00d3W - Prowadnik kabli -- Cable carrier ( prowadnik kabla ) 1665.030.200.3000-4655 TSO_0 FA_MA Tsubaki 1szt Energy chain (prowadnik kabla ) 1665.030.125.140-4189.5 TS0_0 FA_MA Tsubaki 1szt J\u0119\u015bli mo\u017cecie dostarczy\u0107 prosz\u0119 o ofert\u0119",
+                    "id": 0,
+                    "peer_id": "669313b9-1efc-4986-a70d-9545212de0ce",
+                    "intents": [
+                        {
+                            "intent": "Product Inquiry",
+                            "sub_intent": "Product Availability Inquiry",
+                            "branch": "Product Information"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Request for Quotation",
+                            "branch": "Sales"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "deal": {
+                "subject": "Offer \u2116453757 13.11.2023, Contrinex || FAMAGA Group GmbH & Co. KG",
+                "from": "vzdrzevanje@eurobox.si",
+                "deal_id": "4665edd8-172b-4e7c-a048-af2dc316e45a"
+            },
+            "messages": [
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Lesar, thanks you for your order! Proforma invoice for payment attached. Please send me a payment confirmation after it will be made to start processing your order as fast as possible. Wish you a nice day!",
+                    "id": 5,
+                    "peer_id": "686bd9a9-e4a5-40de-aa88-5e8105f340f4",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Invoice Issuance",
+                            "branch": "Issuing Proforma Invoice and Requesting Payment Confirmation"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello The name of the company is EUROBOX d.o.o. Podskrajnik 33, 1380 Cerknica VAT number 77581008 Best regards Edvard Lesar 070 525 775 EUROBOX Podskrajnik 33, 1380 Cerknica",
+                    "id": 4,
+                    "peer_id": "803a91f9-5b35-473a-91c8-39c58ec3e99b",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Providing Information",
+                            "branch": "Providing VAT Number and Company Name"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Lesar, I apologize for a long reply, we have received a manufacturer confirmation. May I ask you to also provide your company VAT number and a full company name? Thanks you in advance!",
+                    "id": 3,
+                    "peer_id": "b2e45777-fbf1-4e46-a031-fb881b4c7c86",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Request for Information",
+                            "branch": "Requesting VAT Number and Company Name"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Hello I confirm the order You can send me the invoice for 2 pieces Best regards Edvard Lesar 070 525 775 EUROBOX Podskrajnik 33, 1380 Cerknica",
+                    "id": 2,
+                    "peer_id": "46dda0df-2f56-422f-8bc8-6f3ef6c00728",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Confirmation",
+                            "branch": "Confirming Order and Requesting Invoice"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "We would like to thank you for your inquiry and we are pleased to provide you our quotation as follows. Please feel free to contact us if you need any further information. Goods value \u20ac179,08 Trans. \u20ac0,00 Netto \u20ac179,08 Total payment \u20ac179,08 Delivery terms EXW Germany, 23560 Luebeck Payment conditions excl. Packing and shipping Payment terms Advance payment Valid till 09.12.2023 Please be kindly informed about 30 Euro fee for orders under 150 Euro. Our general terms and conditions of delivery shall apply. The terms can be found on the internet under https://famaga.de/imperssum or obtained from us. We hope our offer turned out to be profitable for you and we will be glad to see you among the regular customers of our company Yours sincerely FAMAGA Group GmbH & Co. KG Sawwa Wronskiy",
+                    "id": 1,
+                    "peer_id": "d682c364-e851-431a-8365-1598dbbf75db",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Providing Quotation",
+                            "branch": "Providing Detailed Quotation"
+                        },
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Payment Terms",
+                            "branch": "Providing Payment Terms"
+                        },
+                        {
+                            "intent": "Delivery and Shipping",
+                            "sub_intent": "Delivery Terms",
+                            "branch": "Providing Delivery Terms"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Pozdravljeni, I\u0161\u010dem senzor ali je mo\u017eno to pri vas doboiti? 1. CONTRINEX DW-AS-503-P12-627 Nr. 532157 2. CONTRINEX M18x1 adapter M12x1 v priponki je slika LP Edvard Lesar 070 525 775 EUROBOX Podskrajnik 33, 1380 Cerknica",
+                    "id": 0,
+                    "peer_id": "70866421-0604-4a34-954e-d63dd539a259",
+                    "intents": [
+                        {
+                            "intent": "Product Inquiry",
+                            "sub_intent": "Product Availability Inquiry",
+                            "branch": "Inquiry About Specific Products"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "deal": {
+                "subject": "Order Placement",
+                "from": "info@fidarindustrial.com",
+                "deal_id": "c6fc1060-9da0-4c25-b4a9-edda669a8b68"
+            },
+            "messages": [
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Amir, the offer is still valid, you can make a payment on the IBAN number from attached proforma- Berliner Volksbank eG EURO Account: DE32100900002606223008 SWIFT/BIC: BEVODEBB",
+                    "id": 10,
+                    "peer_id": "90ed8bd7-0618-4d90-82d3-68b24e112702",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Price Confirmation",
+                            "branch": "Confirming Price Validity"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Method Confirmation",
+                            "branch": "Providing IBAN Number"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "The request has been sent to the bank and we are waiting for the IBAN number. Also, the target is 195 Euro and if you change the price the order will be null and void.",
+                    "id": 9,
+                    "peer_id": "2ac1091a-0138-41fd-8995-7751d3144e0b",
+                    "intents": [
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Method Confirmation",
+                            "branch": "Confirming IBAN Request"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Price Confirmation",
+                            "branch": "Setting Target Price"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Amir, I will check if the price is still valid and if so I will send you a proforma again where IBAN will be shown",
+                    "id": 8,
+                    "peer_id": "9b03575a-6527-4f33-aa73-3aa9bfae1fa6",
+                    "intents": [
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Price Confirmation",
+                            "branch": "Checking Price Validity"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Method Confirmation",
+                            "branch": "Confirming IBAN Number"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Please send us the IBAN number for payment.",
+                    "id": 7,
+                    "peer_id": "f0eeb84b-cb44-4860-94f8-50b8efbdaf9e",
+                    "intents": [
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Method Inquiry",
+                            "branch": "Requesting IBAN Number"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Dear Mr. Amir, thanks you for your order! Proforma invoice for payment attached. Please send me a payment confirmation after it will be made to start processing your order as fast as possible. Wish you a nice day!",
+                    "id": 6,
+                    "peer_id": "8179df4c-5b40-4a94-88b7-105ad2a353b4",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Acceptance Confirmation",
+                            "branch": "Confirmation of Order Receipt and Acceptance"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Confirmation Request",
+                            "branch": "Requesting Payment Confirmation"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Please find attached. image.png",
+                    "id": 5,
+                    "peer_id": "741f98d3-4d61-40e5-9f41-de25978f0468",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Documentation",
+                            "branch": "Sending Requested Document"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very Dear Mr. Amir, I apologize for a delay, I will send you a proforma shortly, but may I please ask you to send us your company VAT number? Thanks you in advance!",
+                    "id": 4,
+                    "peer_id": "f21bb532-4f0a-44b9-ae9a-fcbc3b98cb51",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Documentation",
+                            "branch": "Requesting VAT Number"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Please find the attached PO for your reference. Sign/Stamp it and return back a color scan copy by email. Also please send us the paypal account and account information in the updated PI.",
+                    "id": 3,
+                    "peer_id": "47485bbb-b948-4223-a375-5d6cbbc11a08",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Documentation",
+                            "branch": "Sending Purchase Order"
+                        },
+                        {
+                            "intent": "Payment Processing",
+                            "sub_intent": "Payment Method Inquiry",
+                            "branch": "Requesting PayPal Account Information"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Dear Mr. Amir, may I ask you, have you received the signed order? Thanks you in advance for your reply!",
+                    "id": 2,
+                    "peer_id": "1f772adb-029c-428e-a39e-1ffbd64215c0",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Status Inquiry",
+                            "branch": "Inquiring About Order Receipt"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "I would like to follow up on quotation, which was sent in response to your inquiry. Our company would be glad to provide any additional information and make every effort to fulfill your requirements and receive an order! Please take into consideration, that our portfolio not limited to this brand only.",
+                    "id": 1,
+                    "peer_id": "342a77a9-dc28-421f-94eb-52f8ac1148e4",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Acceptance Confirmation",
+                            "branch": "Confirmation of Order Receipt and Acceptance"
+                        },
+                        {
+                            "intent": "Product Information",
+                            "sub_intent": "Product Range Information",
+                            "branch": "Informing About Broader Product Portfolio"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Further to your offer No.373849Please be informed that we are in a position to place order with the successful vendor for the following product: image.png Target price is 180.00 Euro pcs. Please review the possibility and confirm your acceptance to proceed for PO arrangement.",
+                    "id": 0,
+                    "peer_id": "af11022e-8c38-4b5b-94d4-a391502ac878",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Placement Confirmation",
+                            "branch": "Confirmation of Specific Offer"
+                        },
+                        {
+                            "intent": "Pricing and Quotes",
+                            "sub_intent": "Price Confirmation",
+                            "branch": "Setting Target Price"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "deal": {
+                "subject": "Order for Sootscan Bircher",
+                "from": "sda.serwis@gmail.com",
+                "deal_id": "72b08f78-0d24-451b-bfd2-4d89074eac27"
+            },
+            "messages": [
+                {
+                    "from": "customer",
+                    "body": "Hello, Thats clear I would like to order thats Sootscan Bircher. What do We shall do now Regards  Krzysztof Wydra",
+                    "id": 4,
+                    "peer_id": "c7de4db9-d858-46ae-b61d-3504cc74517d",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Placement Confirmation",
+                            "branch": "Confirmation of Specific Product Order"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very Dear Mr. Wydra, I am glad, that our offer is interesting for you! I will prepare you a proforma invoice for payment. May I ask you to send me the following data to prepare it: -Your company full name -VAT number -Billing address -Shipping address",
+                    "id": 3,
+                    "peer_id": "0228f953-e4da-4068-9d90-c0f0229eb41f",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Request for Order Details",
+                            "branch": "Request for Company and Shipping Details"
+                        }
+                    ]
+                },
+                {
+                    "from": "customer",
+                    "body": "Good Morning , -Your company full name        ZUH  'Kasper ' Halina Wydra -VAT number      PL7540267650 -Billing address      ul. Hubala 10  , 45-267 Opole Polska -Shipping address       ul. Groszowicka 6  , 45-517 Opole Polska   - Krzysztof Wydra phone +48 609003350 Regards Krzysztof Wydra",
+                    "id": 2,
+                    "peer_id": "944e6564-781b-4585-b20b-93d7e956b378",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Providing Order Details",
+                            "branch": "Providing Company and Shipping Details"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Wydra, thaks you for your order! Proforma invoice for payment attached. Please send me a payment confirmation after it will be made to start processing your order as fast as possible. Wish you a nice day!",
+                    "id": 1,
+                    "peer_id": "23e7244e-3138-49a6-8082-3e54b84d4063",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Payment Request",
+                            "branch": "Request for Payment Confirmation"
+                        }
+                    ]
+                },
+                {
+                    "from": "manager",
+                    "body": "Good day, Very dear Mr. Wydra,your order has left our warehouse. Tracking number: 774113546639 (FedEx) Wish you a nice day!",
+                    "id": 0,
+                    "peer_id": "4e3b008e-82d8-4a73-a85d-882262565f8d",
+                    "intents": [
+                        {
+                            "intent": "Order Processing",
+                            "sub_intent": "Order Shipment Confirmation",
+                            "branch": "Confirmation of Order Shipment"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
