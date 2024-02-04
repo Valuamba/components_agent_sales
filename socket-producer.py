@@ -10,10 +10,12 @@ connections: List[WebSocket] = []
 
 from pydantic import BaseModel
 
+
 class EmailEvent(BaseModel):
     type: str
     subject: str
     body: str
+
 
 class CustomerServiceEvent(BaseModel):
     type: str
@@ -21,6 +23,7 @@ class CustomerServiceEvent(BaseModel):
     sources: str
     reasoning_flow: str
     metadata: str
+
 
 class ConnectionManager:
     def __init__(self):
@@ -37,7 +40,9 @@ class ConnectionManager:
         for connection in self.active_connections:
             await connection.send_text(data)
 
+
 manager = ConnectionManager()
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -55,9 +60,11 @@ async def send_email_event(event: EmailEvent):
     await manager.broadcast(event.json())
     return {"message": "Email event sent"}
 
+
 @app.post("/send_customer_service_event/")
 async def send_customer_service_event(event: CustomerServiceEvent):
     await manager.broadcast(event.json())
     return {"message": "Customer service event sent"}
+
 
 app.include_router(router)

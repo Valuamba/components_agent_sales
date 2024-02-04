@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .modal-container {
     background-color: #fff;
     padding: 20px;
@@ -18,7 +18,7 @@
     width: 80%;
     max-width: 500px;
   }
-  
+
   h2 {
     color: #fff;
     background-color: #000;
@@ -26,7 +26,7 @@
     border-radius: 5px;
     font-size: 20px;
   }
-  
+
   .feedback-form {
     display: flex;
     flex-direction: column;
@@ -38,8 +38,8 @@
     justify-content: space-between; /* This will space out the children evenly */
     gap: 10px; /* Spacing between items */
   }
-  
-  
+
+
   .checkbox-container {
     flex-basis: calc(50% - 10px);
     display: block;
@@ -50,7 +50,7 @@
     font-size: 18px;
     user-select: none;
   }
-  
+
   /* Hide the browser's default checkbox */
   .checkbox-container input {
     position: absolute;
@@ -59,7 +59,7 @@
     height: 0;
     width: 0;
   }
-  
+
   /* Create a custom checkbox */
   .checkmark {
     position: absolute;
@@ -70,29 +70,29 @@
     background-color: #eee;
     border-radius: 4px;
   }
-  
+
   /* On mouse-over, add a grey background color */
   .checkbox-container:hover input ~ .checkmark {
     background-color: #ccc;
   }
-  
+
   /* When the checkbox is checked, add a blue background */
   .checkbox-container input:checked ~ .checkmark {
     background-color: #2196F3;
   }
-  
+
   /* Style the checkmark/indicator (hidden when not checked) */
   .checkmark:after {
     content: "";
     position: absolute;
     display: none;
   }
-  
+
   /* Show the checkmark when checked */
   .checkbox-container input:checked ~ .checkmark:after {
     display: block;
   }
-  
+
   /* Style the checkmark/indicator */
   .checkbox-container .checkmark:after {
     left: 9px;
@@ -103,7 +103,7 @@
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
   }
-  
+
   textarea {
     padding: 10px;
     margin-top: 10px;
@@ -112,26 +112,25 @@
     border-radius: 4px;
     resize: vertical;
   }
-  
+
   .modal-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
   }
-  
+
   .modal-buttons button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   .modal-buttons button[type="submit"] {
     background-color: #0044cc;
     color: white;
   }
-  
+
   .modal-buttons button[type="button"] {
     background-color: #f5f5f5;
   }
-  

@@ -64,7 +64,7 @@
     display: flex;
     align-items: flex-start;
   }
-  
+
   .feedback-button {
     cursor: pointer;
     border: 1px solid #ccc;
@@ -77,16 +77,16 @@
     align-items: center;
     transition: background-color 0.3s, border-color 0.3s;
   }
-  
+
   .feedback-button.active {
     border-color: #007bff;
     background-color: #75a6d8;
   }
-  
+
   .feedback-button:focus {
     outline: none;
   }
-  
+
   .feedback-button svg {
     margin-right: 2px;
     font-size: 16px; /* Keep original icon size */

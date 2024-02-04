@@ -1,0 +1,52 @@
+@startuml some
+!theme toy
+
+scale 1.5
+
+actor "Расчетчик" as salary_empl
+
+
+participant "WB.HR.HRTECH.C&B.TARRIFICATOR-OFFICE" as trf_office
+participant "WB.HR.HRTECH.C&B.BILLING-API" as billing_api
+participant "WB.HR.HRTECH.C&B.BILLING-NATS" as billing_nats
+participant "WB.HR.HRTECH.C&B.BILLING-PROCESSOR" as billing_processor
+participant "WB.HR.HRTECH.Support.PROXY-NOTIFIER" as proxy_notifier
+participant "WB.HR.HRTECH.Support.JAEGER" as jaeger
+
+participant "WB.NOTIFIER" as notifier
+
+
+group #MOTIVATION Цель: Управлять Push уведомлениями
+    billing_processor -> proxy_notifier: Запрос на Push уведомление
+    proxy_notifier --> proxy_notifier: Управление Push уведомлением
+end
+
+group #BUSINESS Сценарий использования
+    group #TECHNOLOGY Контроль уведомлений на действие начисление ЗП в баланс
+        salary_empl -> trf_office: Инциировать начисление ЗП на баланс
+    end
+end
+
+group #IMPLEMENTATION Реализация
+    group #APPLICATION Процесс начисления на баланс
+        trf_office -> billing_api: Запрос на начисление на баланс
+        billing_api --> billing_nats: Запрос на создание транзакции
+        billing_nats --> billing_processor: Получение уведомления о создании транзакции
+        billing_processor --> billing_processor: Начисление на баланс
+        billing_processor -> proxy_notifier: Отправка Push Уведомления
+        loop 
+            proxy_notifier -> jaeger: Создание Trace span
+
+            proxy_notifier -> proxy_notifier: Проверка возможности отправки Push уведомления
+            proxy_notifier -> proxy_notifier: Проверка среды окружения ENV
+            
+            alt ENV = PROD
+                proxy_notifier -> notifier: Запрос на отправку Push уведомления
+            else ENV = STAGE | DEV
+                proxy_notifier -> proxy_notifier: Отвечаем кодом 200 и логируем
+            end
+        end
+    end
+end
+
+@endumlddd

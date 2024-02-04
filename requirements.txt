@@ -9,3 +9,4 @@ pandas
 tabulate
 pre-commit
 detect-secrets
+sqlalchemy

@@ -4,14 +4,14 @@ from dotenv import load_dotenv
 import os
 
 # Specify the path to your .env file
-env_path = './app/.env'
+env_path = "./app/.env"
 
 # Load the .env file
 load_dotenv(dotenv_path=env_path)
 
 
 # Database credentials and connection details
-db_connection_string = 'postgresql://admin:5tgb%25TGB@localhost:5432/famaga'
+db_connection_string = "postgresql://admin:5tgb%25TGB@localhost:5432/famaga"
 container_name = "famaga-pg"
 
 # Generating the filename with the current timestamp

@@ -24,9 +24,9 @@ class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
     """
 
     def some_kek(self):
-        print('Some')
+        print("Some")
         pass
-    
+
     def __init__(
         self,
         html_path: str,
@@ -57,16 +57,12 @@ class EmbeddedTablesUnstructuredRetrieverPack(BaseLlamaPack):
             node_dict=node_mappings,
             verbose=True,
         )
-        service_context = ServiceContext.from_defaults(
-          llm=OpenAI(model="gpt-4")
-        )
+        service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-4"))
 
         self.query_engine = RetrieverQueryEngine.from_args(
-          self.recursive_retriever,
-          service_context=service_context
+            self.recursive_retriever, service_context=service_context
         )
 
-    
     # def __init__(
     #     self,
     #     html_path: str,

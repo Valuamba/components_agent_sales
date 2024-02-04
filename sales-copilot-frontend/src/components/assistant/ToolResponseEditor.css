@@ -11,14 +11,14 @@
     border-radius: 5px;
     background: #f9f9f9;
   }
-  
+
   .part-info-editor input,
   .part-info-editor span {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
   }
-  
+
   .delete-part-button {
     padding: 0;
     border: none;
@@ -34,11 +34,11 @@
     font-size: medium;
     width: 100%;
   }
-  
+
   .delete-part-button:hover {
     color: darkred; /* Darker color on hover */
   }
-  
+
 
 
 
@@ -56,7 +56,7 @@
     font-size: medium;
     width: 100%;
   }
-  
+
   .add-part-button:hover {
     background-color: #67c55d; /* Lighter green on hover for add button */
   }

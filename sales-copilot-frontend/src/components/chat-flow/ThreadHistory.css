@@ -14,11 +14,11 @@
     display: flex;
     justify-content: center; */
   }
-  
+
 .chat-flow {
   width: 60%;
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  padding: 10px; 
+  padding: 10px;
 }
 
   .assistant-container {
@@ -40,38 +40,38 @@
   .reasoning-flow-container {
     margin-bottom: 20px;
   }
-  
+
   .reasoning-flow-header {
     font-weight: bold;
     cursor: pointer;
     user-select: none;
   }
-  
+
   .reasoning-flow-content {
     border: 1px solid #ccc;
     margin-top: 10px;
     padding: 10px;
   }
-  
+
   .summary-container {
     margin-bottom: 20px;
   }
-  
+
   .summary-title {
     font-weight: bold;
     margin-bottom: 10px;
   }
-  
+
   .summary-content {
     border: 1px solid #ccc;
     padding: 10px;
   }
-  
+
   .details-container {
     margin-bottom: 20px;
     /* Add styles for your detail fields */
   }
-  
+
   .submit-button {
     background-color: #007bff;
     color: white;
@@ -81,11 +81,11 @@
     font-size: 16px;
     border-radius: 5px;
   }
-  
+
   .submit-button:hover {
     background-color: #0056b3;
   }
-  
+
   /* Add responsiveness if necessary */
   @media (max-width: 768px) {
     .customer-service-container {
@@ -120,4 +120,3 @@
     bottom: 0;
     right: 0;
   }
-  

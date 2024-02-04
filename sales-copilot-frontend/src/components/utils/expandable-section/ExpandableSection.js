@@ -4,9 +4,9 @@ import './ExpandableSection.css'
 
 const ExpandableSection = ({ title, children }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-  
+
     const toggleExpand = () => setIsExpanded(!isExpanded);
-  
+
     return (
       <div className="expandable-section">
         <button class="toggleButton" onClick={toggleExpand}>

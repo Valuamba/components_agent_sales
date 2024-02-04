@@ -8,7 +8,7 @@
     box-sizing: border-box; /* includes padding and border in the element's total width and height */
     overflow-y: auto; /* allows scrolling */
   }
-  
+
   .search-bar {
     width: 100%;
     padding: 10px;
@@ -17,36 +17,36 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
   .enquiry-item {
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
     transition: background-color 0.3s;
   }
-  
+
   .enquiry-item:hover {
     background-color: #f7f7f7;
   }
-  
+
   .enquiry-date {
     font-size: 0.9em;
     color: #666;
     margin-bottom: 5px;
   }
-  
+
   .enquiry-title {
     font-size: 1em;
     font-weight: bold;
     color: #333;
     margin-bottom: 5px;
   }
-  
+
   .enquiry-name {
     font-size: 0.9em;
     color: #666;
   }
-  
+
   /* Add media queries for responsiveness if needed */
   @media (max-width: 600px) {
     .enquiry-panel {
@@ -57,7 +57,6 @@
       padding: 10px;
 
       flex: 30%; /* 30% width */
-      background-color: #f0f0f0; 
+      background-color: #f0f0f0;
     }
   }
-  

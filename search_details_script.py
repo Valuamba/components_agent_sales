@@ -27,15 +27,15 @@ from aiogram.enums.parse_mode import ParseMode
 
 load_dotenv()
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-SERPER_API_KEY = os.getenv('SERPER_API_KEY')
+SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
-PGVECTOR_CONNECTION_STRING='postgresql://admin:5tgb%25TGB@localhost:45048/famaga'
-PGVECTOR_COLLECTION_NAME='details'
+PGVECTOR_CONNECTION_STRING = "postgresql://admin:5tgb%25TGB@localhost:45048/famaga"
+PGVECTOR_COLLECTION_NAME = "details"
 TOP_K = 6
-SIMILARITY_SEARCH_LIMIT=0.1
-EMBEDDINGS_MODEL = 'text-embedding-ada-002'
+SIMILARITY_SEARCH_LIMIT = 0.1
+EMBEDDINGS_MODEL = "text-embedding-ada-002"
 INDEX_DIMENSIONS = 1536
 
 
@@ -147,20 +147,22 @@ class Context:
         self.trace_id = str(uuid.uuid4())
 
     def _escape_markdown_v2(self, text):
-        escape_chars = '_*[]()~`>#+-=|{}.!'
-        return ''.join('\\' + char if char in escape_chars else char for char in text)
+        escape_chars = "_*[]()~`>#+-=|{}.!"
+        return "".join("\\" + char if char in escape_chars else char for char in text)
 
     def info(self, log: str):
-        print(f'[{self.trace_id}] {log}')
+        print(f"[{self.trace_id}] {log}")
 
     async def sendMessage(self, text: str):
-        await self.bot.send_message(chat_id=6538129881, text=text, parse_mode=ParseMode.HTML)
+        await self.bot.send_message(
+            chat_id=6538129881, text=text, parse_mode=ParseMode.HTML
+        )
 
 
 def select_json_block(text: str):
     regex = r',(?!\s*?[\{\["\'\w])'
-    cleaned_input = re.sub(regex, '', text)
-    match = re.search(r'```json\n([\s\S]*?)\n```', text)
+    cleaned_input = re.sub(regex, "", text)
+    match = re.search(r"```json\n([\s\S]*?)\n```", text)
     if match:
         json_data = match.group(1)
     else:
@@ -169,7 +171,9 @@ def select_json_block(text: str):
     return json.loads(json_data)
 
 
-async def classify_client_response(ctx: Context, client: OpenAI, request: str, model = 'gpt-4'):
+async def classify_client_response(
+    ctx: Context, client: OpenAI, request: str, model="gpt-4"
+):
     classify_prompt = f"""
 Try to extract from text brand name, amount, detail name, part number from the text. Also recognize country by text.
 <<<>>>
@@ -185,43 +189,41 @@ If you cannot recognize specified parameters please put `null` value.
 
 """
 
-    ctx.info(f'Classify prompt: {classify_prompt}')
+    ctx.info(f"Classify prompt: {classify_prompt}")
 
     resp = client.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": classify_prompt}
+            {"role": "user", "content": classify_prompt},
         ],
         stream=False,
     )
 
-    ctx.info(f'Classification response: {resp.choices[0].message.content}')
-    
+    ctx.info(f"Classification response: {resp.choices[0].message.content}")
 
     classified_json_data = select_json_block(resp.choices[0].message.content)
 
     classified_details = [DetailRequest(**item) for item in classified_json_data]
 
-    await ctx.sendMessage('\n\n'.join([ f'<b>Amount:</b> {detail.amount}\n<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Country:</b> {detail.country}'  
-                               for detail in classified_details]))
+    await ctx.sendMessage(
+        "\n\n".join(
+            [
+                f"<b>Amount:</b> {detail.amount}\n<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Country:</b> {detail.country}"
+                for detail in classified_details
+            ]
+        )
+    )
 
     return classified_details
 
 
-def google_search(query: str, country = 'us'):
+def google_search(query: str, country="us"):
     url = "https://google.serper.dev/search"
-    
-    payload = json.dumps({
-      "q": query,
-      "gl": country,
-      "page": 1
-    })
 
-    headers = {
-        'X-API-KEY': SERPER_API_KEY,
-        'Content-Type': 'application/json'
-    }
+    payload = json.dumps({"q": query, "gl": country, "page": 1})
+
+    headers = {"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"}
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
@@ -229,7 +231,7 @@ def google_search(query: str, country = 'us'):
 
 
 def search_details_offers(ctx: Context, query: str):
-    ctx.info(f'Google search query: {query}')
+    ctx.info(f"Google search query: {query}")
 
     search_response = json.loads(google_search(query))
 
@@ -244,21 +246,23 @@ def select_detail_by_part_number(db_cursor, part_number: str):
 
         all_matches = db_cursor.fetchall()
 
-    
         details = []
         for match in all_matches:
-            details.append(Detail(
-                id=match[0],
-                part_number=match[1],
-                brand_name=match[4],
-                description=match[5]
-            ))
+            details.append(
+                Detail(
+                    id=match[0],
+                    part_number=match[1],
+                    brand_name=match[4],
+                    description=match[5],
+                )
+            )
         return details
     except:
         return []
 
+
 def select_detail_by_ids(db_cursor, details_ids):
-    details_ids_str = ', '.join([str(d) for d in details_ids])
+    details_ids_str = ", ".join([str(d) for d in details_ids])
     query = f"select * from details_info where id IN({details_ids_str})"
 
     db_cursor.execute(query)
@@ -267,28 +271,36 @@ def select_detail_by_ids(db_cursor, details_ids):
 
     details = []
     for match in all_matches:
-        details.append(Detail(
-            id=match[0],
-            part_number=match[1],
-            brand_name=match[4],
-            description=match[5]
-        ))
+        details.append(
+            Detail(
+                id=match[0],
+                part_number=match[1],
+                brand_name=match[4],
+                description=match[5],
+            )
+        )
     return details
 
 
-def find_suitable_items(ctx, client: OpenAI, search_response, query: str, detail: DetailRequest, model = 'gpt-4'):
-    google_search_output = ''
-    for idx, google_item in enumerate(search_response['organic']):
+def find_suitable_items(
+    ctx,
+    client: OpenAI,
+    search_response,
+    query: str,
+    detail: DetailRequest,
+    model="gpt-4",
+):
+    google_search_output = ""
+    for idx, google_item in enumerate(search_response["organic"]):
         text = f"""
 ID: {idx}
 Title: {google_item['title']}
 Snippet: {google_item['snippet']}
     """
-        if 'price' in google_item:
+        if "price" in google_item:
             text += f'Price: {google_item["currency"]}{google_item["price"]}'
-            
-        google_search_output += text + '\n\n'
 
+        google_search_output += text + "\n\n"
 
     find_suitable_items_prompt = f"""
 You are manufacturer sales specialist. You know many brands, models, articles of manufacturer details.
@@ -316,17 +328,16 @@ Relevance:
 {google_search_output}
 """
 
-            
     resp = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": find_suitable_items_prompt}
-            ],
-            stream=False,
-        )
-    
-    ctx.info(f'Suitable details: {resp.choices[0].message.content}')
+        model=model,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": find_suitable_items_prompt},
+        ],
+        stream=False,
+    )
+
+    ctx.info(f"Suitable details: {resp.choices[0].message.content}")
 
     suitable_details_json_data = select_json_block(resp.choices[0].message.content)
 
@@ -347,38 +358,39 @@ def get_top_relevant_messages(db_cursor, embeddings, k=3):
             ORDER BY distance
             LIMIT '{k}';
         """
-        
+
         db_cursor.execute(query)
         all_matches = db_cursor.fetchall()
-        
+
         relevant_matches = []
-        print('All matches:')
+        print("All matches:")
         for doc in all_matches:
-            print(f'-- {round(doc[2], 2)}: {doc[1]}')
-            
+            print(f"-- {round(doc[2], 2)}: {doc[1]}")
+
             if round(doc[2], 2) <= float(SIMILARITY_SEARCH_LIMIT):
-                relevant_matches.append({
-                    "document": doc,
-                    "score": doc[2]
-                    })
+                relevant_matches.append({"document": doc, "score": doc[2]})
 
         if len(relevant_matches) == 0:
             print("No relevant matches found")
         else:
             print("Relevant matches: ")
-            [print(f'-- {round(doc["score"], 2)}: {doc["document"][2]}') for doc in relevant_matches]
+            [
+                print(f'-- {round(doc["score"], 2)}: {doc["document"][2]}')
+                for doc in relevant_matches
+            ]
         return relevant_matches
     except Exception as e:
         print(f"[get_top_relevant_messages] {type(e).__name__} exception: {e}")
         return []
-    
+
 
 def get_embeddings_vector(text: str, client: OpenAI):
-    res = client.embeddings.create(input = [text], model=EMBEDDINGS_MODEL)
+    res = client.embeddings.create(input=[text], model=EMBEDDINGS_MODEL)
     return res.data[0].embedding
 
+
 def select_brands_details(db_cursor, brand_ids):
-    ids_str = ', '.join([str(b) for b in brand_ids])
+    ids_str = ", ".join([str(b) for b in brand_ids])
 
     query = f"select * from details_info where brand_id IN({ids_str})"
 
@@ -388,22 +400,24 @@ def select_brands_details(db_cursor, brand_ids):
 
 
 def select_brands(db_cursor, brand, client, k=3):
-    brands_response = get_top_relevant_messages(db_cursor, get_embeddings_vector(brand, client))
-    return [brand['document'][0] for brand in brands_response]
+    brands_response = get_top_relevant_messages(
+        db_cursor, get_embeddings_vector(brand, client)
+    )
+    return [brand["document"][0] for brand in brands_response]
 
 
 def search_detail_at_db(db_cursor, client, detail: DetailRequest):
     details = []
     if detail.part_number:
         details = select_detail_by_part_number(db_cursor, detail.part_number)
-        
+
     if len(details) == 0 and detail.brand_name:
         try:
             brand_ids = select_brands(db_cursor, detail.brand_name, client)
             brand_matches = select_brands_details(db_cursor, brand_ids)
 
-            table_details = [ f'{match[0]}, {match[1]}' for match in brand_matches]
-            table_details_str = '\n'.join(table_details)
+            table_details = [f"{match[0]}, {match[1]}" for match in brand_matches]
+            table_details_str = "\n".join(table_details)
 
             prompt = f"""
     Select detail ids, by part numbers that most suitable for this 'CD1-K-400/30"
@@ -421,12 +435,12 @@ def search_detail_at_db(db_cursor, client, detail: DetailRequest):
     """
 
             resp = client.chat.completions.create(
-                        model="gpt-4",
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": prompt}
-                        ],
-                        temperature=0
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0,
             )
 
             json_data = select_json_block(resp.choices[0].message.content)
@@ -439,7 +453,7 @@ def search_detail_at_db(db_cursor, client, detail: DetailRequest):
 
 
 def remove_html(text):
-    cleaned_text = re.sub(r'<[^>]+>', '', text)
+    cleaned_text = re.sub(r"<[^>]+>", "", text)
     return cleaned_text
 
 
@@ -468,11 +482,10 @@ SIBIU
     db_cursor = db_connection.cursor()
     db_connection.autocommit = True
 
-    client = OpenAI(api_key = os.getenv('OPENAI_API_KEY'))
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    bot = Bot(token=os.getenv('BOT_TOKEN'))
+    bot = Bot(token=os.getenv("BOT_TOKEN"))
     context = Context(bot)
-
 
     details = await classify_client_response(context, client, request)
 
@@ -481,34 +494,42 @@ SIBIU
             presneted_db_details = search_detail_at_db(db_cursor, client, detail)
 
             if len(presneted_db_details):
-                await context.sendMessage('<b>Details at company table</b>\n\n' + '\n\n'.join([ 
-                f"<b>ID</b>: {detail.id}\n" +
-                f"<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Description:</b> {detail.description}"  
-                                    for detail in presneted_db_details]))
+                await context.sendMessage(
+                    "<b>Details at company table</b>\n\n"
+                    + "\n\n".join(
+                        [
+                            f"<b>ID</b>: {detail.id}\n"
+                            + f"<b>Brand name:</b> {detail.brand_name}\n<b>Part number:</b> {detail.part_number}\n<b>Description:</b> {detail.description}"
+                            for detail in presneted_db_details
+                        ]
+                    )
+                )
 
-            query = f'{detail.brand_name} {detail.part_number}'
+            query = f"{detail.brand_name} {detail.part_number}"
 
             search_response = search_details_offers(context, query)
-            suitable_items = find_suitable_items(context, client, search_response, query, detail)
+            suitable_items = find_suitable_items(
+                context, client, search_response, query, detail
+            )
 
-            suitable_items_str = '<b>Google search:</b>\n\n'
+            suitable_items_str = "<b>Google search:</b>\n\n"
             for suitable_item in suitable_items:
-                full_item_info = search_response['organic'][suitable_item.id]
-                
+                full_item_info = search_response["organic"][suitable_item.id]
+
                 text = f"""
 <b>Title:</b> {remove_html(full_item_info['title'])}
 <b>Snippet:</b> {remove_html(full_item_info['snippet'])}
 <b>Link:</b> {remove_html(full_item_info['link'])}
 """
-                if 'price' in full_item_info:
+                if "price" in full_item_info:
                     text += f'<b>Price:</b> {full_item_info["currency"]}{full_item_info["price"]}'
-                
-                suitable_items_str += text  + '\n\n'
-            
+
+                suitable_items_str += text + "\n\n"
+
             context.info(suitable_items_str)
             await context.sendMessage(suitable_items_str)
         except Exception as exc:
-            print(f'Error: {exc}')
+            print(f"Error: {exc}")
 
 
 asyncio.run(main())

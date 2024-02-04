@@ -49,6 +49,7 @@ class GoogleSearchItems(BaseModel):
 class Metadata(BaseModel):
     full_brand: str
 
+
 class GoogleSearchResponse(BaseModel):
     google_items: List[GoogleSearchItems]
     metadata: Metadata

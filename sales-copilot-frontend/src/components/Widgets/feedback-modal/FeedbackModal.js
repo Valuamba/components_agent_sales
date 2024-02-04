@@ -14,7 +14,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           <label className="checkbox-container">Too short<input type="checkbox" /><span className="checkmark"></span></label>
           <label className="checkbox-container">Not helpful<input type="checkbox" /><span className="checkmark"></span></label>
           <label className="checkbox-container">Hallucinates<input type="checkbox" /><span className="checkmark"></span></label>
-          
+
           {/* Repeat the label/input structure for each checkbox option */}
           <textarea placeholder="How can the response be improved? (optional)" />
           <div className="modal-buttons">

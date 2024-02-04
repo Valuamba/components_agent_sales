@@ -21,7 +21,7 @@ const EmailComponent = ({ email }) => {
             </div>
                 <div class="formatted-text">
                     {emailContent}
-                </div>    
+                </div>
         </div>
     </AssistantContainer>
   );

@@ -4,7 +4,7 @@ import './MetadataDropdown.css'
 
 const MetadataDropdown = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
-  
+
     return (
       <div className="dropdown">
         <button className="dropdown-button" onClick={() => setIsOpen(!isOpen)}>

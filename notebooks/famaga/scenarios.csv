@@ -1,0 +1,141 @@
+Scenario id,Motivation,Details
+1,The client is a new customer who is looking to purchase in bulk for their factory. They are price-conscious and are seeking a significant discount on their first purchase to establish a good business relationship.,"The client came to us for the first time.
+The client requested a product they had not purchased before.
+The client asked for a discount, specifying that they are looking for a significant reduction due to the bulk nature of their order.
+The client is purchasing a product priced between $50,000 - $70,000, in a quantity of 100 pieces, with our current margin at 34%."
+2,"The client is a returning customer who had a good experience with our company in the past. However, due to budget constraints, they are asking for a discount on their order.","The client came to us for the third time.
+The client requested a product they had purchased 1 year ago.
+The client asked for a discount, specifying that their budget has been significantly reduced.
+The client is purchasing a product priced between $20,000 - $30,000, in a quantity of 3 pieces, with our current margin at 34%."
+3,The client is a loyal customer who has found a cheaper price from a competitor. They are requesting us to match the price while maintaining the same quality of product and service.,"The client has been with us for more than 5 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $30,000 - $40,000 in a quantity of 10 pieces, with our current margin at 34%."
+4,The client is a regular customer who has never asked for a discount in the past. They are requesting a discount now due to changes in their financial situation.,"The client has been with us for more than 3 years and has never asked for a discount before.
+The client requested a product they are familiar with and have purchased before.
+The client asked for a discount, citing changes in their financial situation as justification.
+The client is purchasing a product priced between $15,000 - $25,000, in a quantity of 5 pieces, with our current margin at 34%."
+5,The client is a new customer who is looking to place a large order for the first time. They are seeking a discount due to the high volume of the order and are willing to negotiate on the price.,"The client is approaching us for the first time.
+The client is interested in a product they haven't purchased before.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $40,000 - $60,000, in a quantity of 50 pieces, with our current margin at 34%."
+6,The client is a returning customer who has a specific price in mind for their next order. They have had a good relationship with the company and are confident about negotiating the price.,"The client is making their fourth purchase from us.
+The client is interested in a product they have purchased before.
+The client asked for a discount, specifying a desired price for their order.
+The client is purchasing a product priced between $25,000 - $35,000, in a quantity of 10 pieces, with our current margin at 34%."
+7,The client is a long-term customer who is facing budget constraints. They are seeking a discount to continue their business with the company without exceeding their budget.,"The client has been with us for over 7 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, citing budget constraints as the reason.
+The client is purchasing a product priced between $15,000 - $25,000 in a quantity of 5 pieces, with our current margin at 34%."
+8,The client is a new customer who has received a competitive quote from another company. They are requesting us to match or beat the price to win their business.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $30,000 - $45,000, in a quantity of 20 pieces, with our current margin at 34%."
+9,The client is a regular customer who is looking to make a bulk purchase for a new project. They are requesting a discount due to the large volume of the order.,"The client has been with us for more than 2 years.
+The client requested a product they have purchased in the past.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $30,000 - $45,000, in a quantity of 40 pieces, with our current margin at 34%."
+10,The client is a new customer who is looking to make a large order. They have been offered a cheaper price from another supplier and are asking if we can match or beat it.,"The client is coming to us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $50,000 - $60,000, in a quantity of 30 pieces, with our current margin at 34%."
+11,The client is a long-term customer who is facing budget cuts in their company. They are requesting a discount to be able to continue purchasing from us.,"The client has been with us for over 5 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, citing budget cuts as the reason.
+The client is purchasing a product priced between $20,000 - $30,000 in a quantity of 10 pieces, with our current margin at 34%."
+12,The client is a returning customer who has a special project. They are requesting a discount on their order to meet the budget constraints of the project.,"The client came to us for the third time.
+The client requested a product they had purchased 1 year ago.
+The client asked for a discount, specifying that they have a special project with a tight budget.
+The client is purchasing a product priced between $25,000 - $35,000, in a quantity of 3 pieces, with our current margin at 34%."
+13,The client is a new customer who is looking to place a high volume order. They have received a competitive quote from another company and want us to match it.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $40,000 - $60,000, in a quantity of 100 pieces, with our current margin at 34%."
+14,The client is a regular customer who has a specific budget for their next order. They are requesting a discount to be able to fit their purchase within this budget.,"The client has been with us for more than 3 years.
+The client requested a product they are familiar with and have purchased before.
+The client asked for a discount, stating a specific budget for their order.
+The client is purchasing a product priced between $15,000 - $25,000, in a quantity of 5 pieces, with our current margin at 34%."
+15,The client is a returning customer who is looking to place a large order. They are requesting a discount due to the high volume of the order.,"The client came to us for the fourth time.
+The client requested a product they had purchased 2 years ago.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $50,000 - $70,000, in a quantity of 50 pieces, with our current margin at 34%."
+16,The client is a long-term customer who is planning to place a high volume order. They are requesting a discount due to the large volume of the order.,"The client has been with us for over 6 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $60,000 - $80,000, in a quantity of 75 pieces, with our current margin at 34%."
+17,The client is a new customer who has a tight budget for their product needs. They are requesting a discount to be able to afford our product.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, citing budget constraints as the reason.
+The client is purchasing a product priced between $20,000 - $30,000, in a quantity of 2 pieces, with our current margin at 34%."
+18,The client is a returning customer who has found a cheaper price from a competitor. They are requesting us to match the price while maintaining the same quality of product and service.,"The client came to us for the second time.
+The client requested a product they had purchased a year ago.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $15,000 - $25,000 in a quantity of 5 pieces, with our current margin at 34%."
+19,The client is a regular customer who is looking to place a large order. They are requesting a discount due to the high volume of the order.,"The client has been with us for more than 4 years.
+The client requested a product they have purchased in the past.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $50,000 - $70,000, in a quantity of 100 pieces, with our current margin at 34%."
+20,The client is a new customer who has received a competitive quote from another company. They are requesting us to match or beat the price to win their business.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $30,000 - $45,000, in a quantity of 20 pieces, with our current margin at 34%."
+21,The client is a new customer who is looking to make a large order. They have received a competitive quote from another supplier and are asking if we can match or beat it.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $70,000 - $90,000, in a quantity of 50 pieces, with our current margin at 34%."
+22,The client is a long-term customer who is facing financial constraints. They are requesting a discount to be able to continue purchasing from us.,"The client has been with us for over 10 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, citing financial constraints as the reason.
+The client is purchasing a product priced between $30,000 - $40,000 in a quantity of 20 pieces, with our current margin at 34%."
+23,The client is a returning customer who is looking to place a large order. They are requesting a discount due to the high volume of the order.,"The client came to us for the fifth time.
+The client requested a product they had purchased 3 years ago.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $80,000 - $100,000, in a quantity of 100 pieces, with our current margin at 34%."
+24,The client is a regular customer who has a special project. They are requesting a discount on their order to meet the budget constraints of the project.,"The client has been with us for more than 4 years.
+The client requested a product they are familiar with and have purchased before.
+The client asked for a discount, stating a specific budget for their order.
+The client is purchasing a product priced between $25,000 - $35,000, in a quantity of 10 pieces, with our current margin at 34%."
+25,The client is a new customer who is planning to place a high volume order. They are requesting a discount due to the large volume of the order.,"The client is approaching us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $50,000 - $70,000, in a quantity of 75 pieces, with our current margin at 34%."
+26,The client is a returning customer who is facing budget cuts in their company. They are requesting a discount to be able to continue purchasing from us.,"The client has been with us for over 5 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, citing budget cuts as the reason.
+The client is purchasing a product priced between $40,000 - $50,000 in a quantity of 15 pieces, with our current margin at 34%."
+27,The client is a new customer who has received a competitive quote from another company. They are requesting us to match or beat the price to win their business.,"The client is coming to us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, providing a quote from a competitor as justification.
+The client is purchasing a product priced between $60,000 - $80,000, in a quantity of 30 pieces, with our current margin at 34%."
+28,The client is a regular customer who is looking to make a bulk purchase for a new project. They are requesting a discount due to the large volume of the order.,"The client has been with us for more than 6 years.
+The client requested a product they have purchased in the past.
+The client asked for a discount, stating that the volume of their order justifies the request.
+The client is purchasing a product priced between $80,000 - $100,000, in a quantity of 120 pieces, with our current margin at 34%."
+29,The client is a new customer who has a specific price in mind for their next order. They have had a good relationship with a competitor and are confident about negotiating the price.,"The client is coming to us for the first time.
+The client requested a product they haven't purchased before.
+The client asked for a discount, specifying a desired price for their order.
+The client is purchasing a product priced between $35,000 - $45,000, in a quantity of 10 pieces, with our current margin at 34%."
+30,The client is a loyal customer who is looking to purchase in bulk for their factory. They are price-conscious and are seeking a significant discount on their order.,"The client has been with us for more than 8 years.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, specifying that they are looking for a significant reduction due to the bulk nature of their order.
+The client is purchasing a product priced between $100,000 - $120,000, in a quantity of 200 pieces, with our current margin at 34%."
+31,The client is a regular customer who is currently facing short-term financial struggles and is seeking a temporary discount to help them get through this period.,"The client has been with us for more than 2 years and has consistently made prompt payments.
+The client requested a product they are familiar with and have purchased before.
+The client asked for a discount, citing short-term financial struggles as justification.
+The client is purchasing a product priced at $10,000, in a quantity of 2 pieces, with our current margin at 15%."
+32,The client is a new customer who is looking to place a high volume order. They have received a competitive quote from another company and are asking us to match or beat it.,"The client is new and has no previous history with the company.
+The client requested a product that is priced at $50,000, in a quantity of 20 pieces.
+The client asked for a discount, providing a quote from a competitor as justification.
+Our current margin on the product is 25%."
+33,The client is a long-term customer who consistently places bulk orders. They are asking for a discount due to their loyalty and consistent high volume purchases.,"The client has been with us for more than 10 years and has consistently placed bulk orders.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, citing their loyalty and consistent high volume purchases as justification.
+The client is purchasing a product priced between $80,000 - $100,000 in a quantity of 30 pieces, with our current margin at 35%."
+34,The client is a returning customer whose company is facing budget cuts. They are asking for a discount to continue purchasing from us within their new budget.,"The client has been with us for over 3 years and has a good relationship with the company.
+The client requested a product they are familiar with and have purchased before.
+The client asked for a discount, citing their company's budget cuts as justification.
+The client is purchasing a product priced between $25,000 - $35,000, in a quantity of 10 pieces, with our current margin at 20%."
+35,The client is a loyal customer who has found a cheaper price from a new competitor. They are requesting us to match the price to maintain their business with us.,"The client has been with us for more than 5 years and has consistently made prompt payments.
+The client requested a product they have purchased multiple times in the past.
+The client asked for a discount, providing a quote from a new competitor as justification.
+The client is purchasing a product priced between $40,000 - $50,000, in a quantity of 15 pieces, with our current margin at 30%."

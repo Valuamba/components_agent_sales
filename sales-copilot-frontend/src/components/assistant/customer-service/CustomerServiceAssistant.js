@@ -55,7 +55,7 @@ const CustomerServiceAssistant = ({state}) => {
           <div>{state}</div>
         )}
       </ExpandableSection>
-      
+
     </AssistantContainer>
   );
 };

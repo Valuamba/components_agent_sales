@@ -4,23 +4,23 @@
     gap: 1rem;
     padding: 1rem;
   }
-  
+
   .search-bar {
     grid-column: span 2;
   }
-  
+
   .metadata {
     grid-column: span 2;
   }
-  
+
   .search-results {
     grid-column: span 4;
   }
-  
+
   .highlighted-keywords {
     grid-column: span 2;
   }
-  
+
   .selected-results {
     grid-column: span 2;
   }

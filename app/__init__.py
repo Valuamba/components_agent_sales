@@ -1,5 +1,1 @@
-
-
-modules = [
-    'config'
-]
+modules = ["config"]

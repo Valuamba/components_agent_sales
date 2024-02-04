@@ -13,17 +13,17 @@
     height: 30px; /* Height */
     margin-bottom: 5px; /* Space between dropdowns */
   }
-  
+
   .dropdown-arrow {
     /* You can use a Unicode arrow or a custom icon */
   }
-  
+
   .dropdown-content {
     display: none;
     border-left: 1px solid #ddd;
     padding: 10px;
   }
-  
+
   .dropdown {
     width: 70%;
     background-color: #FFFFFF; /* Background color for the entire dropdown */

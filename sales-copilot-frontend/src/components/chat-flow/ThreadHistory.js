@@ -67,7 +67,7 @@ function ThreadHistory() {
           </div>
         </div>
         <div className='assistant-container'>
-          
+
             {messages.map((message, index) => (
               getMessageComponent(message)
           ))}
@@ -78,8 +78,8 @@ function ThreadHistory() {
           <ManagerAssistatant/>
           <CustomerServiceAssistant state={CustomerServiceState.DRAFT_EMAIL}></CustomerServiceAssistant>
           {/* <AssistantContainer/> */}
-          
-          {/* <EmailContainer></EmailContainer> */} 
+
+          {/* <EmailContainer></EmailContainer> */}
         </div>
       </div>
     </div>
