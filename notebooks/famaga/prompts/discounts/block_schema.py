@@ -535,6 +535,8 @@ BLOCK_SCHEMA_FIELDS = """
 *   **Fields**: N/A
 """
 
+some_kek = 'Test45123'
+
 example_scenarios_V1 = """
 Scenario 1:
 - The client came to us for the first time.
