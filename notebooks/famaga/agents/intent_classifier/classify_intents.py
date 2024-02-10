@@ -43,8 +43,10 @@ class ClassifyIntentsInstruction(BaseInstruction):
         return 'Intents:\n' + '\n'.join([ f'{intent.intent} -> {intent.sub_intent} -> {intent.branch}' for intent in output.intents])
 
     def run(self, **kwargs):
+        input = self.prepare_input(**kwargs)
+        print(f'Prompt: {input}')
         response = create_completion([
-            {"role": "user", "content": self.prepare_input(**kwargs)}
+            {"role": "user", "content": input}
         ], temperature=0.5)
 
         json_block = select_json_block(response)

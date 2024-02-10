@@ -5,6 +5,7 @@ from agents.openai_client import create_completion
 import re
 import ast
 
+from agents.statics import Colors
 
 INTENT_CLASSIFIER_NAVIGATION = """
 Please do the task from higher Sales Manager.
@@ -55,9 +56,10 @@ class IntentClassifierAgent:
         iters = 0
 
         while do_iter or iters < 5:
-
+            input = self.prepare_input(task, agent_scratchpad, **kwargs)
+            print(f'{Colors.RED}Prompt:{Colors.RESET} {input}')
             response = create_completion([
-                {"role": "user", "content": self.prepare_input(task, agent_scratchpad, **kwargs)}
+                {"role": "user", "content": input}
             ],
                 stop=['\nObservation:', '\n\tObservation:'],
                 temperature=0.5)
