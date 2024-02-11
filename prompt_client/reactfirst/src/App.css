@@ -1,0 +1,102 @@
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 30%; /* This sets the sidebar to a fixed 30% width */
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.sidebar-content {
+  width: 100%;
+}
+
+.sidebar-item {
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.item-content {
+  padding: 10px;
+  overflow: hidden; /* Hide overflow */
+}
+
+.sidebar-item.selected {
+  background-color: #d0e0fc; /* Change this color to whatever highlight color you prefer */
+}
+
+.item-id, .item-date, .item-prompt {
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+  width: 100%; /* Ensure the divs take up all available width */
+}
+
+.item-icons {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Add some space between icons */
+}
+
+/* You may also want to style the icons individually if needed */
+.fa {
+  font-size: 1.2em; /* Example: Change the size of the icons */
+}
+
+/* .item-id, .item-date, .item-prompt {
+  white-space: normal; 
+  overflow-wrap: break-word; 
+} */
+
+.chat {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.select-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.user-message {
+  background-color: #e0f7fa;
+}
+
+.bot-message {
+  background-color: #f3e5f5; /* Lighter purple */
+}
+
+.message.feedback {
+  background-color: #fff3e0; /* Light color for feedback block */
+  border-left: 4px solid #ffab40; /* Highlight line for feedback block */
+}
+
+
+.chat-item-uuid input {
+  width: 100%; /* Adjust based on your layout */
+  padding: 8px;
+  margin-bottom: 10px; /* Space before the chat starts */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Text color */
+  font-size: 14px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.chat-item-uuid input[readOnly] {
+  cursor: not-allowed; /* Show that the field is not editable */
+}
