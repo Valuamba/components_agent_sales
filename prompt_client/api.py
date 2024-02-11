@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional
@@ -8,6 +8,11 @@ from sqlalchemy import Column, String, Integer, Float, DateTime, Text, Boolean, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+import json
+import asyncio
+from fastapi.encoders import jsonable_encoder
+
 
 DATABASE_URL = "sqlite:///../notebooks/famaga/prompt_versions.db"
 
@@ -38,6 +43,7 @@ def get_db():
 
 class PromptVersion(Base):
     __tablename__ = 'prompt_versions'
+    pkid = Column(Integer, primary_key=True, autoincrement=True)
     id = Column(String, primary_key=True)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
@@ -53,6 +59,7 @@ class PromptVersion(Base):
     is_like = Column(Integer)
 
 class PromptVersionSchema(BaseModel):
+    pkid: int
     id: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
@@ -69,6 +76,7 @@ class PromptVersionSchema(BaseModel):
 
     class Config:
         orm_mode = True
+        from_attributes=True
 
 # @app.post("/prompts/", response_model=PromptVersion)
 # def create_prompt_version(prompt_version: PromptVersionCreate, db: Session = Depends(get_db)):
@@ -77,8 +85,37 @@ class PromptVersionSchema(BaseModel):
 #     db.commit()
 #     db.refresh(db_prompt_version)
 #     return db_prompt_version
+        
+last_id_sent = 0  # Initialize with the last ID sent
+
+def new_data_available(db: Session, last_id: int):
+    return db.query(PromptVersion).filter(PromptVersion.pkid > last_id).first() is not None
+
+def get_new_data(db: Session, last_id: int):
+    global last_id_sent
+    new_items = db.query(PromptVersion).filter(PromptVersion.pkid > last_id).all()
+    if new_items:
+        last_id_sent = new_items[-1].pkid  # Update with the latest ID sent
+    return [PromptVersionSchema.from_orm(item) for item in new_items]
+
+
+@app.get("/events")
+async def get_events(request: Request, db: Session = Depends(get_db)):
+    async def event_generator():
+        global last_id_sent
+        while True:
+            if new_data_available(db, last_id_sent):
+                print(last_id_sent)
+                data = get_new_data(db, last_id_sent)
+                json_compatible_data = jsonable_encoder(data)
+                json_data = json.dumps(json_compatible_data)
+                yield f"data: {json_data}\n\n"
+            await asyncio.sleep(1)  # Polling frequency
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 @app.get("/prompts/", response_model=List[PromptVersionSchema])
 def read_prompts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    global last_id_sent
     prompts = db.query(PromptVersion).offset(skip).limit(limit).all()
+    last_id_sent = prompts[-1].pkid
     return prompts
