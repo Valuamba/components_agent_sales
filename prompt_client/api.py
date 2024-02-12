@@ -117,5 +117,6 @@ async def get_events(request: Request, db: Session = Depends(get_db)):
 def read_prompts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     global last_id_sent
     prompts = db.query(PromptVersion).offset(skip).limit(limit).all()
-    last_id_sent = prompts[-1].pkid
+    if prompts:
+        last_id_sent = prompts[-1].pkid
     return prompts
