@@ -61,7 +61,7 @@ class SuitableDetail(BaseModel):
 detail_classification_schema = """
 Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
 [
@@ -128,7 +128,7 @@ Answer could contain comma separated list of json objects, like in following exa
 suitable_items_schema = """
 Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
 [
@@ -425,7 +425,7 @@ def search_detail_at_db(db_cursor, client, detail: DetailRequest):
 
     Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-    The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+    The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
     ```json
     [12, 124, 12345]

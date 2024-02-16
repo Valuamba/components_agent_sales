@@ -3,9 +3,15 @@ from typing import Generator
 from fastapi import Depends, Request
 from sqlalchemy.orm import Session
 
+from configs import config
 from database import get_db
 from repositories import EmbeddingRepository, DetailInfoRepository
+from repositories.deal_repository import DealRepository
+from repositories.message import MessageRepository
+from repositories.part_inquiry import PartInquiryRepository
+from repositories.task import TaskRepository
 from services import LoggingService, ClassifyEmailAgent, GoogleSearch, OpenAIClient
+from agents.classify_parts.agent import ClassifyEmailAgent as ClassifyEmailAgentV1
 
 from openai import OpenAI
 import psycopg2
@@ -68,6 +74,57 @@ def get_embedding_repository(db: Session = Depends(get_db)) -> Generator[Embeddi
         yield repository
     finally:
         pass
+
+
+def get_deal_repository():
+    repository = DealRepository(config.app_settings.famaga_db_url)
+    try:
+        yield repository
+    finally:
+        pass
+
+def get_message_repository():
+    repository = MessageRepository(config.app_settings.famaga_db_url)
+    try:
+        yield repository
+    finally:
+        pass
+
+def get_part_inquiry_repository():
+    repository = PartInquiryRepository(config.app_settings.famaga_db_url)
+    try:
+        yield repository
+    finally:
+        pass
+
+def get_task_repository():
+    repository = TaskRepository(config.app_settings.famaga_db_url)
+    try:
+        yield repository
+    finally:
+        pass
+
+
+def get_classify_email_agent_v1(
+        openai_client=Depends(get_openai_client),
+        logger=Depends(get_logger),
+        details_info_repository: DetailInfoRepository = Depends(get_details_info_repository),
+        deal_repository = Depends(get_deal_repository),
+        task_repository: TaskRepository = Depends(get_task_repository),
+        part_inquiry_repository = Depends(get_part_inquiry_repository),
+        message_repository: MessageRepository = Depends(get_message_repository),
+        embedding_repository: EmbeddingRepository = Depends(get_embedding_repository)
+):
+    return ClassifyEmailAgentV1(
+        openai_client=openai_client,
+        logger=logger,
+        detail_info_repository=details_info_repository,
+        deal_repository=deal_repository,
+        task_repository=task_repository,
+        part_inquiry_repository=part_inquiry_repository,
+        message_repository=message_repository,
+        embeddings_repository=embedding_repository
+    )
 
 
 def get_classify_email_agent(

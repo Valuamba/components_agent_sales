@@ -1,12 +1,12 @@
 build_block_schema = """
 Please read all block schemas interations that presented above blocks [BLOCK SCHEMA INTERATION <num>]
-and placed between ```<block schema info>```. There were few iterations of describing block schemas,
-they could have repeats or crosses. Please read them all and build single block schema in format that
+and placed between ```<block adr info>```. There were few iterations of describing block schemas,
+they could have repeats or crosses. Please read them all and build single block adr in format that
 described as instriction below. Do not concise text it should be the same at interations or extended 
 with addition info to be clear and understandable for Sales managers of parts and components for
 manufacturers.
 
-Here is pretty text format of block schema:
+Here is pretty text format of block adr:
 ```
 **Start of Script**
 
@@ -197,14 +197,14 @@ Here is pretty text format of block schema:
 """
 
 correct_block_schema = """
-Please read current block schema [CURRENT BLOCK SCHEMA]
-and placed between ```<block schema info>```. Please read the block [CORRECTIONS] that needed to correct current block schema,
-please merge it with our current block schema and return full result in format that
+Please read current block adr [CURRENT BLOCK SCHEMA]
+and placed between ```<block adr info>```. Please read the block [CORRECTIONS] that needed to correct current block adr,
+please merge it with our current block adr and return full result in format that
 described as instriction below. Do not concise text it should be the same at interations or extended 
 with addition info to be clear and understandable for Sales managers of parts and components for
 manufacturers.
 
-Here is pretty text format of block schema:
+Here is pretty text format of block adr:
 ```
 **Start of Script**
 
@@ -575,8 +575,8 @@ Scenario 4: "First Time Discount Request from Regular Customer"
 """
 
 generate_different_scenarious_by_decision_points = """
-Please write different scenarious that could happend in communication between Sales Manager and the customer that described at block schema. 
-Please read context [CONTEXT] to better understand porposes of block schema.
+Please write different scenarious that could happend in communication between Sales Manager and the customer that described at block adr. 
+Please read context [CONTEXT] to better understand porposes of block adr.
 
 Please use the following blocks with decision points that could help build different secenraios by main points:
 [DECISION MAKING BLOCKSCHEMA POINTS]
@@ -591,7 +591,7 @@ Please use this fields and generate your own, that could suits scenraio. In addi
 client, this should not contain sales decision because is would use for test and sales-manager should say their decision about discount using this scenarios as context.
 
 [CONTEXT]
-The company sell parts and components for factories. The block schema was developer for Sales managers that communicated with clients with E-mail.
+The company sell parts and components for factories. The block adr was developer for Sales managers that communicated with clients with E-mail.
 
 [BLOCK SCHEMA]
 {block_schema}
@@ -962,8 +962,8 @@ Motivation: The client is a new customer who has received a competitive quote fr
 """
 
 continue_generating_different_scenarious_by_decision_points = """
-Please write different scenarious that could happend in communication between Sales Manager and the customer that described at block schema. 
-Please read context [CONTEXT] to better understand porposes of block schema. Read early generated scenarios [EARLY GENERATED SCENARIOS], but do not copy them,
+Please write different scenarious that could happend in communication between Sales Manager and the customer that described at block adr. 
+Please read context [CONTEXT] to better understand porposes of block adr. Read early generated scenarios [EARLY GENERATED SCENARIOS], but do not copy them,
 continue numbering scenarios with incrementing already generated. When you figure out scenario you can play with numbers or price, margin and use random because their amount
 can impact on the final decision. Margin should be in diapason 10-50% price per part could like 100$ and $100.000,00.
 
@@ -984,7 +984,7 @@ Please use this fields and generate your own, that could suits scenraio. In addi
 client, this should not contain sales decision because is would use for test and sales-manager should say their decision about discount using this scenarios as context.
 
 [CONTEXT]
-The company sell parts and components for factories. The block schema was developer for Sales managers that communicated with clients with E-mail.
+The company sell parts and components for factories. The block adr was developer for Sales managers that communicated with clients with E-mail.
 
 [BLOCK SCHEMA]
 {block_schema}
@@ -1062,11 +1062,11 @@ The sales manager sends the customer a commercial offer with the same price as t
 """
 
 company_system_message = """
-The company sell parts and components for factories. The block schema was developer for Sales managers that communicated with clients with E-mail.
+The company sell parts and components for factories. The block adr was developer for Sales managers that communicated with clients with E-mail.
 """
 
 get_fields_for_scneraios_from_block_schema = """
-Please review block schema and create for each block decision making points that could be specified to deremine the status of message corresponding this block schema, that would describe current 
+Please review block adr and create for each block decision making points that could be specified to deremine the status of message corresponding this block adr, that would describe current 
 customer situation and helps make decision.
 
 The example of decsition points that could help make decision:
@@ -1084,7 +1084,7 @@ The example of decsition points that could help make decision:
 generate_thread_metadata_by_scenario = """
 Please read the scenarios [SCENARIO] and create messaging with client metadata, that would sutable for scenario. This is just imitation of metadata that was extracted from
 conservation of sales manager and customer. That could help make decision to sales-manager about giving discount for customer. Give answer on the next format that presented at 
-block [EXAMPLE PART METADATA]. Also read full block schema [BLOCK SCHEMA] to better understand the scenario. 
+block [EXAMPLE PART METADATA]. Also read full block adr [BLOCK SCHEMA] to better understand the scenario. 
 
 [SCENARIO]
 ```

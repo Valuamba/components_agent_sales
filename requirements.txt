@@ -10,3 +10,6 @@ tabulate
 pre-commit
 detect-secrets
 sqlalchemy
+uuid
+alembic
+bs4

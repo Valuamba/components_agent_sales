@@ -1,0 +1,83 @@
+table Deal
+    subject: string
+    customer: string
+    deal_id: int PK
+    id: int autoincrement
+    uuid: uuid
+    created_at: datetime
+    updated_at: datetime
+
+
+table AgentTask
+    completion_cost: float
+    output_tokens: int
+    prompt_tokens: int
+    task_id: int auto-increment PK
+    prompt: string
+    response: string
+    agent_type: int
+    status: StatusType
+    created_at: datetime
+    updated_at: datetime
+
+enum StatusType
+    Failed = 0
+    Passed = 1
+    Stopped = 2
+
+
+table TaskFeedback
+    id: auto-increment PK
+    uuid: uuid
+    created_at: datetime
+    updated_at: datetime
+    task_id
+    feedback: string
+    is_like: int (0 - False, 1 - True)
+
+table Issue
+    issue_id: auto-increment PK
+    uuid: uuid
+    created_at: datetime
+    updated_at: datetime
+    description
+
+
+table PartInquiry
+    id: auto-increment PK
+    uuid: uuid
+    created_at: datetime
+    updated_at: datetime
+    brand_id: int
+    brand_name: str
+    full_brand_name: str
+    amount: int
+    part_number: string
+
+table Message
+    deal_id: int
+    body: string
+    from_type: int (manager = 0, customer = 1)
+    reply_to
+    sent_at: datetime
+    id: auto-increment PK
+    uuid: uuid
+    id: auto-increment PK
+    uuid: uuid
+
+type Intent
+    id: auto-increment PK
+    uuid: uuid
+    created_at: datetime
+    updated_at: datetime
+    intent: string
+    sub_intent: string
+    branch: string
+
+ Relations
+    Message one-to-many Intent
+    Deal one-to-many Message
+    Deal one-to-many PartInquiry
+    Deal one-to-many AgentTask
+    AgentTask one-to-many TaskFeedback
+    TaskFeedback many-to-many Issue

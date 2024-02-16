@@ -15,7 +15,7 @@ from services.openai_client import OpenAIClient
 detail_classification_schema = """
 Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
 {
@@ -100,7 +100,7 @@ Answer could contain comma separated list of json objects, like in following exa
 suitable_items_schema = """
 Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
 ```json
 {
@@ -130,6 +130,9 @@ class ClassifyEmailAgent:
         self.logger = logger
         self.detail_info_repository = detail_info_repository
         self.embeddings_repository = embeddings_repository
+
+    # async def classify_parts_details_from_request(self):
+
 
     async def classify_client_response(self, request: EmailRequest, model="gpt-4"):
         classify_prompt = f"""
@@ -279,7 +282,7 @@ class ClassifyEmailAgent:
 
         Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
-        The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "\`\`\`json" and "\`\`\`":
+        The output should be a markdown code snippet formatted in the following adr, including the leading and trailing "\`\`\`json" and "\`\`\`":
 
         ```json
         [12, 124, 12345]
