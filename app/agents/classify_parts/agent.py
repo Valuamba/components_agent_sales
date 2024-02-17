@@ -73,19 +73,15 @@ class ClassifyEmailAgent:
                 ],
             )
 
-            # Assuming `select_json_block` and `ClassifyAgentResponse.model_validate`
-            # can raise exceptions if parsing fails or results are incorrect
             classified_json_data = select_json_block(completion.content)
             order = ClassifyAgentResponse.model_validate(classified_json_data)
             status = StatusType.Passed
 
         except Exception as e:
-            # Log the error for debugging purposes
             self.logger.error(f"Failed to process completion: {str(e)}")
             status = StatusType.Failed
 
         finally:
-            # Prepare task based on status
             if status == StatusType.Passed and classified_json_data and completion:
                 task = AgentTask(
                     deal_id=request.deal_id,
@@ -98,23 +94,18 @@ class ClassifyEmailAgent:
                     agent_type=1
                 )
             else:
-                # Provide fallback values for failed cases or partial successes
                 task = AgentTask(
                     deal_id=request.deal_id,
                     status=status,
                     prompt=prompt,
                     agent_type=1,
-                    # Include fallback/default values for missing fields if necessary
                 )
 
-            # Insert task into the database
             try:
                 task_id = self.task_repository.create_task_for_deal(task)
                 self.logger.info('Task was created', {'task_id': task_id})
             except Exception as db_error:
-                # Log database insertion failures, handling unexpected results or schema issues
                 self.logger.error(f"Failed to insert task into the database: {str(db_error)}")
-                # Consider handling this case (e.g., retry mechanism, alerting, etc.)
 
         if order and completion:
             for part in order.parts:
