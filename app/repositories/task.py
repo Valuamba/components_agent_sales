@@ -7,4 +7,4 @@ class TaskRepository(BaseRepository):
         with self.session_scope() as session:
             session.add(agent_task)
             session.commit()
-            return agent_task
+            return agent_task.task_id

@@ -18,4 +18,4 @@ class MessageRepository(BaseRepository):
             message.id = max_message_id + 1
             session.add(message)
             session.commit()
-            return message
+            return message.message_id

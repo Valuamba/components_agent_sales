@@ -48,9 +48,8 @@ def get_request_context(trace_id: str = Depends(get_trace_id)) -> RequestContext
     return RequestContext(trace_id)
 
 
-def get_logger(context: RequestContext = Depends(get_request_context), name: str = "default_logger_name"):
-    # Assuming LoggingService is a custom class for handling logging with context support
-    return LoggingService(context, name)
+def get_logger(context: RequestContext = Depends(get_request_context)):
+    return LoggingService(context)
 
 def get_google_search(logger=Depends(get_logger)):
     # Assuming GoogleSearch is a custom class for handling Google searches

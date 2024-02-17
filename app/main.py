@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-
+# from configs.logger import logger
 import configs.logger
 import uuid
 
 from api.router import api_router
+from dependencies import get_logger
+
 
 app = FastAPI()
 
@@ -37,5 +39,11 @@ async def add_trace_id(request: Request, call_next):
 
     return response
 
+
+@app.get("/health")
+async def health_check(logger_service = Depends(get_logger)):
+    logger_service.info("Health check endpoint was accessed", extra_info={'request_id': 'N/A', 'extra_info': 'Health check'})
+
+    return {"status": "healthy"}
 
 app.include_router(api_router)

@@ -25,7 +25,6 @@ services:
         - "45045:80"
         networks:
             - famaga-net
-
 networks:
   famaga-net:
     driver: bridge
