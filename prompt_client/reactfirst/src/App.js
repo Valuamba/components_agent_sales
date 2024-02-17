@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatItem from './ChatItem';
 import './App.css';
 import { format } from 'date-fns';
-
-
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaThumbsUp, FaThumbsDown, FaCommentDots } from 'react-icons/fa';
 
 
@@ -11,9 +10,11 @@ import { FaThumbsUp, FaThumbsDown, FaCommentDots } from 'react-icons/fa';
 const App = () => {
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  // const navigate = useNavigate();
+  // const { itemId } = useParams();
 
   useEffect(() => {
-    const eventSource = new EventSource('http://127.0.0.1:8000/events');
+    const eventSource = new EventSource('http://127.0.0.1:8004/events');
 
     eventSource.onmessage = (event) => {
       console.log(event.data);
@@ -40,7 +41,7 @@ const App = () => {
       eventSource.close();
     };
 
-    fetch('http://127.0.0.1:8000/prompts/?skip=0&limit=100', {
+    fetch('http://127.0.0.1:8004/prompts/?skip=0&limit=100', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

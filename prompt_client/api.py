@@ -12,7 +12,7 @@ from fastapi.responses import StreamingResponse
 import json
 import asyncio
 from fastapi.encoders import jsonable_encoder
-
+import uvicorn
 
 DATABASE_URL = "sqlite:///../notebooks/famaga/prompt_versions.db"
 
@@ -78,6 +78,21 @@ class PromptVersionSchema(BaseModel):
         orm_mode = True
         from_attributes=True
 
+
+class FeedbackUpdateRequest(BaseModel):
+    feedback: str
+    is_like: bool
+
+
+class FeedbackResponse(BaseModel):
+    pkid: int
+    id: str
+    feedback: str
+    is_like: bool
+    class Config:
+        orm_mode = True
+
+
 # @app.post("/prompts/", response_model=PromptVersion)
 # def create_prompt_version(prompt_version: PromptVersionCreate, db: Session = Depends(get_db)):
 #     db_prompt_version = PromptVersionDB(**prompt_version.dict())
@@ -97,6 +112,30 @@ def get_new_data(db: Session, last_id: int):
     if new_items:
         last_id_sent = new_items[-1].pkid  # Update with the latest ID sent
     return [PromptVersionSchema.from_orm(item) for item in new_items]
+
+
+@app.post("/feedback/{item_id}", response_model=FeedbackResponse)
+def update_feedback(item_id: str, feedback_data: FeedbackUpdateRequest, db: Session = Depends(get_db)):
+    # Try to find the existing prompt version by id
+    prompt_version = db.query(PromptVersion).filter(PromptVersion.id == item_id).first()
+
+    # If it exists, update feedback and is_like
+    if prompt_version:
+        prompt_version.feedback = feedback_data.feedback
+        prompt_version.is_like = feedback_data.is_like
+    else:
+        # If it doesn't exist, create a new PromptVersionDB entry
+        prompt_version = PromptVersion(
+            id=item_id,  # Assuming you want to manually set the UUID here, else remove this
+            feedback=feedback_data.feedback,
+            is_like=feedback_data.is_like,
+            # Set other fields as necessary, or use default values
+        )
+        db.add(prompt_version)
+
+    db.commit()
+    db.refresh(prompt_version)
+    return prompt_version
 
 
 @app.get("/events")
@@ -120,3 +159,7 @@ def read_prompts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     if prompts:
         last_id_sent = prompts[-1].pkid
     return prompts
+
+
+if __name__ == "__main__":
+    uvicorn.run("api:app", host="127.0.0.1", port=8004, log_level="info")

@@ -100,3 +100,214 @@
 .chat-item-uuid input[readOnly] {
   cursor: not-allowed; /* Show that the field is not editable */
 }
+
+/*TOGGLE BUTTONS*/
+
+.view-toggle-buttons {
+    margin-bottom: 5px;
+    text-align: right;
+}
+
+.view-toggle-buttons button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.view-toggle-buttons button:hover {
+    background-color: #e0e0e0;
+}
+
+.message pre {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+}
+
+
+
+/*FEEDBACK AREA*/
+/* Style for the chat item and its elements */
+.chat-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Style for the textarea for feedback */
+.chat-item textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical; /* Allows the user to vertically resize the textarea */
+}
+
+/* General style for buttons within the chat item */
+.chat-item button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Style for the Like button */
+.chat-item button.like {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.chat-item button.like:hover {
+  background-color: #45a049;
+}
+
+/* Style for the Dislike button */
+.chat-item button.dislike {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.chat-item button.dislike:hover {
+  background-color: #da190b;
+}
+
+/* Style for the Submit Feedback button */
+.chat-item button.submit-feedback {
+  background-color: #008CBA; /* Blue */
+  color: white;
+}
+
+.chat-item button.submit-feedback:hover {
+  background-color: #007bb5;
+}
+
+/* Pre tag styling for markdown view */
+.chat-item pre {
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+
+.chat-item button.edit, .chat-item button.cancel, .chat-item button.submit-feedback {
+  padding: 5px 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.chat-item button.edit {
+  background-color: #ffa500; /* Orange */
+  color: white;
+}
+
+.chat-item button.cancel {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.chat-item button.submit-feedback {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.chat-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.message.feedback {
+  position: relative;
+}
+
+/*.feedback-icons {*/
+/*  display: flex;*/
+/*  justify-content: left; !* Center icons *!*/
+/*  margin: 10px 0;*/
+/*}*/
+
+/*.icon {*/
+/*  font-size: 24px;*/
+/*  margin: 0 5px;*/
+/*}*/
+
+/*.like-icon, .dislike-icon {*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.like-icon:hover, .dislike-icon:hover {*/
+/*  opacity: 0.7;*/
+/*}*/
+
+/*textarea {*/
+/*  width: 100%;*/
+/*  padding: 10px;*/
+/*  margin: 10px 0;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 4px;*/
+/*  height: 100px; !* Adjust based on your needs *!*/
+/*}*/
+
+/*button {*/
+/*  display: inline-block;*/
+/*  padding: 8px 15px;*/
+/*  margin: 5px;*/
+/*  border: none;*/
+/*  border-radius: 4px;*/
+/*  cursor: pointer;*/
+/*  font-size: 16px;*/
+/*  transition: background-color 0.3s;*/
+/*}*/
+
+/*.edit {*/
+/*  background-color: #007bff;*/
+/*  color: white;*/
+/*}*/
+
+/*.edit:hover {*/
+/*  background-color: #0056b3;*/
+/*}*/
+
+/*.save {*/
+/*  background-color: #28a745;*/
+/*  color: white;*/
+/*}*/
+
+/*.save:hover {*/
+/*  background-color: #218838;*/
+/*}*/
+
+/*.cancel {*/
+/*  background-color: #dc3545;*/
+/*  color: white;*/
+/*}*/
+
+/*.cancel:hover {*/
+/*  background-color: #c82333;*/
+/*}*/
+
+/*.like, .dislike {*/
+/*  background-color: #f8f9fa;*/
+/*  color: #343a40;*/
+/*}*/
+
+/*.like.selected, .dislike.selected {*/
+/*  background-color: #e2e6ea;*/
+/*}*/
