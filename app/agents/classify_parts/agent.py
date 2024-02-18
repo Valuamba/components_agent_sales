@@ -11,7 +11,7 @@ from schemas.completion import ClassifiedMessageData
 from schemas.v1.classify_part import ClassifyAgentResponse
 from schemas.v1.part import ClassifyPartRequest
 from services import OpenAIClient, LoggingService
-from utility import select_json_block
+from utility import select_json_block, content_hash
 
 
 class ClassifyEmailAgent:
@@ -50,14 +50,16 @@ class ClassifyEmailAgent:
                 subject=request.subject))
         self.logger.info('Deal was or gotten created', {'deal_id': request.deal_id})
 
-        message_id = self.message_repository.append_message_to_deal(
-            request.deal_id, Message(
+        message_hash = content_hash(request.body)
+        message = self.message_repository.append_message_to_chat_history_or_get(
+            request.deal_id, message_hash, Message(
                 deal_id=request.deal_id,
                 from_type=FromType.Customer.value,
                 body=request.body,
-            )
-        )
-        self.logger.info('Message was appended', {'message_id': message_id})
+                hash=content_hash(request.body)
+            ))
+
+        self.logger.info('Message was appended', {'message_id': message.message_id, 'hash': message.hash})
 
         classified_json_data = None
         completion = None
@@ -118,7 +120,7 @@ class ClassifyEmailAgent:
 
             order.deal_id = request.deal_id
             order.agent_task_id = task_id
-            order.message_id = message_id
+            order.message_id = message.message_id
 
             return order, completion.usage_cost_usd
         return None, None

@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -7,10 +7,13 @@ Base = declarative_base()
 
 
 class BaseRepository:
-    def __init__(self, db_url):
-        self.engine = create_engine(db_url)
-        Base.metadata.create_all(self.engine)
-        self.Session = sessionmaker(bind=self.engine)
+    def __init__(self, session: Session):
+        self.session = session
+
+    # def __init__(self, db_url):
+    #     self.engine = create_engine(db_url)
+    #     Base.metadata.create_all(self.engine)
+    #     self.Session = sessionmaker(bind=self.engine)
 
     @contextmanager
     def session_scope(self):

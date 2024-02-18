@@ -9,9 +9,7 @@ import { FaThumbsUp, FaThumbsDown, FaCommentDots } from 'react-icons/fa';
 
 const App = () => {
   const [items, setItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
-  // const navigate = useNavigate();
-  // const { itemId } = useParams();
+  const [selectedItem, setSelectedItem] = useState(null)
 
   useEffect(() => {
     const eventSource = new EventSource('http://127.0.0.1:8004/events');

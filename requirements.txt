@@ -13,3 +13,4 @@ sqlalchemy
 uuid
 alembic
 bs4
+dependency-injector

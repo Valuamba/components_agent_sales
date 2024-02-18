@@ -75,29 +75,29 @@ def get_embedding_repository(db: Session = Depends(get_db)) -> Generator[Embeddi
         pass
 
 
-def get_deal_repository():
-    repository = DealRepository(config.app_settings.famaga_db_url)
+def get_deal_repository(db: Session = Depends(get_db)):
+    repository = DealRepository(session=db)
     try:
         yield repository
     finally:
         pass
 
-def get_message_repository():
-    repository = MessageRepository(config.app_settings.famaga_db_url)
+def get_message_repository(db: Session = Depends(get_db)):
+    repository = MessageRepository(session=db)
     try:
         yield repository
     finally:
         pass
 
-def get_part_inquiry_repository():
-    repository = PartInquiryRepository(config.app_settings.famaga_db_url)
+def get_part_inquiry_repository(db: Session = Depends(get_db)):
+    repository = PartInquiryRepository(session=db)
     try:
         yield repository
     finally:
         pass
 
-def get_task_repository():
-    repository = TaskRepository(config.app_settings.famaga_db_url)
+def get_task_repository(db: Session = Depends(get_db)):
+    repository = TaskRepository(session=db)
     try:
         yield repository
     finally:
