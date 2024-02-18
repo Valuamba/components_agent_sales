@@ -3,10 +3,12 @@ from typing import Generator
 from fastapi import Depends, Request
 from sqlalchemy.orm import Session
 
+from agents.classify_intents.agent import ClassifyIntentsAgent
 from configs import config
 from database import get_db
 from repositories import EmbeddingRepository, DetailInfoRepository
 from repositories.deal_repository import DealRepository
+from repositories.intents import IntentRepository
 from repositories.message import MessageRepository
 from repositories.part_inquiry import PartInquiryRepository
 from repositories.task import TaskRepository
@@ -104,6 +106,13 @@ def get_task_repository(db: Session = Depends(get_db)):
         pass
 
 
+def get_intent_repository(db: Session = Depends(get_db)):
+    repository = IntentRepository(session=db)
+    try:
+        yield repository
+    finally:
+        pass
+
 def get_classify_email_agent_v1(
         openai_client=Depends(get_openai_client),
         logger=Depends(get_logger),
@@ -125,6 +134,13 @@ def get_classify_email_agent_v1(
         embeddings_repository=embedding_repository
     )
 
+def get_classify_intents_agent(
+        openai_client=Depends(get_openai_client),
+        logger=Depends(get_logger)):
+    return ClassifyIntentsAgent(
+        openai_client=openai_client,
+        logger=logger
+    )
 
 def get_classify_email_agent(
         openai_client=Depends(get_openai_client),

@@ -9,6 +9,12 @@ from repositories.base import BaseRepository
 class MessageRepository(BaseRepository):
 
     def append_message_to_chat_history_or_get(self, deal_id, hash, message: Message = None):
+
+        max_message_id = self.session.query(func.max(Message.id)) \
+                             .filter(Message.deal_id == deal_id, Message.hash != None) \
+                             .scalar() or 0
+        message.id = max_message_id + 1
+
         try:
             # Try to retrieve an existing message by hash
             query = select(Message).where(Message.hash == hash, Message.deal_id == deal_id)
@@ -29,15 +35,15 @@ class MessageRepository(BaseRepository):
 
 
     def append_message_to_deal(self, deal_id, message: Message):
-        # with self.session_scope() as session:
         deal = self.session.query(Deal).filter_by(deal_id=deal_id).first()
         if not deal:
             raise ValueError("Deal not found")
 
             # Calculate next message_id_in_deal
-        max_message_id = self.session.query(func.max(Message.id)).filter_by \
-                (deal_id=deal_id).scalar() or 0
+        max_message_id = self.session.query(func.max(Message.id)) \
+                             .filter(Message.deal_id == deal_id, Message.hash != None) \
+                             .scalar() or 0
         message.id = max_message_id + 1
         self.session.add(message)
         self.session.commit()
-        return message.message_id
+        return message
