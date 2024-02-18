@@ -138,7 +138,7 @@ class ClassifyEmailAgent:
         classify_prompt = f"""
         Try to extract from text brand name, amount, detail name, part number from the text. Also recognize country by text.
         <<<>>>
-        Subject: {request.body}
+        Subject: {request.subject}
         From: {request.from_client}
 
         {request.body}
