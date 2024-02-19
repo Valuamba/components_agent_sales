@@ -129,6 +129,7 @@ class Message(Base):
     deal_id = Column(Integer, ForeignKey('deal.deal_id'))
     body = Column(String, nullable=False)
     hash = Column(String, nullable=True)
+    sign = Column(String, nullable=True)
     from_type = Column(Integer, nullable=False)
     reply_to = Column(Integer, ForeignKey('message.message_id'))
     sent_at = Column(DateTime, nullable=True)

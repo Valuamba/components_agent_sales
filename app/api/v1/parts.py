@@ -87,56 +87,46 @@ async def upload_eml_file(deal_id: int, file: UploadFile = File(...),
     contents = await file.read()
     html_content = extract_html_from_eml(contents)
     messages = extract_messages_from_body(html_content)
+    messages = [msg for msg in messages if msg and not msg.isspace()]
     message = message_from_bytes(contents)
 
     existing_messages = session.query(Message).filter_by(deal_id=deal_id).order_by(desc(Message.id)).all()
 
-    # Reverse the list to start comparison from the oldest to newest
-    existing_messages.reverse()
-
-    # Initialize index for existing messages
     existing_index = 0
 
-    # Iterate over EML messages from oldest to newest
     new_messages = []
-    for eml_message in reversed(messages):
-        # print(f'F: {eml_message}')
-        # print(f'D: {existing_messages[existing_index].body}')
-        # If all existing messages have been checked, or a mismatch is found
+    for eml_message in messages:
         if existing_index >= len(existing_messages) or content_hash(eml_message) != existing_messages[existing_index].hash:
-            # Check for middle mismatch collision
             if existing_index < len(existing_messages):
                 raise ValueError("Message mismatch collision detected.")
-            # Insert new message into the database
             new_messages.append(eml_message)
         else:
-            # If hashes match, move to the next existing message
             existing_index += 1
 
     logger_service.info(f'There are [{len(new_messages)}] to be appended to messaging', {'deal_id': deal_id})
+    if len(new_messages) == 0:
+        return JSONResponse(status_code=200, content={"message": "All messages was added earlier."})
 
-    deal = deal_repository.get_or_create_deal(deal_id, Deal(
-        deal_id=deal_id,
-        subject=message.get("Subject")))
+    deal = deal_repository.get_or_create_deal(deal_id, Deal(deal_id=deal_id, subject=message.get("Subject")))
 
-    messages_with_intents = classify_intents_agent.classify_messages_metadata_and_intents(new_messages)
+    messages_with_intents = classify_intents_agent.classify_messages_metadata_and_intents(deal.deal_id, new_messages)
 
     if len(new_messages) != len(messages_with_intents):
         logger_service.error(f'Messages from *.eml file [{len(new_messages)}] and messages with intents [{len(messages_with_intents)}] do not match the length.')
-        # return JSONResponse(status_code=400, content={"message": "Error at parsing intents"})
+        return JSONResponse(status_code=400, content={"message": "Error at parsing intents"})
 
-    # return [message.dict(by_alias=True) for message in messages_with_intents]
-    # print(serialized_json)
-    # return serialized_json
 
-    for raw_msg, msg in zip(new_messages, messages_with_intents[::-1]):
+    for raw_msg, msg in zip(new_messages[::-1], messages_with_intents[::-1]):
         # Хэш какого боди считать, того, что в письме или которе гпт вернул?
+        print(raw_msg)
+        # print(f'\n\n---------\n\n{msg.body}')
         message_hash = content_hash(raw_msg)
         new_message = message_repository.append_message_to_deal(
             deal_id, Message(
                 deal_id=deal_id,
-                from_type= FromType.Manager.value if msg.from_ == 'manager' else FromType.Customer.value,
+                from_type=FromType.Manager.value if msg.from_ == 'manager' else FromType.Customer.value,
                 body=msg.body,
+                sign=msg.sign,
                 hash=message_hash
             ))
         logger_service.info(f'Message [{new_message.message_id}] was appended to deal [{deal_id}] with serial number [{new_message.id}]')

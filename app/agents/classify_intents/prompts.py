@@ -4,7 +4,8 @@ Put the result at ```json``` format, like:
 [
     {
         "id": "<message_id>",
-        "body": "<message body>",
+        "body": "<message body>", //only body withouth sign
+        "sign": "<signature>", //message signature
         "from": "<message from>", //this should be one of two values: customer or manager
         "intents": [
             {
@@ -17,6 +18,7 @@ Put the result at ```json``` format, like:
     }
 ]
 ```
+Please put new lines symbols if it suitable for context \\n at body and sign fields.
 """
 
 INTENT_CLASSIFICATION_PROMPT = """

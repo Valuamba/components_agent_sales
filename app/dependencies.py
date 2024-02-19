@@ -136,10 +136,13 @@ def get_classify_email_agent_v1(
 
 def get_classify_intents_agent(
         openai_client=Depends(get_openai_client),
-        logger=Depends(get_logger)):
+        logger=Depends(get_logger),
+        task_repository: TaskRepository = Depends(get_task_repository)
+):
     return ClassifyIntentsAgent(
         openai_client=openai_client,
-        logger=logger
+        logger=logger,
+        task_repository=task_repository
     )
 
 def get_classify_email_agent(

@@ -12,6 +12,7 @@ class Intent(BaseModel):
 class Message(BaseModel):
     id: str  # Adjust the type as needed (e.g., int for integer IDs)
     body: str
+    sign: str
     from_: Literal['customer', 'manager'] = Field(..., alias='from')
     intents: List[Intent]
 
