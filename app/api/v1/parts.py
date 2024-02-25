@@ -21,10 +21,11 @@ from fastapi.responses import JSONResponse
 from models.deal import Issue, TaskFeedback, IssueGroup, Deal, Message, FromType
 
 from schemas.v1.classify_part import ClassifyAgentResponse
+from schemas.v1.email_parser import EmailContent
 from schemas.v1.part import ClassifyPartRequest, TaskFeedbackCreate
 from schemas.v1.part import IssueModel
 from services import LoggingService
-from utility import extract_html_from_eml, extract_messages_from_body, content_hash
+from utility import extract_html_from_eml, extract_messages_from_body, content_hash, extract_messages_from_raw_html
 
 parts_router = APIRouter()
 
@@ -118,8 +119,67 @@ async def upload_eml_file(deal_id: int, file: UploadFile = File(...),
 
     for raw_msg, msg in zip(new_messages[::-1], messages_with_intents[::-1]):
         # Хэш какого боди считать, того, что в письме или которе гпт вернул?
-        print(raw_msg)
+        # print(raw_msg)
         # print(f'\n\n---------\n\n{msg.body}')
+        message_hash = content_hash(raw_msg)
+        new_message = message_repository.append_message_to_deal(
+            deal_id, Message(
+                deal_id=deal_id,
+                from_type=FromType.Manager.value if msg.from_ == 'manager' else FromType.Customer.value,
+                body=msg.body,
+                sign=msg.sign,
+                hash=message_hash
+            ))
+        logger_service.info(f'Message [{new_message.message_id}] was appended to deal [{deal_id}] with serial number [{new_message.id}]')
+
+        intent_repository.batch_insert_intents_from_models(msg.intents, new_message.message_id)
+
+    return messages_with_intents
+
+
+@parts_router.post("/upload-html/")
+async def upload_eml_file(email_content: EmailContent,
+                          intent_repository: IntentRepository = Depends(get_intent_repository),
+                          deal_repository = Depends(get_deal_repository),
+                          message_repository = Depends(get_message_repository),
+                          logger_service: LoggingService = Depends(get_logger),
+                          classify_intents_agent: ClassifyIntentsAgent = Depends(get_classify_intents_agent),
+                          session = Depends(get_db)):
+    deal_id = email_content.deal_id
+    html_content = email_content.html_content
+    subject = email_content.subject
+
+    messages = extract_messages_from_raw_html(html_content)
+    messages = [msg for msg in messages if msg and not msg.isspace()]
+    logger_service.info(f'There are [{len(messages)}] total messages.', {'deal_id': deal_id})
+
+    existing_messages = session.query(Message).filter_by(deal_id=deal_id).order_by(desc(Message.id)).all()
+
+    existing_index = 0
+
+    new_messages = []
+    for eml_message in messages:
+        if existing_index >= len(existing_messages) or content_hash(eml_message) != existing_messages[existing_index].hash:
+            if existing_index < len(existing_messages):
+                raise ValueError("Message mismatch collision detected.")
+            new_messages.append(eml_message)
+        else:
+            existing_index += 1
+
+    logger_service.info(f'There are [{len(new_messages)}] to be appended to messaging', {'deal_id': deal_id})
+    if len(new_messages) == 0:
+        return JSONResponse(status_code=200, content={"message": "All messages was added earlier."})
+
+    deal = deal_repository.get_or_create_deal(deal_id, Deal(deal_id=deal_id, subject=subject))
+
+    messages_with_intents = classify_intents_agent.classify_messages_metadata_and_intents(deal.deal_id, new_messages)
+
+    if len(new_messages) != len(messages_with_intents):
+        logger_service.error(f'Messages from *.eml file [{len(new_messages)}] and messages with intents [{len(messages_with_intents)}] do not match the length.')
+        return JSONResponse(status_code=400, content={"message": "Error at parsing intents"})
+
+
+    for raw_msg, msg in zip(new_messages[::-1], messages_with_intents[::-1]):
         message_hash = content_hash(raw_msg)
         new_message = message_repository.append_message_to_deal(
             deal_id, Message(

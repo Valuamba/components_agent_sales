@@ -25,6 +25,28 @@ def extract_html_from_eml(eml_content):
     return html_content
 
 
+def extract_messages_from_raw_html(html_content: str):
+    soup = BeautifulSoup(html_content, "html.parser")
+    messages = []
+    clone_body = copy.copy(soup)
+
+    for nested_blockquote in clone_body.find_all("blockquote"):
+        nested_blockquote.decompose()
+
+    messages.append(clone_body.get_text(strip=True))
+    blockquotes = soup.find_all("blockquote")
+
+    for blockquote in blockquotes:
+        clone = copy.copy(blockquote)
+
+        for nested_blockquote in clone.find_all("blockquote"):
+            nested_blockquote.decompose()
+
+        messages.append(clone.get_text(strip=True))
+
+    return messages
+
+
 def extract_messages_from_body(html_content: str):
     soup = BeautifulSoup(html_content, "html.parser")
     messages = []

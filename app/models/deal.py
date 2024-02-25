@@ -4,6 +4,9 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
 import enum
+from sqlalchemy import Column, Integer, Float, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+
 
 Base = declarative_base()
 
@@ -154,6 +157,22 @@ class Intent(Base):
     message_id = Column(Integer, ForeignKey('message.message_id'))
 
     message = relationship("Message", back_populates="intents")
+
+
+class PurchaseHistory(Base):
+    __tablename__ = 'purchase_history'
+
+    deal_id = Column(Integer, primary_key=True)
+    part_number = Column(String)
+    brand_title = Column(String)
+    brand_id = Column(String)
+    client_title = Column(String)
+    client_id = Column(String)
+    requisition_created = Column(DateTime, nullable=True)
+    price_buy = Column(Float)
+    price_sell = Column(Float)
+    margin = Column(Float)
+    amount = Column(Integer)
 
 
 # Association Table for Many-to-Many relationship between TaskFeedback and Issue
