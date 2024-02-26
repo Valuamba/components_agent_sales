@@ -4,6 +4,9 @@
 **/.cache/
 *.dump
 **/logs/*
+.db
+**/*.db
+notebooks/famaga/*.db
 
 
 **/*.sqlite3
