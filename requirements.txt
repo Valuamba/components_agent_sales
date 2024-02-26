@@ -15,3 +15,4 @@ alembic
 bs4
 dependency-injector
 python-multipart
+pydantic[email]

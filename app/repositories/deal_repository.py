@@ -1,6 +1,8 @@
-from models.deal import Deal
+from sqlalchemy import select
+
+from models.deal import Deal, Message
 from repositories.base import BaseRepository
-from sqlalchemy.orm import make_transient_to_detached
+from sqlalchemy.orm import make_transient_to_detached, selectinload, joinedload
 
 
 class DealRepository(BaseRepository):
@@ -13,6 +15,11 @@ class DealRepository(BaseRepository):
         # with self.session_scope() as session:
         deal = self.session.query(Deal).filter_by(deal_id=deal_id).first()
         return deal
+
+    def get_deal_with_messages(self, deal_id: int):
+        return self.session.query(Deal).where(Deal.deal_id == deal_id).options(
+            joinedload(Deal.messages).joinedload(Message.intents)
+        ).first()
 
     def get_or_create_deal(self, deal_id, new_deal: Deal = None):
         # with self.session_scope() as session:

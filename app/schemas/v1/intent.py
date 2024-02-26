@@ -1,4 +1,4 @@
-from typing import List, Literal
+from typing import List, Literal, Optional
 from pydantic import BaseModel, Field
 import json
 
@@ -12,7 +12,7 @@ class Intent(BaseModel):
 class Message(BaseModel):
     id: str  # Adjust the type as needed (e.g., int for integer IDs)
     body: str
-    sign: str
+    sign: Optional[str] = None
     from_: Literal['customer', 'manager'] = Field(..., alias='from')
     intents: List[Intent]
 
