@@ -15,6 +15,7 @@ class FromType(enum.Enum):
     Manager = 0
     Customer = 1
 
+
 class StatusType(enum.Enum):
     Failed = 0
     Passed = 1
