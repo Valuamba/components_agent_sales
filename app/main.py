@@ -1,7 +1,5 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-# from configs.logger import logger
-import configs.logger
 import uuid
 
 from api.router import api_router
