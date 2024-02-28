@@ -1,8 +1,12 @@
+from typing import List
+
 from sqlalchemy import select
 
 from models.deal import Deal, Message
 from repositories.base import BaseRepository
 from sqlalchemy.orm import make_transient_to_detached, selectinload, joinedload
+
+from schemas.v1.messages import MessageModel, IntentModel
 
 
 class DealRepository(BaseRepository):
@@ -20,6 +24,33 @@ class DealRepository(BaseRepository):
         return self.session.query(Deal).where(Deal.deal_id == deal_id).options(
             joinedload(Deal.messages).joinedload(Message.intents)
         ).first()
+
+    def get_deal_with_messages_v2(self, deal_id: int) -> List[MessageModel]:
+        deal = self.session.query(Deal).where(Deal.deal_id == deal_id).options(
+            joinedload(Deal.messages).joinedload(Message.intents)
+        ).first()
+
+        if not deal:
+            raise Exception("Deal not found")
+
+        messages = [
+            MessageModel(
+                uuid=msg.uuid,
+                id=msg.id,
+                body=msg.body,
+                from_type=msg.from_type,
+                intents=[
+                    IntentModel(
+                        uuid=intent.uuid,
+                        intent=intent.intent,
+                        sub_intent=intent.sub_intent,
+                        branch=intent.branch
+                    ) for intent in msg.intents
+                ]
+            ) for msg in deal.messages
+        ]
+
+        return messages
 
     def get_or_create_deal(self, deal_id, new_deal: Deal = None):
         # with self.session_scope() as session:
