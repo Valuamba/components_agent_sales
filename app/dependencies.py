@@ -4,6 +4,7 @@ from fastapi import Depends, Request
 from sqlalchemy.orm import Session
 
 from agents.classify_intents.agent import ClassifyIntentsAgent
+from agents.pricing_manager.agent import PricingManagerAgent
 from configs import config
 from database import get_db
 from repositories import EmbeddingRepository, DetailInfoRepository
@@ -11,9 +12,10 @@ from repositories.deal_repository import DealRepository
 from repositories.intents import IntentRepository
 from repositories.message import MessageRepository
 from repositories.part_inquiry import PartInquiryRepository
+from repositories.purchase_history import PurchaseHistoryRepository
 from repositories.task import TaskRepository
 from services import LoggingService, ClassifyEmailAgent, GoogleSearch, OpenAIClient
-from agents.classify_parts.agent import ClassifyEmailAgent as ClassifyEmailAgentV1
+from agents.classify_parts.service import ClassifyEmailAgent as ClassifyEmailAgentV1
 
 from openai import OpenAI
 import psycopg2
@@ -105,6 +107,12 @@ def get_task_repository(db: Session = Depends(get_db)):
     finally:
         pass
 
+def get_purchase_history_repository(db: Session = Depends(get_db)):
+    repository = PurchaseHistoryRepository(session=db)
+    try:
+        yield repository
+    finally:
+        pass
 
 def get_intent_repository(db: Session = Depends(get_db)):
     repository = IntentRepository(session=db)
@@ -156,4 +164,16 @@ def get_classify_email_agent(
         logger=logger,
         detail_info_repository=details_info_repository,
         embeddings_repository=embedding_repository
+    )
+
+
+def get_pricing_manager(
+        openai_client=Depends(get_openai_client),
+        logger=Depends(get_logger),
+        deal_repository: DealRepository = Depends(get_deal_repository),
+        task_repository: TaskRepository = Depends(get_task_repository),
+        purchase_repository: PurchaseHistoryRepository = Depends(get_purchase_history_repository)
+):
+    return PricingManagerAgent(
+        openai_client, logger, task_repository, deal_repository, purchase_repository
     )

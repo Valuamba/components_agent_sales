@@ -9,7 +9,7 @@ from repositories import (
     MessageRepository, PartInquiryRepository, TaskRepository
 )
 from services import LoggingService, ClassifyEmailAgent, GoogleSearch, OpenAIClient
-from agents.classify_parts.agent import ClassifyEmailAgent as ClassifyEmailAgentV1
+from agents.classify_parts.service import ClassifyEmailAgent as ClassifyEmailAgentV1
 from fastapi import Depends, Request
 
 from openai import OpenAI

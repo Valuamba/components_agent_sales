@@ -1,5 +1,11 @@
+import enum
 from typing import List
 from pydantic import BaseModel, UUID4
+
+
+class FromType(enum.Enum):
+    Manager = 0
+    Customer = 1
 
 
 class IntentModel(BaseModel):
@@ -13,7 +19,7 @@ class MessageModel(BaseModel):
     uuid: UUID4
     id: int
     body: str
-    from_type: int
+    from_type: FromType
     intents: List[IntentModel]
 
 

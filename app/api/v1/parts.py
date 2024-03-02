@@ -8,7 +8,7 @@ from sqlalchemy import desc, asc
 from sqlalchemy.orm import Session
 
 from agents.classify_intents.agent import ClassifyIntentsAgent
-from agents.classify_parts.agent import ClassifyEmailAgent
+from agents.classify_parts.service import ClassifyEmailAgent
 from database import get_db
 from dependencies import get_classify_email_agent_v1, get_deal_repository, get_part_inquiry_repository, \
     get_task_repository, get_message_repository, get_logger, get_classify_intents_agent, get_intent_repository

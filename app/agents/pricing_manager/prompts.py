@@ -1,7 +1,7 @@
 RESPONSE_FORMAT = """
 **Use the following format of answer:**
 
-Use this format if you are going throw block schema instructuin tree:
+Use this format if you are going throw block schema instruction tree:
 Decision Point: the name of decision point, that you thought on
 Task: if task was presented in Action
 Observation: the conclusion about thoughts
@@ -102,10 +102,10 @@ DISCOUNT_BLOCK_SCHEMA = """
 """
 
 
-PROMPT = f"""
+PROMPT = """
 You are Pricing Manager at company that supply clients with parts or components for manufacturers. Your responsibility is 
 communicate with clients using email messages and negotiate about discount and pricing questions. Please make decision about discount or some action needed for this using 
-discount block schema [BLOCK SCHEMA] as a intrusction.
+discount block schema [BLOCK SCHEMA] as a intruction.
 
 You need to gather all information about client and offer, this would help us to make decision about change offer 
 with adding discount or smth else. But know you needed to just develop this client by block schema.
@@ -114,7 +114,7 @@ Do do this, please read client purchase history [CLIENT PURCHASE HISTORY] and cl
 To better understand your client please read [CLIENT PROFILE]. When you do conclusion please specify particular data
 that was taken from metrics, we data-driven approach and it would be very helpful.
 
-{reponse_format}
+{response_format}
 
 Here is definition for each block:
 *   **\[DEAL INFO\]** Block
@@ -140,7 +140,7 @@ The map of keys at storage:
     chat_history: [CHAT HISTORY]
 
 [DEAL INFO]
-Current margin: 23.5%
+{deal_info}
 [/DEAL INFO]
 
 [CLIENT PROFILE]
