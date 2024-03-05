@@ -1,0 +1,55 @@
+@startuml some
+!theme toy
+
+scale 1.5
+
+actor "CRM пользтватель" as crm
+participant "API" as api
+participant "Dialog Manager" as dialog
+participant "Pricing Manager" as pricing
+participant "Sales Manager" as sales
+
+crm -> api: Запрос на генерацию сообщения
+
+api -> api: Определение Intents и добавление сообщения в БД
+note right of api
+    Из базы нам вернулись все message_id сообщений
+end note
+
+group Первый запрос от клиента на покупку запчасти
+    api -> dialog: Классифицировать запрос клиента
+    group Action: Classify parts from inquiry
+        dialog -> sales: Action #1 Определить запчасти из сообщения
+        dialog <- sales: Возвращаем массив желаемых запчастей
+    end
+    group #LightBlue Action: Send offer to client
+        alt if Action is Send offer to client
+            api <- dialog: AgentFinish: прервать действия агентов и отправить задачу оператору
+        else
+
+        end
+    end
+
+end
+
+crm -> api: Запрос клиента со скидкой
+api -> api: Определение Intents и добавление сообщения в БД
+note right of api
+    Из базы нам вернулись все message_id сообщений
+end note
+
+group Запрос клиента на скидку
+    api -> dialog: Классифицировать запрос клиента
+    dialog -> pricing: Определить ответ на скидку
+    pricing -> sales: Посчитать маржу
+    pricing -> sales: Уточнить у поставщика можем ли добиться выбранной скидки?
+    pricing -> sales: Информировать клиента о том, что запросили скидку у поставщика
+    dialog <- pricing: AgentFinish: Вернуть сообщения
+    api <- dialog: Вернуть ответ
+end
+
+crm <- api: Ответ сформирован и возвращается пользователю
+
+ 
+
+@endumlddd
