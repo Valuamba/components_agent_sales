@@ -1,0 +1,22 @@
+branch: classify_request
+decisions:
+  - point: classify_customer_request
+    conditions:
+      - condition: customer_send_request
+        name: "Did the customer leave a request indicating specific parts?"
+        yes:
+          - action: classify_parts
+          - action: send_commercial_offer
+      - condition: customer_ask_change_quote
+        name: "Did the customer ask to change parts in the quote?"
+        yes:
+          - action: classify_parts
+          - action: send_commercial_offer
+      - condition: customer_refuse_buy
+        name: "Did the user refuse to buy?"
+        yes:
+          - action: notify_sales_lead
+      - condition: customer_ask_discount
+        name: "Is the customer asking for a discount?"
+        yes:
+          - branch: discount

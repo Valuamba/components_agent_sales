@@ -1,0 +1,34 @@
+branch: discount
+decisions:
+  - point: analyze_customer_purchase_history
+    name: "Analyze customer purchase history"
+    conditions:
+      - condition: customer_bought_previously_same_product
+        name: "Has the customer bought this product previously?"
+        yes:
+          - condition: price_same_as_previous_with_margin_above_10_percent
+        no:
+          - condition: customer_stated_desired_discount_or_price
+
+  - point: analyze_desired_discount
+    name: "Analyze desired discount"
+    conditions:
+      - condition: customer_stated_desired_discount_or_price
+        name: "Has the customer stated a desired discount or price?"
+        yes:
+          - condition: price_same_as_previous_with_margin_above_10_percent
+        no:
+          - action: ask_about_desired_discount_or_price
+
+      - condition: price_same_as_previous_with_margin_above_10_percent
+        name: "Can the price be the same as in the previous order, keeping the markup above 10%?"
+        yes:
+          - action: change_price_as_previous_bought
+          - action: send_commercial_offer
+        no:
+          - action: offer_2_percent_discount
+          - action: send_commercial_offer
+
+actions:
+  - action: send_commercial_offer
+    name: "Send commercial offer"

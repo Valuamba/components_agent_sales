@@ -4,7 +4,7 @@ Put the result at ```json``` format, like:
 [
     {
         "id": "<message_id>",
-        "body": "<message body>", //only body withouth sign
+        "body": "<message body>", //only body without sign
         "sign": "<signature>", //message signature
         "from": "<message from>", //this should be one of two values: customer or manager
         "intents": [
