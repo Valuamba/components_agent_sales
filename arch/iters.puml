@@ -1,0 +1,30 @@
+@startuml some
+!theme toy
+
+scale 1.5
+
+' actor "Расчетчик" as salary_empl
+participant "Chain" as chain
+participant "AgentExecutor" as agent
+
+chain -> chain: Invoke
+chain -> chain: prep_inputs
+
+chain -> agent: _call
+
+loop We now enter the agent loop (until it returns something)
+
+    agent -> agent: _should_continue(iterations, time_elapsed):
+
+    alt Should continue
+        agent -> agent: _take_next_step
+    else
+
+    end
+
+end
+
+
+
+
+@endumlddd

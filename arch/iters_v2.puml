@@ -1,0 +1,19 @@
+@startuml
+
+start
+
+:Chain._call();
+
+if (AgentExecutor._should_continue(iterations)) then (true)
+    :AgentExecutor._take_next_step();
+
+    if (Ответ next_step_output являеется типом AgentFinish) then (true)
+    endif
+
+else (false)
+endif
+
+
+stop
+
+@enduml

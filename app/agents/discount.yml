@@ -32,3 +32,16 @@ decisions:
 actions:
   - action: send_commercial_offer
     name: "Send commercial offer"
+    break: true
+
+  - action: ask_about_desired_discount_or_price
+    name: "Ask about desired discount or price"
+    break: true
+
+  - action: change_price_as_previous_bought
+    name: "Change price as was it be at previous bought"
+    break: true
+
+  - action: offer_2_percent_discount
+    name: "Offer 2% discount"
+    break: true

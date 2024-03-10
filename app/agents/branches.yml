@@ -1,0 +1,9 @@
+branches:
+  - branch: classify_request
+    name: "Classify customer request"
+    main: true
+    path: "./classification.yml"
+
+  - branch: discount
+    name: "Discount processing"
+    path: "./discount.yml"

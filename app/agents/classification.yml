@@ -1,6 +1,7 @@
 branch: classify_request
 decisions:
   - point: classify_customer_request
+    name: "Classify customer request"
     conditions:
       - condition: customer_send_request
         name: "Did the customer leave a request indicating specific parts?"
@@ -20,3 +21,15 @@ decisions:
         name: "Is the customer asking for a discount?"
         yes:
           - branch: discount
+
+actions:
+  - action: classify_parts
+    name: "Classify parts from request"
+
+  - action: send_commercial_offer
+    name: "Send commercial offer"
+    break: true
+
+  - action: notify_sales_lead
+    name: "Notify sales lead manager"
+    break: true

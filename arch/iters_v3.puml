@@ -1,0 +1,40 @@
+@startuml
+
+start
+:Initialize name_to_tool_map;
+:Construct color_mapping;
+:Initialize intermediate_steps, iterations, time_elapsed, start_time;
+
+while (_should_continue) is (yes)
+  :Take next step;
+  
+  if (next_step_output is AgentFinish) then (true)
+    :Return from _return;
+    stop
+  endif
+  
+  :Extend intermediate_steps with next_step_output;
+  
+  if (next_step_output length is 1) then (yes)
+    :Get tool_return for next_step_action;
+    if (tool_return is not None) then (yes)
+      :Return from _return;
+      stop
+    endif
+  endif
+  
+  :Increment iterations;
+  :Update time_elapsed;
+endwhile (no)
+
+if (iterations >= max_iterations or time_elapsed >= max_execution_time) then (true)
+  :Max conditions met;
+else (false)
+  :Continue loop;
+endif
+
+:Return stopped response from agent;
+:Return from _return;
+stop
+
+@enduml
