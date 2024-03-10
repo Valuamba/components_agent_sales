@@ -3,11 +3,17 @@ decisions:
   - point: classify_customer_request
     name: "Classify customer request"
     conditions:
+      - condition: request_without_parts
+        name: "Did customer leave request without specifying parts?"
+        yes:
+          - action: ask_to_specify_parts
       - condition: customer_send_request
         name: "Did the customer leave a request indicating specific parts?"
         yes:
           - action: classify_parts
           - action: send_commercial_offer
+        no:
+          - condition: is_this_first_message_from_customer
       - condition: customer_ask_change_quote
         name: "Did the customer ask to change parts in the quote?"
         yes:
@@ -22,6 +28,12 @@ decisions:
         yes:
           - branch: discount
 
+      - condition: is_this_first_message_from_customer
+        name: "Is it the first message from the customer?"
+        yes:
+          - condition: customer_send_request
+
+
 actions:
   - action: classify_parts
     name: "Classify parts from request"
@@ -32,4 +44,8 @@ actions:
 
   - action: notify_sales_lead
     name: "Notify sales lead manager"
+    break: true
+
+  - action: ask_to_specify_parts
+    name: "Ask to specify parts"
     break: true

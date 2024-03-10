@@ -29,6 +29,15 @@ decisions:
           - action: offer_2_percent_discount
           - action: send_commercial_offer
 
+  - point: objection_handling
+    name: "Objection handling"
+    conditions:
+      - condition: customer_compared_with_competitor_price
+        name: "Has the customer mentioned receiving a lower price from another supplier, and have we requested the details for comparison?"
+        yes:
+          - action: notify_sales_lead
+
+
 actions:
   - action: send_commercial_offer
     name: "Send commercial offer"
@@ -44,4 +53,8 @@ actions:
 
   - action: offer_2_percent_discount
     name: "Offer 2% discount"
+    break: true
+
+  - action: notify_sales_lead
+    name: "Notify sales lead manager"
     break: true
