@@ -39,10 +39,11 @@ def handle_messages(request: HandleMessagesRequest,
     print(os.getcwd())
     messages = extract_messages_from_raw_html(request.messages_html)
     # source_path = '..\\..\\..\\agents'
-    branches_dict = load_yaml(f'{os.getcwd()}\\agents\\branches.yml')
+    branches_dict = load_yaml(os.path.join(os.getcwd(), 'agents', 'branches.yml'))
     branches = []
     for branch_dict in branches_dict['branches']:
-        data = load_yaml(f"{os.getcwd()}\\agents\\{branch_dict['path']}")
+        data_path = os.path.join(os.getcwd(), 'agents', branch_dict['path'])
+        data = load_yaml(data_path)
         branch = parse_branch(data, branch_dict['name'])
         if branch_dict.get('main', False):
             branch.main = True
