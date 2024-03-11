@@ -21,3 +21,8 @@ Discount: {self.discount if self.discount is not None else 'N/A'}%
 class AgentCompletionRequest(BaseModel):
     deal_id: int
     deal_info: DealInfo
+
+
+class HandleMessagesRequest(BaseModel):
+    deal_id: int
+    messages_html: str
