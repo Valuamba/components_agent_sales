@@ -31,6 +31,9 @@ def handle_messages(request: HandleMessagesRequest,
                     logger=Depends(get_logger),
                     task_repository: TaskRepository = Depends(get_task_repository),
                     ):
+
+    project_root = os.environ.get('PYTHONPATH', os.getcwd())
+
     deal = deal_repository.get_or_create_deal(request.deal_id, Deal(
         deal_id=request.deal_id,
         subject=f"{request.deal_id}"))
@@ -39,10 +42,10 @@ def handle_messages(request: HandleMessagesRequest,
     print(os.getcwd())
     messages = extract_messages_from_raw_html(request.messages_html)
     # source_path = '..\\..\\..\\agents'
-    branches_dict = load_yaml(os.path.join(os.getcwd(), 'agents', 'branches.yml'))
+    branches_dict = load_yaml(os.path.join(project_root, 'agents', 'branches.yml'))
     branches = []
     for branch_dict in branches_dict['branches']:
-        data_path = os.path.join(os.getcwd(), 'agents', branch_dict['path'])
+        data_path = os.path.join(project_root, 'agents', branch_dict['path'])
         data = load_yaml(data_path)
         branch = parse_branch(data, branch_dict['name'])
         if branch_dict.get('main', False):
