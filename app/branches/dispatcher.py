@@ -26,7 +26,7 @@ def action_dispatcher(deal_id: int,
         if isinstance(iter_obj, Branch):
             if iter_obj.name == 'discount':
                 response = discount_branch.run(deal_id, messaging_history)
-                next_step_output = AgentIteration(iter_obj=parse_output(response, discount_branch.branch))
+                next_step_output = AgentIteration(iter_obj=parse_output(response, discount_branch.branch, branches))
 
         elif isinstance(iter_obj, Action):
             if iter_obj.name == 'ask_about_desired_discount_or_price':
