@@ -7,7 +7,7 @@
 .db
 **/*.db
 notebooks/famaga/*.db
-
+**/cache/**
 
 **/*.sqlite3
 

@@ -9,7 +9,7 @@ from branches.utils import select_json_block
 class DetailRequest(BaseModel):
     amount: int | None
     brand_name: str | None
-    part_number: str
+    part_number: str | None
 
 
 class ClientInfo(BaseModel):
@@ -71,4 +71,4 @@ The output should be a markdown code snippet formatted in the following adr, inc
         classified_json_data = select_json_block(response)
         order = ClassifyAgentResponse.model_validate(classified_json_data)
 
-        return AgentFinish(output=order, action=self.name())
+        return AgentFinish(output=order, action=self.name(), log=response)

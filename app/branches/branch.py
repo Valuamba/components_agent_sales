@@ -54,6 +54,7 @@ class AgentIteration(BaseModel):
 class AgentFinish(BaseModel):
     output: Any
     action: str
+    log: str = None
 
 
 def parse_condition(condition_content):

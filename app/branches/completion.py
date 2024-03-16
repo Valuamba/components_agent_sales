@@ -18,18 +18,18 @@ class GPTCompletionResolver:
         self.openai_client = openai_client
         self.task_repository = task_repository
         self.logger = logger
+        self.agents_logger = []
 
     def _create_completion(self, name: str, deal_id, messages, model, **kwargs):
         prompt = '\n\n'.join([f'{msg["role"]}:\n{msg["content"]}' for msg in messages])
         status: StatusType = None
         completion = None
+        task_id = None  # Initialize task_id
         try:
             completion = self.openai_client.create_completion(
                 model, messages, **kwargs
             )
-
             status = StatusType.Passed
-            return completion
         except Exception as e:
             self.logger.error(f"Failed to process completion: {str(e)}")
             status = StatusType.Failed
@@ -59,13 +59,22 @@ class GPTCompletionResolver:
                 self.logger.info('Task was created', {'task_id': task_id})
             except Exception as db_error:
                 self.logger.error(f"Failed to insert task into the database: {str(db_error)}")
+                task_id = None  # Reset task_id to None if task creation fails
+
+        return completion, task_id
 
     def create_completion(self, name: str, deal_id: int, messages, temperature,
                           model: str = 'gpt-4', **kwargs) -> str:
+        self.logger.info(f'Start completion for {name}')
         mapped_response = self.entity_to_response_map.get(name, None)
         if mapped_response and not self.off_mapping:
             return mapped_response
 
-        completion = self._create_completion(name, deal_id, messages, model=model, temperature=temperature, **kwargs)
+        completion, task_id = self._create_completion(name, deal_id, messages, model=model, temperature=temperature, **kwargs)
+        self.agents_logger.append({
+            'step_name': name,
+            'log': completion.content,
+            'task_id': task_id
+        })
 
         return completion.content

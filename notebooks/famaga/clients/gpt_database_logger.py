@@ -6,10 +6,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import uuid
 import tiktoken
+import os
+from dotenv import load_dotenv
 
 from ipywidgets import widgets, Layout, Button, Textarea, HBox
 from IPython.display import display
 import threading
+import openai
 
 completion_pricing_per_1k_tokens_usd = {
     "gpt-4-1106-preview": {"input": 0.01, "output": 0.03},

@@ -31,8 +31,10 @@ def handle_messages(request: HandleMessagesRequest,
                     logger=Depends(get_logger),
                     task_repository: TaskRepository = Depends(get_task_repository),
                     ):
-
-    project_root = os.environ.get('PYTHONPATH', os.getcwd())
+    if os.name == 'nt':  # Windows
+        project_root = os.getcwd()
+    else:  # Linux and other Unix-like OS
+        project_root = os.environ.get('PYTHONPATH', os.getcwd())
 
     deal = deal_repository.get_or_create_deal(request.deal_id, Deal(
         deal_id=request.deal_id,
@@ -67,8 +69,12 @@ def handle_messages(request: HandleMessagesRequest,
     classify_parts_action = ClassifyPartsAction(gpt_completion_resolver)
 
     action_output = action_dispatcher(request.deal_id, messages, branches,
+                                      logger=logger,
                                       classify_request_branch=classify_request_branch,
                                       discount_branch=discount_branch,
                                       classify_parts_action=classify_parts_action)
 
-    return action_output
+    return {
+        **action_output,
+        'logs': gpt_completion_resolver.agents_logger
+    }
