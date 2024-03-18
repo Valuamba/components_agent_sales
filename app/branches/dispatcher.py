@@ -66,7 +66,8 @@ def action_dispatcher(deal_id: int,
             iters += 1
             if isinstance(next_step_output, AgentFinish):
                 return {
-                    'output': next_step_output.output
+                    'output': next_step_output.output,
+                    'action': next_step_output.action
                     # 'logs': logs
                 }
 

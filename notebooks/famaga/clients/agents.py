@@ -56,14 +56,14 @@ class AgentsAPIClient:
         else:
             raise Exception(f"Failed to upload email content: {response.status_code} - {response.text}")
 
-    def handle_messages(self, deal_id: int, messages_html: str):
+    def handle_html_messages(self, deal_id: int, messages_html: str):
         """
         Upload email content to the API.
 
         :param email_content: EmailContent object containing the email data
         :return: Response from the API
         """
-        full_url = f"{self.base_url}/v1/agent/handle_messages/"
+        full_url = f"{self.base_url}/v1/agent/handle_messages/html/"
         response = requests.post(full_url, json={
             'deal_id': deal_id,
             'messages_html': messages_html,
@@ -75,6 +75,25 @@ class AgentsAPIClient:
         else:
             raise Exception(f"Failed to upload email content: {response.status_code} - {response.text}")
 
+    def handle_list_messages(self, deal_id: int, messages):
+        """
+        Upload email content to the API.
+
+        :param email_content: EmailContent object containing the email data
+        :return: Response from the API
+        """
+        full_url = f"{self.base_url}/v1/agent/handle_messages/list/"
+        response = requests.post(full_url, json={
+            'deal_id': deal_id,
+            'messages': messages,
+        }
+        , headers=self.headers)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Failed to upload email content: {response.status_code} - {response.text}")
+    
     def get_messages_with_intents(self, deal_id: int):
         """
         Fetch messages with intents by deal_id.

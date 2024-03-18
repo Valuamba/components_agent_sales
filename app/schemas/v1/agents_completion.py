@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -23,6 +23,10 @@ class AgentCompletionRequest(BaseModel):
     deal_info: DealInfo
 
 
-class HandleMessagesRequest(BaseModel):
+class HandleMessagesHtmlRequest(BaseModel):
     deal_id: int
     messages_html: str
+
+class HandleMessagesRequest(BaseModel):
+    deal_id: int
+    messages: List[str]
