@@ -1,0 +1,60 @@
+{% extends "admin/change_form.html" %}
+
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/my_custom_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="employees-list">
+    <h2>Employees List</h2>
+    {% for employee in employees %}
+    <div class="employee-data">
+        <h3>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.email }}</h3>
+        <div class="custom-fields-container" data-employee-id="{{ employee.id }}">
+            <div class="form-row custom-field" data-field-id="1">
+                <label>Custom Field:</label>
+                <input type="text" name="customField-{{ employee.id }}-1" class="vTextField" />
+                <select name="commitmentStatus-{{ employee.id }}-1" class="vSelect">
+                    <option value="Complete">Complete</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Blocked">Blocked</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="add-field-button add-another" data-employee-id="{{ employee.id }}" style="border: none;"><span class="addlink">+</span></button>
+    </div>
+    {% endfor %}
+</div>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.add-field-button').forEach(button => {
+        button.onclick = function() {
+            const employeeId = this.getAttribute('data-employee-id');
+            const container = document.querySelector('.custom-fields-container[data-employee-id="' + employeeId + '"]');
+            const allFields = container.querySelectorAll('.custom-field');
+            const nextFieldId = allFields.length + 1;
+
+            const newField = document.createElement("div");
+            newField.classList.add("form-row", "custom-field");
+            newField.setAttribute('data-field-id', nextFieldId);
+            newField.innerHTML = '<label>Custom Field:</label>' +
+                                 '<input type="text" name="customField-' + employeeId + '-' + nextFieldId + '" class="vTextField" />' +
+                                 '<select name="commitmentStatus-' + employeeId + '-' + nextFieldId + '" class="vSelect">' +
+                                 '<option value="Complete">Complete</option>' +
+                                 '<option value="Canceled">Canceled</option>' +
+                                 '<option value="Blocked">Blocked</option>' +
+                                 '<option value="Pending">Pending</option>' +
+                                 '</select>';
+
+            container.appendChild(newField);
+        };
+    });
+});
+</script>
+{% endblock %}

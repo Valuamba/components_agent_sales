@@ -11,7 +11,7 @@ Use this format if you need to complete action.
 Action: the action that you are going to do
 
 Task: the short task summary
-Assignee: the employee that would carry out the task
+Assignee: the dailymeetinglog that would carry out the task
 Description: the task description
 Input keys: the input keys that persisting at remote storag values of each could be used for task completion
 Input: the input data at json format, like { "desired_price": "2432$"}
@@ -128,7 +128,7 @@ Here is definition for each block:
     *   **Description**: This section records the client's past purchases, presenting a history of transactions. Analyzing this data can reveal patterns and preferences, aiding in personalized marketing efforts and product recommendations.
 *   **\[CHAT HISTORY\]** Block
     
-    *   **Description**: The Chat History block captures the entire messaging history between the client and the sales or support team. This information is crucial for understanding the client's concerns, questions, and the context of past interactions, enabling better communication and service.
+    *   **Description**: The Chat History block captures the entire messaging history between the client and the sales or support daily. This information is crucial for understanding the client's concerns, questions, and the context of past interactions, enabling better communication and service.
 *   **\[BLOCK SCHEMA\]** (Assuming you're introducing a new block called "Block Schema")
     
     *   **Description**: The Block Schema contains the structure or layout of a specific block, possibly related to discounts or offers. This schema is essential for developers and managers to understand how data is organized and should be interpreted within the system.

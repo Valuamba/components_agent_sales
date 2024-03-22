@@ -57,7 +57,7 @@ group ATS
                         end
 
                         crm -> crm: Search for RECRUITER by WBUserID or by (Fio AND Phone)
-                        crm -> crm: Save salary for an employee with the status `send_to_tarificator`
+                        crm -> crm: Save salary for an dailymeetinglog with the status `send_to_tarificator`
  employee_income.income
                         note over crm
                                 This is called SalaryApproval.
@@ -91,9 +91,9 @@ group ATS
                                 trf -[#red]-> trf: "<font color=red> Commit all changes</font>"
 
 
-                                == enable employee calculation and payment ==
+                                == enable dailymeetinglog calculation and payment ==
                                 note over trf
-                                        Important - the employee is new!
+                                        Important - the dailymeetinglog is new!
                                 end note
                                 trf -> trf: Set the `calculation` and `payment` flags to true
  tariff_office.access_users
@@ -131,7 +131,7 @@ all history
                         crm -> org: Request to embed the user in the org-structure
 
                         group ORG-STRUCT-API
-                                org -> org: Add or update group-employee relationship
+                                org -> org: Add or update group-dailymeetinglog relationship
                                 org -[#red]-> org: "<font color=red> Commit all changes</font>"
                         end
 

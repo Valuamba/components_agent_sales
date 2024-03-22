@@ -1,0 +1,129 @@
+body {
+    font-family: 'Arial', sans-serif; /* Or whichever font is used in the screenshot */
+    background-color: #e5e5e5; /* Adjust based on screenshot background */
+    margin: 0;
+    padding: 0;
+}
+
+#chat-container {
+    width: 70%; /* Set width to 70% of the parent element */
+    /*max-width: 800px; !* Adjust max-width as needed *!*/
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+#chat-header {
+    background-color: #4CAF50; /* Green color from the screenshot */
+    color: white;
+    padding: 10px 20px;
+    font-size: 24px; /* Large font size from the screenshot */
+}
+
+#chat-main {
+    padding: 15px;
+    background-color: #f7f7f7; /* Light background for the message area */
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px);
+}
+
+#message-container {
+    /*height: 300px;*/
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+#message-form {
+    display: flex;
+    padding: 10px;
+    background-color: #f7f7f7; /* Same as chat-main for a cohesive look */
+}
+
+#message-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#message-input, #send-button {
+    height: 50px; /* Increase the height of the input and button, adjust as needed */
+}
+
+#send-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50; /* Green color matching the header */
+    color: white;
+    font-size: 16px; /* Larger font size for readability */
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: #45a049; /* Slightly darker green for hover state */
+}
+
+/* Styles for individual messages */
+.message {
+    padding: 8px 15px;
+    margin: 8px 0;
+    border-radius: 4px;
+    background-color: #f9f9f9; /* Light grey background for messages */
+    border-left: 3px solid #4CAF50; /* Green border to the left of messages */
+    font-size: 14px; /* Standard font size for messages */
+}
+
+.message .user-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* Existing styles... */
+
+.message {
+    padding: 5px 10px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+.message .user-name {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.message-content {
+    display: inline-block;
+    padding: 5px;
+    font-size: 16px;
+    white-space: pre-wrap;
+}
+
+.current-user .message-content {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.other-user .message-content {
+    background-color: #f1f0f0;
+    color: #333;
+}
+
+.other-user {
+    align-self: flex-start;
+}
+
+/* Layout styles for the message container */
+#message-container {
+    display: flex;
+    flex-direction: column;
+}

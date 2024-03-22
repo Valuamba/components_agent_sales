@@ -1,0 +1,20 @@
+/* daily/static/css/my_custom_styles.css */
+.employees-list {
+    margin-top: 20px;
+}
+
+.employees-list h2 {
+    margin-bottom: 10px;
+}
+
+.employees-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.employees-list li {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
