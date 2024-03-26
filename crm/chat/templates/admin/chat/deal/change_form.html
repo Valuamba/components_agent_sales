@@ -9,64 +9,96 @@
 
 
 {% block content %}
-{{ block.super }}  {# Include the original content of the 'content' block #}
-
-
+{{ block.super }}
 <div class="conversation">
-            <div class="message message-received">
-                <div class="message-wrapper">
-                    <img src="neo.jpg" alt="Profile Image" class="profile-image">
-                    <div class="chat-message-content">
-    Hi, my name is Vincent. I'm looking for Endress+Hauser.
-                    </div>
-                </div>
-            </div>
-            <div class="message message-ai">
-                <div class="chat-message-content">
-                    <div class="message-toggle" onclick="toggleMessage(this)">AI Assistant Response...</div>
-                    <div class="message-detail" style="display: none;">
-Parts:
-Amount: 1, Brand: Keyence, Part Number: ML-Z9500W
-Amount: 1, Brand: Cognex, Part Number: IS5705-11
-Amount: 1, Brand: None, Part Number: DTCM230-72-AL
-
-Client Information:
-Country: None, Domain: None, Email: None, Office Country: None
-
-Deal ID: None
-Message ID: None
-Agent Task ID: None
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button onclick="addDiscount()">Add 2% Discount</button>
-                </div>
-            </div>
-            <div class="message message-sent">
-                <div class="chat-message-content">
-Please check the new offer
-                </div>
+    {% for message in messages %}
+    <div class="message {% if message.from_sender == 'customer' %}message-received{% elif message.from_sender == 'assistant' %}message-ai{% else %}message-sent{% endif %}">
+        <div class="message-wrapper">
+            {% if message.from_sender == 'customer' %}
+            <img src="{% static 'path/to/your/customer/image.jpg' %}" alt="Profile Image" class="profile-image">
+            {% endif %}
+            <div class="chat-message-content">
+{{ message.message }}
             </div>
         </div>
+        {% if message.from_sender == 'assistant' %}
+        <div class="action-buttons">
+            <!-- You can add specific buttons here based on your logic -->
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Message Send Form -->
+<form method="post" action="{% url 'your_message_submission_view' %}">
+    {% csrf_token %}
+    <input type="hidden" name="deal_id" value="{{ object_id }}" />
+    <textarea name="message" placeholder="Write a message..." required></textarea>
+    <button type="submit">Send</button>
+</form>
+
+<button id="call-assistant-btn" type="button">Call Assistant</button>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-            function toggleMessage(element) {
-                const detail = element.nextElementSibling;
-                const isVisible = detail.style.display === "block";
-                detail.style.display = isVisible ? "none" : "block"; // Toggle visibility
-                element.classList.toggle('expanded', !isVisible); // Toggle the class for the indicator
-            }
-            function toggleMessage(element) {
-                const detail = element.nextElementSibling;
-                const isVisible = detail.style.display === "block";
-                detail.style.display = isVisible ? "none" : "block";
-                element.classList.toggle('expanded', !isVisible);
-            }
 
-            function addDiscount() {
-                alert("Adding a 2% discount to your offer...");
-                // Implement the logic to add a discount and update the offer
-                // This could involve updating the UI, sending a request to a server, etc.
+
+    document.addEventListener('DOMContentLoaded', function() {
+    $('#call-assistant-btn').click(function() {
+        $.ajax({
+            url: "{% url 'assistant_message_create' %}",  // The URL to your backend endpoint
+            type: "POST",
+            data: {
+                'deal_id': "{{ object_id }}",  // Assuming you have access to the deal's ID
+                'message': "This is an automated message from the assistant.",  // Custom message
+                'from_sender': "assistant",  // Indicating the message is from the assistant
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // CSRF token
+            },
+            success: function(response) {
+                // Update the UI to show the new message
+                console.log("Assistant message sent successfully.");
+                var newMessageHtml = `
+                    <div class="message message-ai">
+                        <div class="message-wrapper">
+                            <div class="chat-message-content">
+${response.message}
+                            </div>
+                        </div>
+                    </div>`;
+                $(".conversation").append(newMessageHtml);
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.log("Error sending assistant message.");
             }
-        </script>
+        });
+    });
+});
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log("Number of messages loaded:", "{{ messages.count }}");
+    });
+
+    function toggleMessage(element) {
+        const detail = element.nextElementSibling;
+        const isVisible = detail.style.display === "block";
+        detail.style.display = isVisible ? "none" : "block"; // Toggle visibility
+        element.classList.toggle('expanded', !isVisible); // Toggle the class for the indicator
+    }
+
+    function toggleMessage(element) {
+        const detail = element.nextElementSibling;
+        const isVisible = detail.style.display === "block";
+        detail.style.display = isVisible ? "none" : "block";
+        element.classList.toggle('expanded', !isVisible);
+    }
+
+    function addDiscount() {
+        alert("Adding a 2% discount to your offer...");
+    }
+</script>
+
 {% endblock %}
