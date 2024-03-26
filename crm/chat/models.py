@@ -2,8 +2,25 @@ from django.db import models
 from django.core.validators import EmailValidator
 
 
+class AgentTask(models.Model):
+    task_id = models.AutoField(primary_key=True)
+    completion_cost = models.FloatField(null=True, blank=True)
+    output_tokens = models.IntegerField(null=True, blank=True)
+    prompt_tokens = models.IntegerField(null=True, blank=True)
+    prompt = models.TextField()
+    response = models.TextField(null=True, blank=True)
+    agent_type = models.IntegerField()
+    status = models.CharField(max_length=50)  # Adjust max_length as needed
+    created_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+    deal_id = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'agent_task'
+
+
 class Deal(models.Model):
-    deal_id = models.CharField(max_length=50, unique=True)  # Unique identifier for the deal
+    deal_id = models.CharField(max_length=50, unique=True, primary_key=True)  # Unique identifier for the deal
     subject = models.CharField(max_length=255)  # Subject or title of the deal
     customer = models.CharField(max_length=100)  # Customer's email address
 

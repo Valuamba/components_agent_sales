@@ -1,0 +1,13 @@
+/* your_app/static/your_app/css/admin_styles.css */
+
+/* Custom background color for prompt field */
+#id_prompt {
+    background-color: #E6F7FF; /* Light blue */
+    color: black;
+}
+
+/* Custom background color for response field */
+#id_response {
+    background-color: #FFF3E6; /* Light orange */
+    color: black;
+}

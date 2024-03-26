@@ -1,16 +1,32 @@
 
 
+.conversation {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    display: flex; /* Added to align the messages to the start or end */
+    margin-bottom: 10px;
+}
 
 .chat-message-content {
-                color: navy;
-                padding: 10px 15px; /* Adds internal space around the text */
-                background-color: #e0e0e0; /* Light gray background, adjust as needed */
-                border-radius: 20px; /* Rounded corners for the bubble effect */
-                border: 1px solid #d0d0d0; /* Slight border around the message, adjust color as needed */
-                max-width: 70%; /* Ensures the text content does not stretch too wide */
-                word-wrap: break-word; /* Ensures long words do not overflow the bubble */
-                white-space: pre-wrap;
-            }
+    color: navy;
+    padding: 10px 15px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    border: 1px solid #d0d0d0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 70%; /* Set max width to limit message width */
+}
             .profile-image {
                 width: 40px; /* Set the width of the image */
                 height: 40px; /* Set the height of the image */
@@ -18,22 +34,31 @@
                 object-fit: cover; /* Ensures the image covers the area without stretching. May crop the image if its aspect ratio is different */
                 margin-right: 10px;
             }
-            /*.conversation {*/
-            /*    display: flex;*/
-            /*    flex-direction: column;*/
-            /*    max-width: 600px; !* Adjust based on your design *!*/
-            /*    margin: auto;*/
-            /*}*/
-            .message {
-                margin-bottom: 10px;
-            }
 
-            .message-wrapper {
-                display: flex;
-                align-items: center; /* Vertically center image and text */
-                justify-content: center; /* Center horizontally */
-                width: 100%; /* Take full width to allow centering */
-            }
+.message-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start; /* Align to the start by default */
+}
+
+.message-received .message-wrapper,
+.message-ai .message-wrapper {
+    justify-content: flex-start; /* Explicitly set alignment to the start (left) */
+}
+
+.message-sent .message-wrapper {
+    justify-content: flex-end; /* Align sent messages to the end (right) */
+}
+
+.message-sent .chat-message-content {
+    background-color: #97E7E1;
+    border-radius: 20px 20px 0 20px; /* Tail effect on the bottom right */
+}
+
+.message-ai .chat-message-content {
+    background-color: #d1e8ff;
+    cursor: pointer;
+}
 
             .message-received .chat-message-content,
             .message-sent .chat-message-content {

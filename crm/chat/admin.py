@@ -10,13 +10,9 @@ class MessageInline(admin.TabularInline):
 class DealAdmin(admin.ModelAdmin):
     list_display = ('deal_id', 'subject', 'customer')  # Fields to display in the admin list view
     search_fields = ('deal_id', 'subject', 'customer')  # Fields to search by in the admin list view
-    # inlines = [MessageInline]  # Include MessageInline to manage messages within a deal
-
-    # change_form_template = "admin/change_form.html"
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         extra_context = extra_context or {}
-        print(object_id)
         messages = Message.objects.filter(deal_id=object_id).order_by('sent_at')
         extra_context['messages'] = messages
         return super().changeform_view(request, object_id, form_url, extra_context)

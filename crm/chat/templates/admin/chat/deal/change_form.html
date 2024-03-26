@@ -15,7 +15,7 @@
     <div class="message {% if message.from_sender == 'customer' %}message-received{% elif message.from_sender == 'assistant' %}message-ai{% else %}message-sent{% endif %}">
         <div class="message-wrapper">
             {% if message.from_sender == 'customer' %}
-            <img src="{% static 'path/to/your/customer/image.jpg' %}" alt="Profile Image" class="profile-image">
+<!--            <img src="{% static 'path/to/your/customer/image.jpg' %}" alt="Profile Image" class="profile-image">-->
             {% endif %}
             <div class="chat-message-content">
 {{ message.message }}
@@ -78,9 +78,9 @@ ${response.message}
     });
 });
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-        console.log("Number of messages loaded:", "{{ messages.count }}");
-    });
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     console.log("Number of messages loaded:", "{{ messages.count }}");
+    // });
 
     function toggleMessage(element) {
         const detail = element.nextElementSibling;

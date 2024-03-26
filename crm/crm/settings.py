@@ -46,7 +46,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'chat'
+    'chat',
+    'agent'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -84,14 +85,54 @@ WSGI_APPLICATION = 'crm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+DB_NAME = 'famaga'
+DB_LOGIN = 'admin'
+DB_PASSWORD = '5tgb%TGB'  # Ensure special characters are correctly handled in your actual settings
+DB_HOST = '154.38.160.240'
+DB_PORT = '45043'
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'famaga': {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": DB_NAME,
+        "USER": DB_LOGIN,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT
     }
 }
 
+class FamagaRouter:
+    route_app_labels = {'agent',}  # Replace 'app_name' with the name of your app containing the AgentTask model
+
+    def db_for_read(self, model, **hints):
+        if model._meta.app_label in self.route_app_labels:
+            return 'famaga'
+        return None
+
+    def db_for_write(self, model, **hints):
+        if model._meta.app_label in self.route_app_labels:
+            return 'famaga'
+        return None
+
+    def allow_relation(self, obj1, obj2, **hints):
+        if obj1._meta.app_label in self.route_app_labels or \
+           obj2._meta.app_label in self.route_app_labels:
+            return True
+        return None
+
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label in self.route_app_labels:
+            return db == 'famaga'
+        return None
+
+
+DATABASE_ROUTERS = ['crm.settings.FamagaRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

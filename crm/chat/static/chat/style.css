@@ -1,3 +1,16 @@
+.conversation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns children (messages) to the start (left) */
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 body {
     font-family: 'Arial', sans-serif; /* Or whichever font is used in the screenshot */
     background-color: #e5e5e5; /* Adjust based on screenshot background */
@@ -71,12 +84,14 @@ body {
 
 /* Styles for individual messages */
 .message {
-    padding: 8px 15px;
+    display: block;
+    background-color: #ffffff; /* White background for messages */
+    padding: 10px 15px;
     margin: 8px 0;
-    border-radius: 4px;
-    background-color: #f9f9f9; /* Light grey background for messages */
-    border-left: 3px solid #4CAF50; /* Green border to the left of messages */
-    font-size: 14px; /* Standard font size for messages */
+    border-radius: 8px;
+    border: 1px solid #eaeaea; /* Light border color for message */
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .message .user-name {
@@ -84,15 +99,6 @@ body {
     margin-bottom: 4px;
 }
 
-/* Existing styles... */
-
-.message {
-    padding: 5px 10px;
-    margin-bottom: 8px;
-    border-radius: 20px;
-    max-width: 60%;
-    word-wrap: break-word;
-}
 
 .message .user-name {
     font-weight: bold;
@@ -104,6 +110,65 @@ body {
     padding: 5px;
     font-size: 16px;
     white-space: pre-wrap;
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+
+.message-ai,
+.message-received,
+.message-sent {
+    align-self: flex-start; /* Align all messages to the left */
+    background-color: #eff2f5; /* Different background color for assistant messages */
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 10px; /* Space between messages */
+    position: relative; /* For positioning pseudo-elements if needed */
+    max-width: 80%; /* Making messages take up to 80% of the container width */
+}
+
+.message-ai:before {
+    content: ''; /* You can use pseudo-elements to create tail effects */
+    /* Styling for the tail effect can be added here */
+}
+
+.profile-image {
+    width: 40px; /* Profile image size */
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover; /* Ensures the image maintains aspect ratio */
+}
+
+.chat-message-content {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #007bff; /* Blue border to match the background */
+    max-width: calc(100% - 50px); /* Account for the profile image width */
+    word-wrap: break-word;
+}
+
+.action-buttons {
+    margin-top: 10px;
+    text-align: right; /* Align action buttons to the right */
+}
+
+.action-buttons button {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px; /* Space between buttons */
+}
+
+.action-buttons button:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
 
 .current-user .message-content {
