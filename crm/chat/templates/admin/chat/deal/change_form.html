@@ -1,0 +1,72 @@
+{% extends "admin/change_form.html" %}
+
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/chatting_styles.css' %}">
+{% endblock %}
+
+
+{% block content %}
+{{ block.super }}  {# Include the original content of the 'content' block #}
+
+
+<div class="conversation">
+            <div class="message message-received">
+                <div class="message-wrapper">
+                    <img src="neo.jpg" alt="Profile Image" class="profile-image">
+                    <div class="chat-message-content">
+    Hi, my name is Vincent. I'm looking for Endress+Hauser.
+                    </div>
+                </div>
+            </div>
+            <div class="message message-ai">
+                <div class="chat-message-content">
+                    <div class="message-toggle" onclick="toggleMessage(this)">AI Assistant Response...</div>
+                    <div class="message-detail" style="display: none;">
+Parts:
+Amount: 1, Brand: Keyence, Part Number: ML-Z9500W
+Amount: 1, Brand: Cognex, Part Number: IS5705-11
+Amount: 1, Brand: None, Part Number: DTCM230-72-AL
+
+Client Information:
+Country: None, Domain: None, Email: None, Office Country: None
+
+Deal ID: None
+Message ID: None
+Agent Task ID: None
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="addDiscount()">Add 2% Discount</button>
+                </div>
+            </div>
+            <div class="message message-sent">
+                <div class="chat-message-content">
+Please check the new offer
+                </div>
+            </div>
+        </div>
+
+<script>
+            function toggleMessage(element) {
+                const detail = element.nextElementSibling;
+                const isVisible = detail.style.display === "block";
+                detail.style.display = isVisible ? "none" : "block"; // Toggle visibility
+                element.classList.toggle('expanded', !isVisible); // Toggle the class for the indicator
+            }
+            function toggleMessage(element) {
+                const detail = element.nextElementSibling;
+                const isVisible = detail.style.display === "block";
+                detail.style.display = isVisible ? "none" : "block";
+                element.classList.toggle('expanded', !isVisible);
+            }
+
+            function addDiscount() {
+                alert("Adding a 2% discount to your offer...");
+                // Implement the logic to add a discount and update the offer
+                // This could involve updating the UI, sending a request to a server, etc.
+            }
+        </script>
+{% endblock %}

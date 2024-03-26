@@ -9,6 +9,53 @@
 
 {% block content %}
 {{ block.super }}
+
+
+<!--<div class="tabular inline-related last-related">-->
+<!--    <fieldset class="module ">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--                <th class="column-description required">Description-->
+<!--                    <img src="/staticfiles/admin/img/icon-unknown.svg"-->
+<!--                         class="help help-tooltip" width="10" height="10"-->
+<!--                         alt="(Description of the commitment made by the dailymeetinglog.)"-->
+<!--                         title="Description of the commitment made by the dailymeetinglog.">-->
+<!--               </th>-->
+<!--                <th class="column-status required">Status</th>-->
+<!--                <th>Delete?</th>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                {% for employee in employees %}-->
+<!--                <tr class="add-row">-->
+<!--                    <td colspan="5">-->
+<!--                       <h3 style="background: none; font-size: 0.975rem; margin: 0.8em 0 0.3em 0; color: var(&#45;&#45;body-quiet-color); font-weight: bold;">{{ employee.first_name }} {{ employee.last_name }} - {{ employee.email }}</h3>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>-->
+<!--                        <input type="text" name="customField-{{ employee.id }}-1" class="vTextField" />-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <select name="commitmentStatus-{{ employee.id }}-1" class="vSelect">-->
+<!--                            <option value="Complete">Complete</option>-->
+<!--                            <option value="Canceled">Canceled</option>-->
+<!--                            <option value="Blocked">Blocked</option>-->
+<!--                            <option value="Pending">Pending</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <a href="#" class="delete-field-button">Delete</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr class="add-row"><td colspan="5"><a href="#">Add another Commitment</a></td></tr>-->
+<!--                {% endfor %}-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </fieldset>-->
+<!--</div>-->
+
+
+
 <div class="employees-list">
     <h2>Employees List</h2>
     {% for employee in employees %}
@@ -24,9 +71,10 @@
                     <option value="Blocked">Blocked</option>
                     <option value="Pending">Pending</option>
                 </select>
+                <a href="#" class="delete-field-button">Delete</a>
             </div>
         </div>
-        <button type="button" class="add-field-button add-another" data-employee-id="{{ employee.id }}" style="border: none;"><span class="addlink">+</span></button>
+        <a href="#" class="add-field-button" data-employee-id="{{ employee.id }}">Add</a>
     </div>
     {% endfor %}
 </div>
@@ -34,7 +82,8 @@
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.add-field-button').forEach(button => {
-        button.onclick = function() {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
             const employeeId = this.getAttribute('data-employee-id');
             const container = document.querySelector('.custom-fields-container[data-employee-id="' + employeeId + '"]');
             const allFields = container.querySelectorAll('.custom-field');
@@ -43,17 +92,30 @@ document.addEventListener("DOMContentLoaded", function() {
             const newField = document.createElement("div");
             newField.classList.add("form-row", "custom-field");
             newField.setAttribute('data-field-id', nextFieldId);
-            newField.innerHTML = '<label>Custom Field:</label>' +
-                                 '<input type="text" name="customField-' + employeeId + '-' + nextFieldId + '" class="vTextField" />' +
-                                 '<select name="commitmentStatus-' + employeeId + '-' + nextFieldId + '" class="vSelect">' +
-                                 '<option value="Complete">Complete</option>' +
-                                 '<option value="Canceled">Canceled</option>' +
-                                 '<option value="Blocked">Blocked</option>' +
-                                 '<option value="Pending">Pending</option>' +
-                                 '</select>';
-
+            newField.innerHTML = `
+                <label>Custom Field:</label>
+                <input type="text" name="customField-${employeeId}-${nextFieldId}" class="vTextField" />
+                <select name="commitmentStatus-${employeeId}-${nextFieldId}" class="vSelect">
+                    <option value="Complete">Complete</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Blocked">Blocked</option>
+                    <option value="Pending">Pending</option>
+                </select>
+                <a href="#" class="delete-field-button">Delete</a>
+            `;
             container.appendChild(newField);
-        };
+        });
+    });
+
+    // Event delegation to handle clicks on all delete buttons, even new ones added after page load
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-field-button')) {
+            event.preventDefault();
+            const fieldRow = event.target.closest('.custom-field');
+            if (fieldRow) {
+                fieldRow.remove();
+            }
+        }
     });
 });
 </script>

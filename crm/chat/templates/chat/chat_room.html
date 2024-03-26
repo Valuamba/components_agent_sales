@@ -1,47 +1,42 @@
-{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room</title>
-    <link rel="stylesheet" href="{% static 'chat/style.css' %}">
+    <title>Vue Integration Example</title>
+    <!-- Include Vue.js from CDN for simplicity -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 </head>
 <body>
-    <div id="chat-container">
-        <header id="chat-header">
-            <h1>Chat Room: {{ room_name }}</h1>
-        </header>
-        <main id="chat-main">
-            <div id="message-container">
-                <!-- Sample messages -->
-                <div class="message other-user">
-                    <div class="user-name">Alice</div>
-                    <div class="message-content">Hello, how are you today?</div>
-                </div>
-                <div class="message current-user">
-                    <div class="message-content">Parts:
-Amount: 1, Brand: Keyence, Part Number: ML-Z9500W
-Amount: 1, Brand: Cognex, Part Number: IS5705-11
-Amount: 1, Brand: None, Part Number: DTCM230-72-AL
-
-Client Information:
-Country: None, Domain: None, Email: None, Office Country: None
-
-Deal ID: None
-Message ID: None
-Agent Task ID: None</div>
-                </div>
-                <div class="message other-user">
-                    <div class="user-name">Bob</div>
-                    <div class="message-content">Can't complain. Just got my coffee and ready to start coding.</div>
-                </div>
-                <!-- More messages -->
-            </div>
-
-            <input type="text" id="message-input" placeholder="Type your message here...">
-            <button id="send-button">Send</button>
-        </main>
+    <div id="vue-app">
+        <greeting-component></greeting-component>
     </div>
+
+    <script>
+        Vue.component('greeting-component', {
+            data: function() {
+                return {
+                    greeting: 'Hello, Visitor!',
+                    name: ''
+                }
+            },
+            template: `
+                <div>
+                    <h3>{{ greetingMessage }}</h3>
+                    <input v-model="name" placeholder="Enter your name">
+                </div>
+            `,
+            computed: {
+                greetingMessage: function() {
+                    return this.name ? `Hello, ${this.name}!` : this.greeting;
+                }
+            }
+        });
+
+        new Vue({
+            el: '#vue-app'
+        });
+    </script>
 </body>
 </html>

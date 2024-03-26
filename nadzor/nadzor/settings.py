@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'team',
-    'daily.apps.DailyConfig'
+    'daily'
 ]
 
 MIDDLEWARE = [

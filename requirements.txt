@@ -18,3 +18,4 @@ pydantic[email]
 jupyterlab
 tiktoken
 ipywidgets
+aiogram

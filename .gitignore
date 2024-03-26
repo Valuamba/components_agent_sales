@@ -9,6 +9,8 @@
 notebooks/famaga/*.db
 **/cache/**
 
+**/staticfiles/**
+
 **/*.sqlite3
 
 **/autogen_config.json

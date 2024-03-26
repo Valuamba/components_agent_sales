@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .chat-message-content {
+                color: navy;
+                padding: 10px 15px; /* Adds internal space around the text */
+                background-color: #e0e0e0; /* Light gray background, adjust as needed */
+                border-radius: 20px; /* Rounded corners for the bubble effect */
+                border: 1px solid #d0d0d0; /* Slight border around the message, adjust color as needed */
+                max-width: 70%; /* Ensures the text content does not stretch too wide */
+                word-wrap: break-word; /* Ensures long words do not overflow the bubble */
+                white-space: pre-wrap;
+            }
+            .profile-image {
+                width: 40px; /* Set the width of the image */
+                height: 40px; /* Set the height of the image */
+                border-radius: 50%; /* This creates the circular shape */
+                object-fit: cover; /* Ensures the image covers the area without stretching. May crop the image if its aspect ratio is different */
+                margin-right: 10px;
+            }
+            .conversation {
+                display: flex;
+                flex-direction: column;
+                max-width: 600px; /* Adjust based on your design */
+                margin: auto;
+            }
+            .message {
+                margin-bottom: 10px;
+            }
+            
+            .message-wrapper {
+                display: flex;
+                align-items: center; /* Vertically center image and text */
+                justify-content: center; /* Center horizontally */
+                width: 100%; /* Take full width to allow centering */
+            }
+
+            .message-received .chat-message-content,
+            .message-sent .chat-message-content {
+                padding: 10px 15px;
+                border-radius: 20px;
+                border: 1px solid #d0d0d0;
+                max-width: 70%;
+                word-wrap: break-word;
+            }
+
+            .message-received .profile-image {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+
+            .message-received .chat-message-content {
+                background-color: #e0e0e0; /* Light gray for received messages */
+            }
+
+            .message-sent .chat-message-content {
+                background-color: #97E7E1; 
+                margin-left: auto; /* Aligns sent messages to the right */
+                border-radius: 20px 20px 0 20px; /* Tail effect on the bottom right */
+            }
+
+            /* Optional: Adjusting the border-radius for sent messages to create a tail effect */
+            .message-sent .chat-message-content {
+                border-radius: 20px 20px 20px 0; /* Tail effect on the bottom left for sent messages */
+            }
+
+            .message-ai .chat-message-content {
+                background-color: #d1e8ff; /* Different color for AI messages */
+                cursor: pointer;
+            }
+
+            .message-toggle::after {
+                content: ' ▼'; /* Indicator for collapsibility */
+            }
+
+            /* Style for when the message detail is visible */
+            .message-toggle.expanded::after {
+                content: ' ▲'; /* Changes indicator to show the content is expanded */
+            }
+
+            .message-detail {
+                padding-top: 10px;
+            }
+
+            .action-buttons {
+                margin-top: 10px;
+            }
+
+            .action-buttons button {
+                padding: 5px 10px;
+                background-color: #4CAF50; /* Green background */
+                color: white; /* White text */
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .action-buttons button:hover {
+                background-color: #45a049; /* Darker shade of green */
+            }
+        </style>
+        <script>
+            function toggleMessage(element) {
+                const detail = element.nextElementSibling;
+                const isVisible = detail.style.display === "block";
+                detail.style.display = isVisible ? "none" : "block"; // Toggle visibility
+                element.classList.toggle('expanded', !isVisible); // Toggle the class for the indicator
+            }
+            function toggleMessage(element) {
+                const detail = element.nextElementSibling;
+                const isVisible = detail.style.display === "block";
+                detail.style.display = isVisible ? "none" : "block";
+                element.classList.toggle('expanded', !isVisible);
+            }
+
+            function addDiscount() {
+                alert("Adding a 2% discount to your offer...");
+                // Implement the logic to add a discount and update the offer
+                // This could involve updating the UI, sending a request to a server, etc.
+            }
+        </script>
+    </head>
+    <body>
+        <div class="conversation">
+            <div class="message message-received">
+                <div class="message-wrapper">
+                    <img src="neo.jpg" alt="Profile Image" class="profile-image">
+                    <div class="chat-message-content">
+    Hi, my name is Vincent. I'm looking for Endress+Hauser.
+                    </div>
+                </div>
+            </div>
+            <div class="message message-ai">
+                <div class="chat-message-content">
+                    <div class="message-toggle" onclick="toggleMessage(this)">AI Assistant Response...</div>
+                    <div class="message-detail" style="display: none;">
+Parts:
+Amount: 1, Brand: Keyence, Part Number: ML-Z9500W
+Amount: 1, Brand: Cognex, Part Number: IS5705-11
+Amount: 1, Brand: None, Part Number: DTCM230-72-AL
+
+Client Information:
+Country: None, Domain: None, Email: None, Office Country: None
+
+Deal ID: None
+Message ID: None
+Agent Task ID: None
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="addDiscount()">Add 2% Discount</button>
+                </div>
+            </div>
+            <div class="message message-sent">
+                <div class="chat-message-content">
+Please check the new offer
+                </div>
+            </div>
+            <!-- <img src="neo.jpg" alt="Profile Image" class="profile-image">
+            <div class="chat-message-content">
+                Hi, my name is Vincent. I'm looking for Endress+Hauser.
+            </div> -->
+        </div>
+    </body>
+</html>
