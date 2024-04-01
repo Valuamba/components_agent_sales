@@ -20,12 +20,12 @@ class DealRepository(BaseRepository):
         deal = self.session.query(Deal).filter_by(deal_id=deal_id).first()
         return deal
 
-    def get_deal_with_messages(self, deal_id: int):
+    def get_deal_with_messages(self, deal_id: str):
         return self.session.query(Deal).where(Deal.deal_id == deal_id).options(
             joinedload(Deal.messages).joinedload(Message.intents)
         ).first()
 
-    def get_deal_with_messages_v2(self, deal_id: int) -> List[MessageModel]:
+    def get_deal_with_messages_v2(self, deal_id: str) -> List[MessageModel]:
         deal = self.session.query(Deal).where(Deal.deal_id == deal_id).options(
             joinedload(Deal.messages).joinedload(Message.intents)
         ).first()

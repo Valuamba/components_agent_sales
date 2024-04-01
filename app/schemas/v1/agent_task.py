@@ -21,7 +21,7 @@ class AgentTaskPydantic(BaseModel):
     status: int
     created_at: datetime
     updated_at: datetime
-    deal_id: int
+    deal_id: str
 
     class Config:
         from_attributes = True

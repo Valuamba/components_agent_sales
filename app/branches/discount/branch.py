@@ -15,7 +15,7 @@ class DiscountBranch:
     def name(self) -> Text:
         return "discount"
 
-    def run(self, deal_id: int, messaging_history):
+    def run(self, deal_id: str, messaging_history):
         messaging_history_str = messaging_history_to_str(messaging_history)
         stop = ['\nAction observation:', '\n\tAction observation:', '\nBranch observation:', '\n\tBranch observation:']
         resp = self.gpt_completion_resolver.create_completion(name=self.name(), deal_id=deal_id, messages=[

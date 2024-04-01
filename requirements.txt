@@ -19,3 +19,5 @@ jupyterlab
 tiktoken
 ipywidgets
 aiogram
+gspread
+oauth2client

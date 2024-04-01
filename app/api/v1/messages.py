@@ -8,7 +8,7 @@ messages_router = APIRouter()
 
 
 @messages_router.get("/deals/{deal_id}/messages", response_model=DealMessagesResponse)
-def get_messages_with_intents(deal_id: int, deal_repository: DealRepository = Depends(get_deal_repository)):
+def get_messages_with_intents(deal_id: str, deal_repository: DealRepository = Depends(get_deal_repository)):
     deal = deal_repository.get_deal_with_messages(deal_id)
     if not deal:
         raise HTTPException(status_code=404, detail="Deal not found")

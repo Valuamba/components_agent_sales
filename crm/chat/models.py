@@ -41,6 +41,7 @@ class Message(models.Model):
     message = models.TextField()  # The message content
     sent_at = models.DateTimeField(auto_now_add=True)  # The timestamp when the message was sent
     from_sender = models.CharField(max_length=10, choices=SENDER_CHOICES)  # The sender of the message
+    task_id = models.IntegerField(null=True)
 
     def __str__(self):
         return f"Message from {self.from_sender} at {self.sent_at}"

@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class ClassifyPartRequest(BaseModel):
-    deal_id: int
+    deal_id: str
     body: str
     subject: Optional[str] = None
     from_client: Optional[str] = None

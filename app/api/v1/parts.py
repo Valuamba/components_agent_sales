@@ -75,7 +75,7 @@ def create_task_feedback(task_feedback: TaskFeedbackCreate, db: Session = Depend
 
 
 @parts_router.post("/upload-eml/")
-async def upload_eml_file(deal_id: int, file: UploadFile = File(...),
+async def upload_eml_file(deal_id: str, file: UploadFile = File(...),
                           intent_repository: IntentRepository = Depends(get_intent_repository),
                           deal_repository = Depends(get_deal_repository),
                           message_repository = Depends(get_message_repository),

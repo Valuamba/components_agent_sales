@@ -63,7 +63,7 @@ class GPTCompletionResolver:
 
         return completion, task_id
 
-    def create_completion(self, name: str, deal_id: int, messages, temperature,
+    def create_completion(self, name: str, deal_id: str, messages, temperature,
                           model: str = 'gpt-4', **kwargs) -> str:
         self.logger.info(f'Start completion for {name}')
         mapped_response = self.entity_to_response_map.get(name, None)

@@ -26,7 +26,7 @@ class Deal(Base):
     __tablename__ = 'deal'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    deal_id = Column(Integer, unique=True, nullable=False)
+    deal_id = Column(String, unique=True, nullable=False)
     uuid = Column(UUID(as_uuid=True), unique=True, nullable=False, default=uuid.uuid4)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -58,7 +58,7 @@ class AgentTask(Base):
     status = Column(Enum(StatusType), nullable=False)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-    deal_id = Column(Integer, ForeignKey('deal.deal_id'))
+    deal_id = Column(String, ForeignKey('deal.deal_id'))
 
     deal = relationship("Deal", back_populates="agent_tasks")
     task_feedbacks = relationship("TaskFeedback", back_populates="agent_task")
@@ -120,7 +120,7 @@ class PartInquiry(Base):
     full_brand_name = Column(String, nullable=True)
     amount = Column(Integer, nullable=True)
     part_number = Column(String, nullable=True)
-    deal_id = Column(Integer, ForeignKey('deal.deal_id'))
+    deal_id = Column(String, ForeignKey('deal.deal_id'))
 
     deal = relationship("Deal", back_populates="part_inquiries")
 
@@ -130,7 +130,7 @@ class Message(Base):
 
     message_id = Column(Integer, primary_key=True, autoincrement=True)
     id = Column(Integer)
-    deal_id = Column(Integer, ForeignKey('deal.deal_id'))
+    deal_id = Column(String, ForeignKey('deal.deal_id'))
     body = Column(String, nullable=False)
     hash = Column(String, nullable=True)
     sign = Column(String, nullable=True)
@@ -163,7 +163,7 @@ class Intent(Base):
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
 
-    deal_id = Column(Integer, primary_key=True)
+    deal_id = Column(String, primary_key=True)
     part_number = Column(String)
     brand_title = Column(String)
     brand_id = Column(String)

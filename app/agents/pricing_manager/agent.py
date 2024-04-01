@@ -108,7 +108,7 @@ class PricingManagerAgent(BaseAgent):
     def agent_type(self) -> AgentType:
         return AgentType.PricingManager
 
-    def classify_messages_metadata_and_intents(self, deal_id: int, deal_info: DealInfo, model="gpt-4"):
+    def classify_messages_metadata_and_intents(self, deal_id: str, deal_info: DealInfo, model="gpt-4"):
         client_id = self.purchase_history_rep.get_client_id_by_deal(deal_id)
         purchase_history = self.purchase_history_rep.get_client_history(client_id)
         summarize_client_metrics = self.client_statistics.summarize_client_metrics(purchase_history)

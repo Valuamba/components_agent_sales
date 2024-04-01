@@ -8,7 +8,7 @@ from branches.utils import parse_output
 from services import LoggingService
 
 
-def action_dispatcher(deal_id: int,
+def action_dispatcher(deal_id: str,
                       messaging_history: List[str],
                       branches,
                       logger: LoggingService,

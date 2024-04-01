@@ -147,6 +147,7 @@ def assistant_message_create(request):
                     deal=deal,
                     message=log_entry.get('log', ''),
                     from_sender=from_sender,
+                    task_id=log_entry.get('task_id', None)
                 )
 
             # Check if the request was successful
