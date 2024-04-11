@@ -14,6 +14,7 @@ from IPython.display import display
 import threading
 import openai
 
+
 completion_pricing_per_1k_tokens_usd = {
     "gpt-4-1106-preview": {"input": 0.01, "output": 0.03},
     "gpt-4-1106-vision-preview": {"input": 0.01, "output": 0.03},
@@ -29,7 +30,6 @@ assistants_api_price_usd = {
 }
 
 
-# Define your Pydantic model for data validation
 class PromptVersion(BaseModel):
     pkid: Optional[int] = None 
     id: Optional[str] = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -48,7 +48,7 @@ class PromptVersion(BaseModel):
 
 Base = declarative_base()
 
-# Define your SQLAlchemy model for the database schema
+
 class PromptVersionDB(Base):
     __tablename__ = 'prompt_versions'
     pkid = Column(Integer, primary_key=True, autoincrement=True)
@@ -75,13 +75,14 @@ def num_tokens_from_string(string: str, encoding_name: str = "gpt-3.5-turbo") ->
     
 
 class GPTDatabaseLogger:
-    def __init__(self, db_url):
+    def __init__(self, db_url, output_log: bool = True):
         self.engine = create_engine(db_url)
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine)
         if os.getenv('OPENAI_API_KEY') is None:
             load_dotenv()
         self.client = openai.OpenAI()
+        self.output_log = output_log
 
     def create_completion(self, messages, temperature, output = True, tags: str = None,
                           model: str = 'gpt-4', **kwargs): 
@@ -98,7 +99,7 @@ class GPTDatabaseLogger:
         collected_messages = []
         for chunk in response:
             if chunk.choices[0].delta.content:
-                if output:
+                if output and self.output_log:
                     print(chunk.choices[0].delta.content, end='')
                 collected_messages.append(chunk.choices[0].delta.content)
 
@@ -125,12 +126,11 @@ class GPTDatabaseLogger:
         self.note_id = db_record.id  # Assuming the record has an ID field
         session.close()
 
-        # Step 3: Return result from method
-        print("\n\n--------------------\n\nNote saved without feedback. ID:", self.note_id)
-        print(f'Input tokens: {prompt_tokens} Output tokens: {output_tokens} Total price: {round(total_price, 2)}$\n\n')
-
-        # Step 4: Run the window for feedback form
-        self.collect_feedback()
+        if self.output_log:
+            print("\n\n--------------------\n\nNote saved without feedback. ID:", self.note_id)
+            print(f'Input tokens: {prompt_tokens} Output tokens: {output_tokens} Total price: {round(total_price, 2)}$\n\n')
+    
+            self.collect_feedback()
 
         return content_str
 

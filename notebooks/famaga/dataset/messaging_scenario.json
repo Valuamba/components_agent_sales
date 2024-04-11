@@ -1,0 +1,653 @@
+{
+    "scenarios": [
+        {
+            "client_info": {
+                "client_id": 67197,
+                "purchase_history": [
+                    {
+                        "articul": "ZP516A02RD01",
+                        "id": 380825,
+                        "brand_title": "DELIMON / BIJUR DELIMON",
+                        "brand_id": 2985.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-01-27T08:02:23",
+                        "price_buy": 2984.6,
+                        "price_sell": 3887.0,
+                        "amount": 1,
+                        "margin": 23.215847697453057,
+                        "purchase_date": "2023-01-27"
+                    },
+                    {
+                        "articul": "",
+                        "id": 380825,
+                        "brand_title": null,
+                        "brand_id": null,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-01-27T08:02:23",
+                        "price_buy": 720.0,
+                        "price_sell": 850.0,
+                        "amount": 1,
+                        "margin": 15.294117647058826,
+                        "purchase_date": "2023-01-27"
+                    },
+                    {
+                        "articul": "ZP516A02RD01",
+                        "id": 387541,
+                        "brand_title": "DELIMON / BIJUR DELIMON",
+                        "brand_id": 2985.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-02-23T12:39:37",
+                        "price_buy": 3980.0,
+                        "price_sell": 5262.5,
+                        "amount": 1,
+                        "margin": 24.370546318289783,
+                        "purchase_date": "2023-02-23"
+                    },
+                    {
+                        "articul": "6SL3220-2YE56-0CF0",
+                        "id": 403142,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-05-02T08:29:33",
+                        "price_buy": 11944.89,
+                        "price_sell": 15081.53,
+                        "amount": 4,
+                        "margin": 20.797889869263926,
+                        "purchase_date": "2023-05-02"
+                    },
+                    {
+                        "articul": "3VA2580-6HL32-0AA0",
+                        "id": 403142,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-05-02T08:29:33",
+                        "price_buy": 1107.65,
+                        "price_sell": 1398.51,
+                        "amount": 4,
+                        "margin": 20.797849139441254,
+                        "purchase_date": "2023-05-02"
+                    },
+                    {
+                        "articul": "3KD4830-0QE10-0",
+                        "id": 403142,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-05-02T08:29:33",
+                        "price_buy": 429.0,
+                        "price_sell": 541.65,
+                        "amount": 4,
+                        "margin": 20.797563001938514,
+                        "purchase_date": "2023-05-02"
+                    },
+                    {
+                        "articul": "8UD1151-3AF21",
+                        "id": 403142,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-05-02T08:29:33",
+                        "price_buy": 33.42,
+                        "price_sell": 42.2,
+                        "amount": 4,
+                        "margin": 20.805687203791464,
+                        "purchase_date": "2023-05-02"
+                    },
+                    {
+                        "articul": "6SL3000-0CE36-3AA0",
+                        "id": 403142,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-05-02T08:29:33",
+                        "price_buy": 878.48,
+                        "price_sell": 1109.16,
+                        "amount": 4,
+                        "margin": 20.7977207977208,
+                        "purchase_date": "2023-05-02"
+                    },
+                    {
+                        "articul": "",
+                        "id": 426634,
+                        "brand_title": null,
+                        "brand_id": null,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 100.0,
+                        "price_sell": 170.0,
+                        "amount": 1,
+                        "margin": 41.17647058823529,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6EP1334-1LB00",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 64.35,
+                        "price_sell": 88.87,
+                        "amount": 1,
+                        "margin": 27.59086305839992,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7222-1HF32-0XB0",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 83.2,
+                        "price_sell": 128.3,
+                        "amount": 1,
+                        "margin": 35.15198752922838,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7972-0BA52-0XA0",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 30.59,
+                        "price_sell": 38.7,
+                        "amount": 1,
+                        "margin": 20.9560723514212,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7155-6BA01-0CN0",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 233.38,
+                        "price_sell": 287.12,
+                        "amount": 1,
+                        "margin": 18.71691278907774,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7193-6BP00-0BA0",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 11.56,
+                        "price_sell": 14.22,
+                        "amount": 2,
+                        "margin": 18.70604781997187,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7134-6GD01-0BA1",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 132.4,
+                        "price_sell": 162.87,
+                        "amount": 2,
+                        "margin": 18.708172161846875,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6EP7133-6AB00-0BN0",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 112.64,
+                        "price_sell": 121.53,
+                        "amount": 1,
+                        "margin": 7.315066238788788,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6GK1503-3CB00",
+                        "id": 426634,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-07-28T09:32:35",
+                        "price_buy": 737.39,
+                        "price_sell": 1194.06,
+                        "amount": 1,
+                        "margin": 38.24514681004304,
+                        "purchase_date": "2023-07-28"
+                    },
+                    {
+                        "articul": "6ES7972-0BA52-0XA0",
+                        "id": 438515,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 29.21,
+                        "price_sell": 42.89,
+                        "amount": 1,
+                        "margin": 31.895546747493583,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "",
+                        "id": 438515,
+                        "brand_title": null,
+                        "brand_id": null,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 100.0,
+                        "price_sell": 140.0,
+                        "amount": 1,
+                        "margin": 28.57142857142857,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "6ES7193-6BP00-0BA0",
+                        "id": 438515,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 10.73,
+                        "price_sell": 15.76,
+                        "amount": 3,
+                        "margin": 31.91624365482234,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "6ES7131-6BH01-0BA0",
+                        "id": 438515,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 61.02,
+                        "price_sell": 89.59,
+                        "amount": 3,
+                        "margin": 31.88971983480299,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "6EP7133-6AB00-0BN0",
+                        "id": 438515,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 91.73,
+                        "price_sell": 130.0,
+                        "amount": 1,
+                        "margin": 29.43846153846154,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "6ES7155-6BA01-0CN0",
+                        "id": 438515,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-09-14T10:00:56",
+                        "price_buy": 216.71,
+                        "price_sell": 310.0,
+                        "amount": 1,
+                        "margin": 30.093548387096774,
+                        "purchase_date": "2023-09-14"
+                    },
+                    {
+                        "articul": "382087136",
+                        "id": 445979,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-10-13T12:09:36",
+                        "price_buy": 93.74,
+                        "price_sell": 139.93,
+                        "amount": 4,
+                        "margin": 33.00936182376904,
+                        "purchase_date": "2023-10-13"
+                    },
+                    {
+                        "articul": "",
+                        "id": 445979,
+                        "brand_title": null,
+                        "brand_id": null,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-10-13T12:09:36",
+                        "price_buy": 130.0,
+                        "price_sell": 220.0,
+                        "amount": 1,
+                        "margin": 40.90909090909091,
+                        "purchase_date": "2023-10-13"
+                    },
+                    {
+                        "articul": "3RW5527-3HA14",
+                        "id": 449032,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-10-31T11:24:48",
+                        "price_buy": 2293.76,
+                        "price_sell": 2950.09,
+                        "amount": 1,
+                        "margin": 22.247795829957724,
+                        "purchase_date": "2023-10-31"
+                    },
+                    {
+                        "articul": "3RW5524-1HA14",
+                        "id": 449032,
+                        "brand_title": "Siemens",
+                        "brand_id": 127.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-10-31T11:24:48",
+                        "price_buy": 1684.48,
+                        "price_sell": 2166.47,
+                        "amount": 1,
+                        "margin": 22.247711715371082,
+                        "purchase_date": "2023-10-31"
+                    },
+                    {
+                        "articul": "BMXFTW301",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 41.05,
+                        "price_sell": 51.5,
+                        "amount": 8,
+                        "margin": 20.291262135922338,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXART0814",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 773.0,
+                        "price_sell": 969.75,
+                        "amount": 8,
+                        "margin": 20.288734209847902,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXAMI0810",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 679.0,
+                        "price_sell": 851.83,
+                        "amount": 4,
+                        "margin": 20.289259594050463,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXDDO1602",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 209.0,
+                        "price_sell": 262.2,
+                        "amount": 4,
+                        "margin": 20.289855072463766,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXDDI1602",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 149.9,
+                        "price_sell": 188.06,
+                        "amount": 4,
+                        "margin": 20.291396362862912,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMEP581020",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 1707.0,
+                        "price_sell": 2141.48,
+                        "amount": 4,
+                        "margin": 20.28877225096663,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMENOC0301",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 1223.0,
+                        "price_sell": 1534.29,
+                        "amount": 4,
+                        "margin": 20.288863252709717,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXFCW301S",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 64.7,
+                        "price_sell": 81.17,
+                        "amount": 8,
+                        "margin": 20.29074781323149,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXCPS3500",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 474.0,
+                        "price_sell": 594.65,
+                        "amount": 4,
+                        "margin": 20.28924577482553,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMEXBP1200",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 357.0,
+                        "price_sell": 447.87,
+                        "amount": 4,
+                        "margin": 20.289369683166996,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXNOM0200",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 613.0,
+                        "price_sell": 769.03,
+                        "amount": 4,
+                        "margin": 20.289195480020283,
+                        "purchase_date": "2023-11-10"
+                    },
+                    {
+                        "articul": "BMXFTW308S",
+                        "id": 452874,
+                        "brand_title": "Schneider Electric",
+                        "brand_id": 912.0,
+                        "client_title": "Spectrum Engineering (Pvt) LTD",
+                        "client_id": 67197,
+                        "requisition_created": "2023-11-10T17:43:09",
+                        "price_buy": 74.8,
+                        "price_sell": 93.84,
+                        "amount": 4,
+                        "margin": 20.289855072463766,
+                        "purchase_date": "2023-11-10"
+                    }
+                ]
+            },
+            "messaging_history": [
+                {
+                    "from": "customer",
+                    "message": "Hey, could you please clarify availability of Endress+Hauser 71035522?\nKind regards\nAusten Brunton BEng (Hons), MIMarEST\nTechnical Fleet Manager\nWYM Group Ltd\nIncorporating Wilson Yacht Management and Wilson Ship Management\nNew Email Address: austen@wymgroup.com\nWeb: www.wymgroup.com\nPhone: +44 (0) 1482 648322\nMob: +44 (0) 7760665835",
+                    "metadata": {
+                        "intents": [
+                            {
+                                "intent": "Parts Inquiry",
+                                "sub_intent": "Check Availability"
+                            }
+                        ],
+                        "parts_inquiries": [
+                            {
+                                "part_number": "71035522",
+                                "brand": "Endress+Hauser"
+                            }
+                        ],
+                        "customer_info": {
+                            "email": "austen@wymgroup.com",
+                            "domain": "wymgroup.com",
+                            "office_country": "United Kindom",
+                            "phone": "+44 (0) 7760665835"
+                        }
+                    }
+                },
+                {
+                    "from": "manager",
+                    "offer": {
+                        "positions": [
+                            {
+                                "position": "ZP516A02RD01 DELIMON / BIJUR DELIMON",
+                                "description": "",
+                                "article": "ZP516A02RD01",
+                                "qty": 1,
+                                "discount_percents": 0,
+                                "discounted_price": 0,
+                                "sum": 6000,
+                                "delivery_time_from_days": 3,
+                                "delivery_time_to_days": 5
+                            }
+                        ],
+                        "total": {
+                            "payment": 1100
+                        }
+                    }
+                },
+                {
+                    "from": "manager",
+                    "message": "Dear Sir / Madam\n I would like just to follow up about out offer.",
+                    "metadata": {
+                        "intents": [
+                            {
+                                "intent": "Offer Discussions",
+                                "sub_intent": "Follow up"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "from": "customer",
+                    "message": "Dear Kristine! Could you give us discount?",
+                    "metadata": {
+                        "discount_inquiry": {
+                            "is_margin_sufficient": null,
+                            "is_discount_specified": false,
+                            "is_customer_bought_previously": true
+                        }
+                    }
+                },
+                {
+                    "from": "manager",
+                    "message": "Dear Sir / Madam\n Please specify justification, our offer provided minimum price as it could be."
+                },
+                {
+                    "from": "customer",
+                    "message": "Dear Kristine! Please be informed that we had submitted our offer to the end user and got feedback from them that our prices were on the higher side by 45% from the prices other vendors quoted to them. \nHence we request you to please recheck the prices and help us so we will be able to win this bid.",
+                    "metadata": {
+                        "intents": [
+                            {
+                                "intent": "Offer Discussions",
+                                "sub_intent": "Follow up"
+                            }
+                        ],
+                        "discount_inquiry": {
+                            "is_margin_sufficient": null,
+                            "is_discount_specified": true,
+                            "desired_discount": 45,
+                            "is_customer_bought_previously": true
+                        }
+                    }
+                },
+                {
+                    "from": "manager",
+                    "message": "Dear Sir / Madam! Our prices are already at the minimum; we can't offer further discounts"
+                }
+            ]
+        }
+    ]
+}

@@ -67,7 +67,8 @@ class ClientDealsHistoryRepository:
         price_changes = group['price_sell'].pct_change().abs() > exceed_num
         return price_changes.any()
     
-    def get_deals_with_exceeds_price(self, df, exceed_num=0.1):
+    def get_deals_with_exceeds_price(self, exceed_num=0.1):
+        df = self.df
         df['price_sell'] = pd.to_numeric(df['price_sell'], errors='coerce')
         df = df[pd.notna(df['margin'])]
         
@@ -88,7 +89,8 @@ class ClientDealsHistoryRepository:
         
         return price_changes.any()
 
-    def get_deals_with_exceeds_price(self, df, exceed_num=0.1):
+    def get_deals_with_exceeds_price(self, exceed_num=0.1):
+        df = self.df
         df['price_sell'] = pd.to_numeric(df['price_sell'], errors='coerce')
         df = df[pd.notna(df['margin'])]
         
@@ -99,7 +101,8 @@ class ClientDealsHistoryRepository:
         
         return unique_clients
     
-    def optimized_get_deals_with_exceeds_price(self, df, exceed_num=0.1):
+    def optimized_get_deals_with_exceeds_price(self, exceed_num=0.1):
+        df = self.df
         df['price_sell'] = pd.to_numeric(df['price_sell'], errors='coerce')
         df['requisition_created'] = pd.to_datetime(df['requisition_created'])
         df = df[pd.notna(df['margin'])].sort_values(by=['articul', 'client_id', 'requisition_created'])
@@ -114,7 +117,8 @@ class ClientDealsHistoryRepository:
     
         return unique_clients
 
-    def optimized_get_deals_with_exceeds_price_with_gap(self, df, exceed_num=0.1, min_day_gap=30):
+    def optimized_get_deals_with_exceeds_price_with_gap(self, exceed_num=0.1, min_day_gap=30):
+        df = self.df
         df['price_sell'] = pd.to_numeric(df['price_sell'], errors='coerce')
         df['requisition_created'] = pd.to_datetime(df['requisition_created'])
         df = df[df['articul'].notna() & (df['articul'] != '')]
@@ -132,7 +136,8 @@ class ClientDealsHistoryRepository:
     
         return unique_clients
 
-    def group_by_clients(self, df):
+    def group_by_clients(self):
+        df = self.df
         grouped = df.groupby('client_id')['articul'].apply(list).reset_index()
         grouped['articuls'] = grouped['articul'].apply(lambda x: ', '.join(x))
         grouped = grouped[['client_id', 'articuls']].rename(columns={'articuls': 'articul'})
