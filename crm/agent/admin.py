@@ -123,7 +123,6 @@ class AgentTaskAdmin(admin.ModelAdmin):
     status_boolean.boolean = True  # Render as boolean icon
 # admin.site.register(AgentTask, AgentTaskAdmin)
 
-"sk-n6EXEzwcSdcsdvdsakFJWWqSGHn9olhw3iDPYrPc"
 
 class TaskFeedbackAdmin(admin.ModelAdmin):
     list_display = ['id', 'linked_task', 'display_like', 'feedback', 'list_issues', 'created_at']
