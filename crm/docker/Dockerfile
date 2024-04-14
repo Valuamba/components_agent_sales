@@ -20,7 +20,7 @@ WORKDIR /crm
 
 COPY --chown=app:app . .
 RUN chmod 777 /crm
-RUN touch /src/db.sqlite3
+RUN touch /crm/db.sqlite3
 RUN chmod 777 /crm/db.sqlite3
 
 
