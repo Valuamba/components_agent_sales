@@ -13,6 +13,7 @@ from repositories.intents import IntentRepository
 from repositories.message import MessageRepository
 from repositories.part_inquiry import PartInquiryRepository
 from repositories.purchase_history import PurchaseHistoryRepository
+from repositories.run_repository import RunRepository
 from repositories.task import TaskRepository
 from services import LoggingService, ClassifyEmailAgent, GoogleSearch, OpenAIClient
 from agents.classify_parts.service import ClassifyEmailAgent as ClassifyEmailAgentV1
@@ -79,8 +80,8 @@ def get_embedding_repository(db: Session = Depends(get_db)) -> Generator[Embeddi
         pass
 
 
-def get_deal_repository(db: Session = Depends(get_db)):
-    repository = DealRepository(session=db)
+def get_deal_repository(db: Session = Depends(get_db), logger = Depends(get_logger)):
+    repository = DealRepository(session=db, logger=logger)
     try:
         yield repository
     finally:
@@ -100,8 +101,8 @@ def get_part_inquiry_repository(db: Session = Depends(get_db)):
     finally:
         pass
 
-def get_task_repository(db: Session = Depends(get_db)):
-    repository = TaskRepository(session=db)
+def get_task_repository(db: Session = Depends(get_db), logger = Depends(get_logger)):
+    repository = TaskRepository(session=db, logger=logger)
     try:
         yield repository
     finally:
@@ -116,6 +117,13 @@ def get_purchase_history_repository(db: Session = Depends(get_db)):
 
 def get_intent_repository(db: Session = Depends(get_db)):
     repository = IntentRepository(session=db)
+    try:
+        yield repository
+    finally:
+        pass
+
+def get_run_repository(db: Session = Depends(get_db), logger = Depends(get_logger)):
+    repository = RunRepository(session=db, logger=logger)
     try:
         yield repository
     finally:

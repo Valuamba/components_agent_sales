@@ -7,6 +7,7 @@ class TaskRepository(BaseRepository):
     def create_task_for_deal(self, agent_task: AgentTask):
         self.session.add(agent_task)
         self.session.commit()
+        self.logger.info(f'Agent task created with ID: {agent_task.task_id}')
         return agent_task.task_id
 
 

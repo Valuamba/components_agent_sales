@@ -1,6 +1,8 @@
 from openai import OpenAI
 from schemas.completion import CompletionResponse
 
+import time
+
 
 completion_pricing_per_1k_tokens_usd = {
     "gpt-4-1106-preview": {"input": 0.01, "output": 0.03},
@@ -34,10 +36,14 @@ class OpenAIClient:
             + prompt_tokens * model_pricing_info["input"]
         ) / 1000
 
-    def create_completion(self, model: str, messages, **kwargs):
+    def create_completion(self, model: str, messages, **kwargs) -> CompletionResponse:
+        start_time = time.time()
+
         resp = self.client.chat.completions.create(
             model=model, messages=messages, **kwargs
         )
+
+        end_time = time.time()
 
         choice = resp.choices[0]
 
@@ -45,6 +51,8 @@ class OpenAIClient:
             raise Exception(
                 f"The chat completion was ended due to {choice.finish_reason}"
             )
+
+        elapsed_time_ms = (end_time - start_time) * 1000
 
         completion_response = CompletionResponse(
             completion_tokens=resp.usage.completion_tokens,
@@ -54,6 +62,7 @@ class OpenAIClient:
             usage_cost_usd=self.count_usage_price(
                 resp.usage.completion_tokens, resp.usage.prompt_tokens, model
             ),
+            completion_time_ms=elapsed_time_ms
         )
 
         return completion_response

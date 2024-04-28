@@ -1,0 +1,42 @@
+[
+    {
+        "file_path": "../../../notebooks/famaga/deals_html/discount/380760.html",
+        "expected_count": 7,
+        "expected_snippets": [
+            "freundlichen Grüßen",
+            "Please send me the proforma invoice",
+            "Subject:Sv",
+            "Thank you for the offer.",
+            "Dear Niclas, good afternoon",
+            "Z80M18S3-F-660-lp30Frequenzbereich",
+            "Jag skulle"
+        ]
+    },
+    {
+        "file_path": "../../../notebooks/famaga/deals_html/discount/382491.html",
+        "expected_count": 7,
+        "expected_snippets": [
+            "Thank you for your offer and email. There is not any update yet.",
+            "Dear Alezandros",
+            "R900562835",
+            "Mit freundlichen Grüßen",
+            "Rexroth",
+            "Can you please clarify the name of the brand and article number?",
+            "Kindly advise us availability"
+        ]
+    },
+    {
+        "file_path": "../../../notebooks/famaga/deals_html/discount/397719.html",
+        "expected_count": 8,
+        "expected_snippets": [
+            "Hence we request you to please recheck the prices and help us so we will be able to win this bid.",
+            "21:06",
+            "Famaga Group OHG",
+            "PRGM7",
+            "19:29:23",
+            "17:02:55",
+            "18:36:28",
+            "2002243420"
+        ]
+    }
+]

@@ -52,18 +52,20 @@ class DealRepository(BaseRepository):
 
         return messages
 
-    def get_or_create_deal(self, deal_id, new_deal: Deal = None):
+    def get_or_create_deal(self, deal_id: str, new_deal: Deal = None):
         # with self.session_scope() as session:
         deal = self.session.query(Deal).filter_by(deal_id=deal_id).first()
         if deal is None:
             if new_deal is not None:
                 self.session.add(new_deal)
                 self.session.commit()
+                self.logger.info(f'Deal created with ID: {new_deal.deal_id}')
                 return new_deal
             else:
                 deal = Deal(deal_id=deal_id)
                 self.session.add(deal)
                 self.session.commit()
+                self.logger.info(f'Deal created with ID: {deal.deal_id}')
                 return deal
         return deal
 

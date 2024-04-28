@@ -9,6 +9,7 @@ class CompletionResponse(BaseModel):
     content: str
     model: str
     usage_cost_usd: float
+    completion_time_ms: float
 
 
 class EmailRequest(BaseModel):

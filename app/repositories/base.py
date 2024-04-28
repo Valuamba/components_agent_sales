@@ -3,12 +3,15 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
+from services import LoggingService
+
 Base = declarative_base()
 
 
 class BaseRepository:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session, logger: LoggingService = None):
         self.session = session
+        self.logger = logger
 
     # def __init__(self, db_url):
     #     self.engine = create_engine(db_url)

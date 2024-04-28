@@ -20,6 +20,7 @@ class StatusType(enum.Enum):
     Failed = 0
     Passed = 1
     Stopped = 2
+    InProgress = 4
 
 
 class Deal(Base):
@@ -31,7 +32,7 @@ class Deal(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    subject = Column(String, nullable=False)
+    subject = Column(String, nullable=True)
     customer = Column(String, nullable=True)
 
     country = Column(String(255))
@@ -43,6 +44,21 @@ class Deal(Base):
     messages = relationship("Message", back_populates="deal")
     part_inquiries = relationship("PartInquiry", back_populates="deal")
     agent_tasks = relationship("AgentTask", back_populates="deal")
+    runs = relationship("LLMRun", back_populates="deal")
+
+
+class LLMRun(Base):
+    __tablename__ = 'runs'
+
+    run_id = Column(Integer, primary_key=True, autoincrement=True)
+    status = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    deal_id = Column(String, ForeignKey('deal.deal_id'))
+    deal = relationship("Deal", back_populates="runs")
+
+    agent_tasks = relationship("AgentTask", back_populates="run")
 
 
 class AgentTask(Base):
@@ -52,14 +68,16 @@ class AgentTask(Base):
     completion_cost = Column(Float, nullable=True)
     output_tokens = Column(Integer, nullable=True)
     prompt_tokens = Column(Integer, nullable=True)
-    prompt = Column(String, nullable=False)
+    prompt = Column(String, nullable=True)
     response = Column(String, nullable=True)
-    agent_type = Column(Integer, nullable=False)
-    status = Column(Enum(StatusType), nullable=False)
+    action = Column(String, nullable=True)
+    status = Column(String, nullable=False)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-    deal_id = Column(String, ForeignKey('deal.deal_id'))
+    deal_id = Column(String, ForeignKey('deal.deal_id'), nullable=True)
+    run_id = Column(Integer, ForeignKey('runs.run_id'), nullable=True)
 
+    run = relationship("LLMRun", back_populates="agent_tasks")
     deal = relationship("Deal", back_populates="agent_tasks")
     task_feedbacks = relationship("TaskFeedback", back_populates="agent_task")
 

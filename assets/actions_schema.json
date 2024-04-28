@@ -1,0 +1,186 @@
+{
+  "actions": [
+    {
+      "event": {
+        "event_version": 1,
+        "event_name": "classify_request",
+        "event_type": "sales_agent",
+        "event_id": 2342,
+        "event_time": 1.23
+      },
+      "data": {
+        "parts": [
+          {
+            "amount": 1,
+            "brand_name": "Airtac",
+            "part_number": "A05-DMSE-020"
+          },
+          {
+            "amount": 15,
+            "brand_name": "Clayton",
+            "part_number": "0039042"
+          }
+        ],
+        "client": {
+          "country": "Romania",
+          "domain": "epno.com.mx",
+          "email": "roberto.sosa@epno.com.mx",
+          "office_country": "Mexico"
+        }
+      },
+      "metadata": {
+        "completion_cost_usd": 0.023,
+        "completion_time_sec": 1.2,
+        "llm_model": "gpt-4"
+      },
+      "raw_output": "adscdsacfsadcasdfcsda"
+    },
+    {
+      "event": {
+        "event_version": 1,
+        "event_name": "classify_intents",
+        "event_type": "sales_agent",
+        "event_id": 2343,
+        "event_time": 2.12
+      },
+      "data": {
+        "intents": [
+          {
+            "intent": "Price Inquiry",
+            "subIntent": "Discount Inquiry"
+          }
+        ],
+        "metadata": {
+          "completion_cost_usd": 0.023,
+          "completion_time_sec": 1.2,
+          "llm_model": "gpt-4"
+        }
+      }
+    },
+    {
+      "event": {
+        "event_version": 1,
+        "event_name": "analyze_discount",
+        "event_type": "sales_agent",
+        "event_id": 2343,
+        "event_time": 2.12,
+        "event_status": 500
+      },
+      "data": {
+        "error": {
+          "code": 2,
+          "message": "Json schema was not found field `brand_name` at text."
+        },
+        "raw_output": "adscdsacfsadcasdfcsda",
+        "metadata": {
+          "completion_cost_usd": 0.023,
+          "completion_time_sec": 1.2,
+          "llm_model": "gpt-4"
+        }
+      }
+    }
+  ],
+  "run": {
+    "actions": [
+      {
+        "event": {
+          "event_version": 1,
+          "event_name": "classify_request",
+          "event_type": "sales_agent",
+          "event_id": 2342,
+          "event_time": 1.23
+        },
+        "data": {
+          "parts": [
+            {
+              "amount": 1,
+              "brand_name": "Airtac",
+              "part_number": "A05-DMSE-020"
+            }
+          ]
+        },
+        "metadata": {
+          "completion_cost_usd": 0.023,
+          "completion_time_sec": 1.2,
+          "llm_model": "gpt-4"
+        },
+        "raw_output": "adscdsacfsadcasdfcsda"
+      }
+    ],
+    "run": {
+      "run_type": "sales_agent",
+      "run_state": "success",
+      "run_processing_time_ms": 2432
+    },
+    "tasks": [
+      {
+        "task_id": "fs-1234",
+        "action": "send_message",
+        "state": "todo",
+        "data": {
+          "recipient_type": "customer",
+          "intents": [
+            {
+              "intent": "Product Inquiry",
+              "sub_intent": "Product Information Request"
+            }
+          ],
+          "body": "Dear, Can you please clarify the name of the brand and article number?"
+        }
+      },
+      {
+        "action": "discount_processing",
+        "state": "blocked",
+        "blocked_by": "fs-1234",
+        "data": {
+          "customer_info": {
+            "client_id": "12345",
+            "name": "John Doe",
+            "email": "john.doe@example.com"
+          },
+          "purchase_history": {
+            "last_purchase_date": "2023-04-01",
+            "last_purchased_items": [
+              {
+                "brand": "BrandX",
+                "article_number": "XYZ123",
+                "quantity": 2
+              },
+              {
+                "brand": "BrandY",
+                "article_number": "ABC789",
+                "quantity": 1
+              }
+            ],
+            "total_spent": "$1500"
+          },
+          "bot_decision": {
+            "eligibility_for_discount": "pending",
+            "reason": "Requires further details about current product inquiry",
+            "previous_discounts": [
+              {
+                "date": "2023-01-20",
+                "amount": "10%",
+                "on_products": [
+                  "XYZ123",
+                  "ABC789"
+                ]
+              }
+            ],
+            "decision_process": "Bot is awaiting additional product information before determining the discount percentage based on customer loyalty and recent purchases."
+          }
+        }
+      },
+      {
+        "action": "define_customer",
+        "state": "todo",
+        "data": {
+          "customer_info": {
+            "email": ""
+          }
+        }
+      }
+    ],
+    "error": null
+  }
+}
