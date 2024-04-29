@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class DetailRequest(BaseModel):
     amount: int | None
     brand_name: str | None
-    part_number: str
+    part_number: str | None
 
 
 class ClientInfo(BaseModel):

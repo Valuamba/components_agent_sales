@@ -1,0 +1,11 @@
+/* admin_custom.css */
+.error-field input {
+    background-color: #FFC0CB; /* Light Pink */
+    font-size: smaller;
+}
+.prompt-field input {
+    background-color: #FAFAD2; /* Light Yellow/Orange */
+}
+.completion-field input {
+    background-color: #90EE90; /* Light Green */
+}

@@ -40,7 +40,6 @@ class Intent(BaseModel):
     branch: str
 
 
-
 class ClassifyIntentsResponseSchema(Serializable):
     intents: List[Intent]
 

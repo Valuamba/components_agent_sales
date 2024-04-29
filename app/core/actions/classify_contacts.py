@@ -57,7 +57,7 @@ class ClassifyContactsAction:
     def create_completion(self) -> any:
         return {}
 
-    def classify_contacts_details(self, run_id: int, message: str) -> Action:
+    def classify_contacts_details(self, run_id: int, message: str):
         model = 'gpt-4'
         action_version = 1
 
@@ -154,6 +154,7 @@ class ClassifyContactsAction:
 
             actual_status = StatusType.Failed
             task.status = actual_status.name
+            task.error = str(e)
             db_session.commit()
 
             return Action(

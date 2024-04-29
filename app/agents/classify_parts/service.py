@@ -50,6 +50,11 @@ class ClassifyEmailAgent:
                 subject=request.subject))
         self.logger.info('Deal was or gotten created', {'deal_id': request.deal_id})
 
+        actual_status = StatusType.InProgress
+        task = AgentTask(status=actual_status.name, action='lead_classification', prompt=prompt, deal_id=request.deal_id)
+        db_session = self.task_repository.session
+        self.task_repository.create_task_for_deal(task)
+
         message_hash = content_hash(request.body)
         message = self.message_repository.append_message_to_chat_history_or_get(
             request.deal_id, message_hash, Message(
@@ -61,11 +66,9 @@ class ClassifyEmailAgent:
 
         self.logger.info('Message was appended', {'message_id': message.message_id, 'hash': message.hash})
 
-        classified_json_data = None
         completion = None
         task_id = None
         order = None
-        status = None
         try:
             completion = self.openai_client.create_completion(
                 model,
@@ -75,52 +78,46 @@ class ClassifyEmailAgent:
                 ],
             )
 
+            task.response = completion.content  # Store raw output
+            db_session.commit()
+
             classified_json_data = select_json_block(completion.content)
             order = ClassifyAgentResponse.model_validate(classified_json_data)
-            status = StatusType.Passed
+
+            task.status = StatusType.Passed.name
+            task.prompt_tokens = completion.prompt_tokens
+            task.output_tokens = completion.completion_tokens
+            task.completion_cost = completion.usage_cost_usd
+            task.action_time_ms = completion.completion_time_ms
+
+            db_session.commit()
 
         except Exception as e:
             self.logger.error(f"Failed to process completion: {str(e)}")
-            status = StatusType.Failed
 
-        finally:
-            if status == StatusType.Passed and classified_json_data and completion:
-                task = AgentTask(
-                    deal_id=request.deal_id,
-                    prompt_tokens=completion.prompt_tokens,
-                    output_tokens=completion.completion_tokens,
-                    status=status.name,
-                    action="lead_classification",
-                    prompt=prompt,
-                    response=completion.content,
-                    completion_cost=completion.usage_cost_usd,
-                )
-            else:
-                task = AgentTask(
-                    deal_id=request.deal_id,
-                    status=status.name,
-                    prompt=prompt,
-                    action="lead_classification",
-                )
-
-            try:
-                task_id = self.task_repository.create_task_for_deal(task)
-                self.logger.info('Task was created', {'task_id': task_id})
-            except Exception as db_error:
-                self.logger.error(f"Failed to insert task into the database: {str(db_error)}")
+            task.status = StatusType.Failed.name
+            task.error = str(e)
+            db_session.commit()
 
         if order and completion:
-            for part in order.parts:
-                part_inquiry = self.part_inquiry_repository.create_part_inquiry_for_deal(PartInquiry(
-                    deal_id=request.deal_id,
-                    brand_name=part.brand_name,
-                    part_number=part.part_number,
-                    amount=part.amount
-                ))
+            try:
+                for part in order.parts:
+                    part_inquiry = self.part_inquiry_repository.create_part_inquiry_for_deal(PartInquiry(
+                        deal_id=request.deal_id,
+                        brand_name=part.brand_name,
+                        part_number=part.part_number,
+                        amount=part.amount
+                    ))
 
-            order.deal_id = request.deal_id
-            order.agent_task_id = task_id
-            order.message_id = message.message_id
+                order.deal_id = request.deal_id
+                order.agent_task_id = task.task_id
+                order.message_id = message.message_id
+            except Exception as e:
+                self.logger.error(f"Failed at parts classification: {str(e)}")
+
+                task.status = StatusType.Failed.name
+                task.error = str(e)
+                db_session.commit()
 
             return order, completion.usage_cost_usd
         return None, None

@@ -69,6 +69,8 @@ class AgentTask(Base):
     output_tokens = Column(Integer, nullable=True)
     prompt_tokens = Column(Integer, nullable=True)
     prompt = Column(String, nullable=True)
+    error = Column(String, nullable=True)
+    action_time_ms = Column(Integer, nullable=True)
     response = Column(String, nullable=True)
     action = Column(String, nullable=True)
     status = Column(String, nullable=False)

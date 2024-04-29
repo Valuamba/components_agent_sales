@@ -6,6 +6,7 @@ from .models import AgentTask, Issue, TaskFeedback, TaskFeedbackIssueLink, Issue
 from django.utils.html import format_html
 from django.db import models
 from django.forms import Textarea
+from django import forms
 from django.db.models import Prefetch
 
 
@@ -79,10 +80,20 @@ class TaskFeedbackIssueLinkInline(admin.TabularInline):
     extra = 1  # Controls the number of extra blank forms displayed
 
 
+class AgentTaskAdminForm(forms.ModelForm):
+    class Meta:
+        model = AgentTask
+        widgets = {
+            'error': forms.TextInput(attrs={'class': 'error-field'}),
+            'prompt': forms.TextInput(attrs={'class': 'prompt-field'}),
+            'completion_cost': forms.TextInput(attrs={'class': 'completion-field'}),
+        }
+        fields = '__all__'
+
+
 class AgentTaskAdmin(admin.ModelAdmin):
-    list_filter = ('status', 'created_at', 'updated_at')
     list_display = (
-        'task_id', 'run_id', 'status_boolean', 'display_like', 'display_feedback', 'list_issues', 'created_at'
+        'task_id', 'run_id', 'status_boolean', 'display_like', 'action', 'action_time_ms', 'display_feedback', 'list_issues', 'created_at'
     )
     list_filter = (
         IssuesFilter, HasFeedbackFilter, LikeDislikeFilter, 'status', 'created_at'
@@ -92,9 +103,10 @@ class AgentTaskAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     inlines = (TaskFeedbackInline,)
     readonly_fields = ('deal_id',)
+    # form = AgentTaskAdminForm
 
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 40, 'cols': 200})},
+        models.TextField: {'widget': Textarea(attrs={'rows': 20, 'cols': 180})},
     }
 
     def get_queryset(self, request):

@@ -13,6 +13,9 @@ class AgentTask(models.Model):
     completion_cost = models.FloatField(null=True, blank=True)
     output_tokens = models.IntegerField(null=True, blank=True)
     prompt_tokens = models.IntegerField(null=True, blank=True)
+    error = models.TextField(null=True, blank=True)
+    action_time_ms = models.IntegerField(null=True, blank=True)
+    action = models.CharField(null=True, blank=True, max_length=200)
     prompt = models.TextField()
     response = models.TextField(null=True, blank=True)
     status = models.CharField(
