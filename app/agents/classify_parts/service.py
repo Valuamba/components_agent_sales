@@ -89,18 +89,18 @@ class ClassifyEmailAgent:
                     deal_id=request.deal_id,
                     prompt_tokens=completion.prompt_tokens,
                     output_tokens=completion.completion_tokens,
-                    status=status,
+                    status=status.name,
+                    action="lead_classification",
                     prompt=prompt,
                     response=completion.content,
                     completion_cost=completion.usage_cost_usd,
-                    agent_type=1
                 )
             else:
                 task = AgentTask(
                     deal_id=request.deal_id,
-                    status=status,
+                    status=status.name,
                     prompt=prompt,
-                    agent_type=1,
+                    action="lead_classification",
                 )
 
             try:
