@@ -29,8 +29,8 @@ services:
     crm:
         container_name: crm-admin
         build:
-            context: ../../
-            dockerfile: ./crm/docker/Dockerfile
+            context: ../../crm/
+            dockerfile: ./docker/Dockerfile
         ports:
             - "9027:8000"
         networks:
