@@ -25,10 +25,20 @@ services:
         - "45045:80"
         networks:
             - famaga-net
+
+    crm:
+        container_name: crm-admin
+        build:
+            context: ../../
+            dockerfile: ./crm/docker/Dockerfile
+        ports:
+            - "9027:8000"
+        networks:
+            - famaga-net
+
 networks:
   famaga-net:
     driver: bridge
-
 
 volumes:
   postgres_db:
