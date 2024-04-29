@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from agents.classify_intents.agent import ClassifyIntentsAgent
 from agents.pricing_manager.agent import PricingManagerAgent
 from configs import config
+from core.bot import TelegramBotClient
 from database import get_db
 from repositories import EmbeddingRepository, DetailInfoRepository
 from repositories.deal_repository import DealRepository
@@ -55,6 +56,9 @@ def get_request_context(trace_id: str = Depends(get_trace_id)) -> RequestContext
 
 def get_logger(context: RequestContext = Depends(get_request_context)):
     return LoggingService(context)
+
+def get_telegram_bot_client(logger = Depends(get_logger)):
+    return TelegramBotClient(logger)
 
 def get_google_search(logger=Depends(get_logger)):
     # Assuming GoogleSearch is a custom class for handling Google searches
@@ -132,6 +136,7 @@ def get_run_repository(db: Session = Depends(get_db), logger = Depends(get_logge
 def get_classify_email_agent_v1(
         openai_client=Depends(get_openai_client),
         logger=Depends(get_logger),
+        telegram_bot_client=Depends(get_telegram_bot_client),
         details_info_repository: DetailInfoRepository = Depends(get_details_info_repository),
         deal_repository = Depends(get_deal_repository),
         task_repository: TaskRepository = Depends(get_task_repository),
@@ -140,6 +145,7 @@ def get_classify_email_agent_v1(
         embedding_repository: EmbeddingRepository = Depends(get_embedding_repository)
 ):
     return ClassifyEmailAgentV1(
+        telegram_bot=telegram_bot_client,
         openai_client=openai_client,
         logger=logger,
         detail_info_repository=details_info_repository,

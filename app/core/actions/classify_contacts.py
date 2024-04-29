@@ -6,6 +6,7 @@ from typing import List, Optional
 
 from pydantic.v1 import BaseModel
 
+from core.bot import TelegramBotClient
 from core.models.action import Action, ActionMetadata, Data, Metadata
 from models.deal import AgentTask, StatusType
 from repositories import TaskRepository
@@ -44,11 +45,13 @@ class Person(BaseModel):
 class ClassifyContactsAction:
     def __init__(self,
                  openai_client: OpenAIClient,
+                 telegram_bot: TelegramBotClient,
                  task_repository: TaskRepository,
                  logger_service: LoggingService):
         self.openai_client = openai_client
         self.task_repository = task_repository
         self.logger = logger_service
+        self.telegram_bot = telegram_bot
 
     @classmethod
     def get_action_name(cls):
@@ -150,7 +153,13 @@ class ClassifyContactsAction:
                 )
             )
         except Exception as e:
-            self.logger.error(f"Failed to process action [{self.get_action_name()}]: {str(e)}")
+            error_message = f"Failed to process action [{self.get_action_name()}]: {str(e)}"
+            self.logger.error(error_message)
+            self.telegram_bot.notify_admins(error_message, **{
+                'action': self.get_action_name(),
+                'task_id': task.task_id,
+                'run_id': run_id
+            })
 
             actual_status = StatusType.Failed
             task.status = actual_status.name

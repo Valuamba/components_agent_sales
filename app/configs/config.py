@@ -10,6 +10,8 @@ class AppSettings(BaseSettings):
     openai_api_key: str = Field(env="OPENAI_API_KEY")
     serper_api_key: str = Field(env="SERPER_API_KEY")
     famaga_db_url: str = Field(env="FAMAGA_DB_URL")
+    bot_token: str = Field(env="BOT_TOKEN")
+    notify_users_ids: List[int] = [6102292898]
 
     vector_collection_name: str = "details"
     similarity_search_limit: float = 0.1

@@ -1,5 +1,6 @@
 from agents.classify_parts.prompts import CLASSIFY_PARTS_PROMPT, DETAIL_CLASSIFICATION_EXAMPLES, FORMAT_RESPONSE, \
     SYSTEM_PROMPT
+from core.bot import TelegramBotClient
 from models import Deal
 from models.deal import AgentTask, StatusType, PartInquiry, Message, FromType
 from repositories import DetailInfoRepository, EmbeddingRepository
@@ -19,6 +20,7 @@ class ClassifyEmailAgent:
             self,
             openai_client: OpenAIClient,
             logger: LoggingService,
+            telegram_bot: TelegramBotClient,
             detail_info_repository: DetailInfoRepository,
             deal_repository: DealRepository,
             task_repository: TaskRepository,
@@ -26,6 +28,7 @@ class ClassifyEmailAgent:
             part_inquiry_repository: PartInquiryRepository,
             embeddings_repository: EmbeddingRepository,
     ):
+        self.telegram_bot = telegram_bot
         self.openai_client = openai_client
         self.logger = logger
         self.detail_info_repository = detail_info_repository
@@ -93,7 +96,12 @@ class ClassifyEmailAgent:
             db_session.commit()
 
         except Exception as e:
-            self.logger.error(f"Failed to process completion: {str(e)}")
+            error_message = f"Failed to process completion: {str(e)}"
+            self.logger.error(error_message)
+            self.telegram_bot.notify_admins(error_message, **{
+                'task_id': task.task_id,
+                'deal_id': request.deal_id
+            })
 
             task.status = StatusType.Failed.name
             task.error = str(e)
@@ -114,6 +122,10 @@ class ClassifyEmailAgent:
                 order.message_id = message.message_id
             except Exception as e:
                 self.logger.error(f"Failed at parts classification: {str(e)}")
+                self.telegram_bot.notify_admins(f"Failed at parts classification: {str(e)}", **{
+                    'task_id': task.task_id,
+                    'deal_id': request.deal_id
+                })
 
                 task.status = StatusType.Failed.name
                 task.error = str(e)

@@ -5,7 +5,9 @@ from pydantic import BaseModel
 
 from core.actions.classify_contacts import ClassifyContactsAction
 from core.actions.classify_intents import ClassifyIntentsAction
-from dependencies import get_run_repository, get_deal_repository, get_openai_client, get_task_repository, get_logger
+from core.bot import TelegramBotClient
+from dependencies import get_run_repository, get_deal_repository, get_openai_client, get_task_repository, get_logger, \
+    get_telegram_bot_client
 from models.deal import LLMRun, StatusType, Deal
 from repositories import DealRepository, TaskRepository
 from repositories.run_repository import RunRepository
@@ -25,6 +27,7 @@ class ClassifyMessageIntentsDto(BaseModel):
 def classify_intents(request: ClassifyMessageIntentsDto,
                      openai_client: OpenAIClient = Depends(get_openai_client),
                      logger: LoggingService = Depends(get_logger),
+                     telegram_bot: TelegramBotClient = Depends(get_telegram_bot_client),
                      task_repository: TaskRepository = Depends(get_task_repository),
                      run_repository: RunRepository = Depends(get_run_repository),
                      deal_repository: DealRepository = Depends(get_deal_repository)):
@@ -40,7 +43,7 @@ def classify_intents(request: ClassifyMessageIntentsDto,
     ))
 
     classify_intents_action = ClassifyIntentsAction(openai_client, task_repository)
-    classify_contacts = ClassifyContactsAction(openai_client, task_repository, logger)
+    classify_contacts = ClassifyContactsAction(openai_client, telegram_bot, task_repository, logger)
 
     contact_details = classify_contacts.classify_contacts_details(run.run_id, message)
 
