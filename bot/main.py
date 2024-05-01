@@ -55,21 +55,21 @@ def format_response(details):
                 for intent in action['data']
             ])
             action_details = f"Details:\n<pre>{intents}</pre>"
-        elif action_name == "classify_contacts" and 'data' in action and action['data']:
-            # Assuming action['data'] contains a list of Person objects
-            contacts_details = []
+        elif action_name == "classify_contacts" and 'data' in action:
             person = action['data']
-            contact_info = person['contact'] if 'contact' in person else {}
-            addresses_info = contact_info.get('addresses', [{}])[0]  # Get the first address if available
-            contacts_details.append(
-                    f"- Name: {person.get('name', 'N/A')}\n"
-                    f"  Title: {person.get('title', 'N/A')}\n"
-                    f"  Company: {person.get('company', 'N/A')}\n"
-                    f"  Email: {contact_info.get('email', 'N/A')}\n"
-                    f"  Phone: {contact_info.get('office_phone', 'N/A')}\n"
-                    f"  Address: {addresses_info.get('street', 'N/A')}, {addresses_info.get('city', 'N/A')}"
+            contact_info = person.get('contact', {})
+            addresses_info = contact_info.get('addresses', [{}])[0]  # Safely get the first address
+
+            # Compile contact details ensuring no None values slip through
+            contacts_details = (
+                f"- Name: {person.get('name', 'N/A')}\n"
+                f"  Title: {person.get('title', 'N/A')}\n"
+                f"  Company: {person.get('company', 'N/A')}\n"
+                f"  Email: {contact_info.get('email', 'N/A')}\n"
+                f"  Phone: {contact_info.get('office_phone', 'N/A')}\n"
+                f"  Address: {addresses_info.get('street', 'N/A')}, {addresses_info.get('city', 'N/A')}"
             )
-            action_details = "Details:\n<pre>" + "\n".join(contacts_details) + "</pre>"
+            action_details = f"Details:\n<pre>{contacts_details}</pre>"
         else:
             action_details = "No additional details available"
 
