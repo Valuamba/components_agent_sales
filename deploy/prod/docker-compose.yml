@@ -16,6 +16,20 @@ services:
         networks:
             - famaga-net
 
+    bot-app:
+        container_name: bot-app
+        build:
+            context: ../../bot  # Set the context to the 'bot' folder
+            dockerfile: ./docker/Dockerfile
+        ports:
+            - "45046:80"  # Map port 80 in the container to port 45045 on the host
+        volumes:
+            - "./bot/logs:/app/logs"  # Bind mount for logs
+        environment:
+            - AGENT_URL=http://fastapi-app:80  # Overriding AGENT_URL to point to the famaga-app service
+        networks:
+            - famaga-net
+
     fastapi-app:
         container_name: famaga-app
         build:

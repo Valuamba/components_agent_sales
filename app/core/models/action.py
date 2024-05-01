@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List, Optional, Any, Union
 
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
 
 class Metadata(BaseModel):

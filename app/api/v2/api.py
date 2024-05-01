@@ -1,11 +1,14 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from fastapi.openapi.models import Response
-# from pydantic.v1 import BaseModel
 from pydantic import BaseModel
 
 from core.actions.classify_contacts import ClassifyContactsAction
 from core.actions.classify_intents import ClassifyIntentsAction
 from core.bot import TelegramBotClient
+from core.dispatcher import Task, dispatch
+from core.models.action import Action
 from dependencies import get_run_repository, get_deal_repository, get_openai_client, get_task_repository, get_logger, \
     get_telegram_bot_client
 from models.deal import LLMRun, StatusType, Deal
@@ -21,6 +24,16 @@ v2_group = APIRouter()
 class ClassifyMessageIntentsDto(BaseModel):
     deal_id: str
     messages_html: str
+
+
+class RunDetails(BaseModel):
+    run_id: int
+
+
+class Run(BaseModel):
+    actions: List[Action]
+    run: RunDetails | None = None
+    tasks: List[Task]
 
 
 @v2_group.post("/agent/handle_messages/html")
@@ -42,8 +55,8 @@ def classify_intents(request: ClassifyMessageIntentsDto,
         deal_id=deal.deal_id
     ))
 
-    classify_intents_action = ClassifyIntentsAction(openai_client, task_repository)
-    classify_contacts = ClassifyContactsAction(openai_client, telegram_bot, task_repository, logger)
+    classify_intents_action = ClassifyIntentsAction(openai_client, task_repository, telegram_bot, logger)
+    classify_contacts = ClassifyContactsAction(openai_client, task_repository, telegram_bot, logger)
 
     contact_details = classify_contacts.classify_contacts_details(run.run_id, message)
 
@@ -52,15 +65,16 @@ def classify_intents(request: ClassifyMessageIntentsDto,
 
     intents = classify_intents_action.classify_intents(run.run_id, message)
 
-    return {
-        "run": {
-            "actions": [
-                contact_details.dict(),
-                intents.dict()
-            ],
-            "run": {
-                "run_id": run.run_id
-            }
-        }
-    }
+    tasks = dispatch(contact_details.data, intents.data)
+
+    run_data = Run(
+        actions=[
+            contact_details,
+            intents,
+        ],
+        run=RunDetails(run_id=run.run_id),
+        tasks=tasks
+    )
+
+    return run_data
 

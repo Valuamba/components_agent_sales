@@ -4,8 +4,9 @@ from typing import List, Optional
 from abc import ABC
 from typing import List, Optional
 
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
+from core.actions.base import BaseAction
 from core.bot import TelegramBotClient
 from core.models.action import Action, ActionMetadata, Data, Metadata
 from models.deal import AgentTask, StatusType
@@ -42,16 +43,14 @@ class Person(BaseModel):
     sign: Optional[str] = None
 
 
-class ClassifyContactsAction:
+class ClassifyContactsAction(BaseAction):
     def __init__(self,
                  openai_client: OpenAIClient,
-                 telegram_bot: TelegramBotClient,
                  task_repository: TaskRepository,
-                 logger_service: LoggingService):
+                 telegram_bot: TelegramBotClient,
+                 logger: LoggingService):
+        super().__init__(task_repository, telegram_bot, logger)
         self.openai_client = openai_client
-        self.task_repository = task_repository
-        self.logger = logger_service
-        self.telegram_bot = telegram_bot
 
     @classmethod
     def get_action_name(cls):
@@ -153,26 +152,4 @@ class ClassifyContactsAction:
                 )
             )
         except Exception as e:
-            error_message = f"Failed to process action [{self.get_action_name()}]: {str(e)}"
-            self.logger.error(error_message)
-            self.telegram_bot.notify_admins(error_message, **{
-                'action': self.get_action_name(),
-                'task_id': task.task_id,
-                'run_id': run_id
-            })
-
-            actual_status = StatusType.Failed
-            task.status = actual_status.name
-            task.error = str(e)
-            db_session.commit()
-
-            return Action(
-                action=ActionMetadata(
-                    action_version=1,
-                    action_name=self.get_action_name(),
-                    action_id=task.task_id,
-                    action_time=None,
-                    action_status=actual_status.value,
-                ),
-                error={'code': type(e).__name__, 'message': str(e)}
-            )
+            return self.handle_error(e, task, run_id)

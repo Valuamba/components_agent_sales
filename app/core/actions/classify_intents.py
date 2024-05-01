@@ -1,12 +1,14 @@
 from abc import ABC
 from typing import List, Optional
 
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
+from core.actions.base import BaseAction
+from core.bot import TelegramBotClient
 from core.models.action import Action, ActionMetadata, Metadata, Data
 from models.deal import AgentTask, StatusType
 from repositories import TaskRepository
-from services import OpenAIClient
+from services import OpenAIClient, LoggingService
 from utility import select_json_block
 
 
@@ -44,10 +46,14 @@ class ClassifyIntentsResponseSchema(Serializable):
     intents: List[Intent]
 
 
-class ClassifyIntentsAction:
-    def __init__(self, openai_client: OpenAIClient, task_repository: TaskRepository):
+class ClassifyIntentsAction(BaseAction):
+    def __init__(self,
+                 openai_client: OpenAIClient,
+                 task_repository: TaskRepository,
+                 telegram_bot: TelegramBotClient,
+                 logger: LoggingService):
+        super().__init__(task_repository, telegram_bot, logger)
         self.openai_client = openai_client
-        self.task_repository = task_repository
 
     @classmethod
     def get_action_name(cls):
@@ -59,10 +65,6 @@ class ClassifyIntentsAction:
     def classify_intents(self, run_id: int, message: str):
         model = 'gpt-4'
         action_version = 1
-
-        actual_status = StatusType.InProgress
-        task = AgentTask(run_id=run_id, status=actual_status.name, action=self.get_action_name())
-        self.task_repository.create_task_for_deal(task)
 
         prompt = f"""
 Please attach to each message in chat history tags, annotations, indexes, intents to better classification and search.
@@ -88,6 +90,7 @@ Example of intents/sub-intents/branches namings:
    - Delivery and Shipping -> Discussing Logistics -> Coordination of Transport and Delivery Options
    - Product Inquiry -> Availability Check -> Inquiry about Availability of Specific Parts (Stators and Rotors)
    - Product Inquiry -> Product Comparison
+   - Product Inquiry -> Product Details Request
    
 Your response should be a list of comma separated values, eg: `foo, bar, baz`
 
@@ -104,29 +107,43 @@ The output should be a markdown code snippet formatted in the following adr, inc
 ```     
 """
 
-        completion = self.openai_client.create_completion(
-            model,
-            [
-                {"role": "user", "content": prompt}
-            ],
-        )
+        actual_status = StatusType.InProgress
+        task = AgentTask(run_id=run_id, status=actual_status.name, action=self.get_action_name(), prompt=prompt)
+        self.task_repository.create_task_for_deal(task)
 
-        response_raw_json = select_json_block(completion.content)
-        parsed_intents = [Intent(**intent) for intent in response_raw_json]
-
-        return Action(
-            action=ActionMetadata(
-                action_version=action_version,
-                action_name=self.get_action_name(),
-                action_id=task.task_id,
-                action_time=round(completion.completion_time_ms, 0),
-                action_status=actual_status.value,
-            ),
-            data=parsed_intents,
-            metadata=Metadata(
-                completion_cost_usd=round(completion.usage_cost_usd, 3),
-                completion_time_sec=round(completion.completion_time_ms, 0),
-                llm_model=completion.model,
-                raw_output=completion.content
+        try:
+            completion = self.openai_client.create_completion(
+                model,
+                [
+                    {"role": "user", "content": prompt}
+                ],
             )
-        )
+
+            task.response = completion.content  # Store raw output
+            self.db_session.commit()
+
+            response_raw_json = select_json_block(completion.content)
+            parsed_intents = [Intent(**intent) for intent in response_raw_json]
+
+            actual_status = StatusType.Passed
+            task.status = actual_status.name
+            self.db_session.commit()
+
+            return Action(
+                action=ActionMetadata(
+                    action_version=action_version,
+                    action_name=self.get_action_name(),
+                    action_id=task.task_id,
+                    action_time=round(completion.completion_time_ms, 0),
+                    action_status=actual_status.value,
+                ),
+                data=parsed_intents,
+                metadata=Metadata(
+                    completion_cost_usd=round(completion.usage_cost_usd, 3),
+                    completion_time_sec=round(completion.completion_time_ms, 0),
+                    llm_model=completion.model,
+                    raw_output=completion.content
+                )
+            )
+        except Exception as e:
+            return self.handle_error(e, task, run_id)
