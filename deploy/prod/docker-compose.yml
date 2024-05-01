@@ -22,7 +22,7 @@ services:
             context: ../../bot  # Set the context to the 'bot' folder
             dockerfile: ./docker/Dockerfile
         ports:
-            - "45046:80"  # Map port 80 in the container to port 45045 on the host
+            - "45041:80"  # Map port 80 in the container to port 45045 on the host
         volumes:
             - "./bot/logs:/app/logs"  # Bind mount for logs
         environment:
