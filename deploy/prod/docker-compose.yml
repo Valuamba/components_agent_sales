@@ -26,7 +26,7 @@ services:
         volumes:
             - "./bot/logs:/app/logs"  # Bind mount for logs
             - type: bind
-              source: /root/messages
+              source: /var/www/messages
               target: /app/messages
         environment:
             - DIRECTORY_PATH=/app/messages
