@@ -112,7 +112,7 @@ async def echo_handler(message: Message) -> None:
 
 
             for email_msg in messaging_history['content']:
-                file_path = os.path.join(directory_path, f'{email_msg["messageId"]}.html')
+                file_path = os.path.join(directory_path, f'{email_msg["uid"]}.html')
                 with open(file_path, 'w') as file:
                     file.write(email_msg['body'])
 
@@ -131,7 +131,7 @@ async def echo_handler(message: Message) -> None:
                                              [
                                                  [InlineKeyboardButton(
                                                      text=email_msg['subject'] + (" ⭐️" if index == 0 else ""),
-                                                     url=f"{storage_domain}/deals/{email_msg['messageId']}"
+                                                     url=f"{storage_domain}/deals/{email_msg['uid']}"
                                                  )]
                                                  for index, email_msg in enumerate(messaging_history['content'])
                                              ]
