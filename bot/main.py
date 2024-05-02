@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, html, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 from dotenv import load_dotenv
 
@@ -88,16 +88,34 @@ def format_response(details):
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
+
+    storage_domain = os.getenv("STORAGE_DOMAIN")
     """
     This handler receives messages with `/start` command.
     If the message is numeric, it processes it as a request ID to fetch an email message body.
     """
+    # await message.answer("kek", reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+    #     [
+    #         InlineKeyboardButton(text="test", web_app=WebAppInfo(url="https://neon-dev.us/deals/397966"))
+    #     ]
+    # ]))
+
     if message.text.isdigit():  # Check if the message text is numeric
         request_id = int(message.text)  # Convert text to an integer as request ID
         logging.info(f"Received numeric request ID: {request_id}")
         try:
             # Fetch the email content associated with the request ID
             messaging_history = process_request(request_id)
+
+            directory_path = os.getenv('MESSAGES_DIRECTORY_PATH', os.path.join(os.getcwd(), 'messages'))
+            os.makedirs(directory_path, exist_ok=True)
+
+
+            for email_msg in messaging_history['content']:
+                file_path = os.path.join(directory_path, f'{email_msg["messageId"]}.html')
+                with open(file_path, 'w') as file:
+                    file.write(email_msg['body'])
+
             if 'content' in messaging_history and messaging_history['content']:
                 body = messaging_history['content'][0]['body']  # Extract body from the first item
                 logging.info("Email content successfully retrieved")
@@ -108,7 +126,16 @@ async def echo_handler(message: Message) -> None:
                         raise ValueError(intents_details['error']['message'])
 
                     formatted_response = format_response(intents_details)
-                    await message.answer(formatted_response, parse_mode='HTML')
+                    await message.answer(formatted_response, parse_mode='HTML',
+                                         reply_markup=InlineKeyboardMarkup(inline_keyboard=
+                                             [
+                                                 [InlineKeyboardButton(
+                                                     text=email_msg['subject'] + (" ⭐️" if index == 0 else ""),
+                                                     url=f"{storage_domain}/deals/{email_msg['messageId']}"
+                                                 )]
+                                                 for index, email_msg in enumerate(messaging_history['content'])
+                                             ]
+                    ))
                 except KeyError:
                     await message.answer(
                         "There was an error processing the intents. Please check the log for more details.")
