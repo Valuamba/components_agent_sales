@@ -32,6 +32,7 @@ from utils.sign import remove_sign_from_message
 
 from utils.html_messages_parser import get_messages_from_html_file
 import pandas as pd
+import os
 
 discount = APIRouter()
 
@@ -101,17 +102,20 @@ def make_decision_about_discount(request: DiscountHandlingDto,
         deal_id=deal.deal_id
     ))
 
+    project_root = os.environ.get('PYTHONPATH', os.getcwd())
+
     api_key = "YXBpZmFtYWdhcnU6RHpJVFd1Lk1COUV4LjNmdERsZ01YYlcvb0VFcW9NLw"
     session_id = "085qpt4eflu39a0dg7hjhr5mdu"
     client = FamagaClient(api_key, session_id)
 
     ghconv = GoogleSheet(
         spreadsheet='Famaga Knowledge Map',
-        credentials_path=r'/Users/valuamba/projs/components_agent_sales/notebooks/famaga/langchain-400510-06936d0d30b5.json')
+        credentials_path=os.path.join(project_root, 'langchain-400510-06936d0d30b5.json'))
 
     file_name = '410158_CAFidWpS2O2JN6fPtwQ0SiqdsSG+y9qDr0xEWeZj_c==rEhG62g@mail.gmail.com'
 
-    deal_id, message_id = parse_file_name(file_name)
+    deal_id = deal.deal_id
+    # deal_id, message_id = parse_file_name(file_name)
     messages = split_email_html_on_messages(request.messages_html)
     # messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
     #                                        f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
