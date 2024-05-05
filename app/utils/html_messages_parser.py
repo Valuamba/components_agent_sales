@@ -53,7 +53,7 @@ def get_element_messages(element) -> List[str]:
         elif child.name == 'table':
             blockquote = child.find('blockquote')
             if blockquote:
-                print('Table blockquote')
+                # print('Table blockquote')
                 _append_message(message)
                 message = ''
                 messages += get_element_messages(blockquote)
