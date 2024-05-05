@@ -49,7 +49,6 @@ def format_response(details):
         if 'error' in action and action['error']:
             action_details = f"Error: {action['error']['message']}"
         elif action_name == "classify_intents" and 'data' in action and action['data']:
-            # Format for classify_intents action
             intents = "\n".join([
                 f"- Intent: {intent['intent']}\n  Sub-intent: {intent['sub_intent']}\n  Branch: {intent['branch']}"
                 for intent in action['data']
@@ -70,6 +69,8 @@ def format_response(details):
                 f"  Address: {addresses_info.get('street', 'N/A')}, {addresses_info.get('city', 'N/A')}"
             )
             action_details = f"Details:\n<pre>{contacts_details}</pre>"
+        elif action['ui_message']:
+            action_details = action['ui_message']
         else:
             action_details = "No additional details available"
 
@@ -121,7 +122,7 @@ async def echo_handler(message: Message) -> None:
                 logging.info("Email content successfully retrieved")
 
                 try:
-                    intents_details = classify_intents(request_id, body)
+                    intents_details = discount_processing(request_id, body)
                     if 'error' in intents_details:
                         raise ValueError(intents_details['error']['message'])
 
@@ -177,6 +178,16 @@ def classify_intents(deal_id, body):
     return response.json()
 
 
+def discount_processing(deal_id, body):
+    url = f'{os.getenv('AGENT_URL')}/v2/agent/discount/html'
+    data = {
+        "deal_id": str(deal_id),
+        "messages_html": body
+    }
+    logging.info("Sending request for intent classification")
+    response = requests.post(url, json=data)
+    logging.info(f"Received response with status code: {response.status_code}")
+    return response.json()
 
 
 async def main() -> None:

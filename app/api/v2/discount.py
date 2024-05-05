@@ -112,8 +112,9 @@ def make_decision_about_discount(request: DiscountHandlingDto,
     file_name = '410158_CAFidWpS2O2JN6fPtwQ0SiqdsSG+y9qDr0xEWeZj_c==rEhG62g@mail.gmail.com'
 
     deal_id, message_id = parse_file_name(file_name)
-    messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
-                                           f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
+    messages = split_email_html_on_messages(request.messages_html)
+    # messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
+    #                                        f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
 
     prepared_messages = filter_messages(messages, 8, 3)
     prepared_conversation = prepare_conversation_to_prompt(prepared_messages)

@@ -31,6 +31,7 @@ class ActionMetadata(BaseModel):
 
 class Action(BaseModel):
     action: ActionMetadata
+    ui_message: str | None = None
     data: Any = None
     metadata: Metadata | None = None
     error: Any = None

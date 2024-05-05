@@ -25,6 +25,11 @@ class DocumentSelectionAction(BaseAction):
     def get_action_name(cls):
         return "document_selection"
 
+    def prepare_ui(self, output):
+        return f"""
+Document name: {output.document_name}
+"""
+
     def document_selection(self, run_id: int, discount_messages: str, purchase_history: str, current_offer: str) -> Action:
         prompt = f"""
 Select one of documents with instructions:

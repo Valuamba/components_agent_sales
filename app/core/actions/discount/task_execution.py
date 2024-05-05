@@ -45,6 +45,9 @@ Messages about discount at conversation:
 Deal offer:
 {current_offer}
 
+Please use new lines symbols \n or tabs \t to format text if needed. Put result into single string line, if paragraphs 
+are needed use \\n symbol.
+
 Put result of task into ```json``` format, like this:
 ```json
 {{

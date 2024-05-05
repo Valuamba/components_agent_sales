@@ -28,6 +28,11 @@ class QueryBuilderAction(BaseAction):
     def get_action_name(cls):
         return "query_builder"
 
+    def prepare_ui(self, output):
+        return f"""
+Query: {output.query}
+"""
+
     def build_query(self, run_id: int, document_name, discount_messages: str, purchase_history: str) -> Action:
         sheet_data = self.ghconv.get_sheet_data(document_name)
         data = sheet_data

@@ -62,12 +62,12 @@ class BaseAction(ABC):
             actual_status = StatusType.Passed
             self.update_task_status(task, actual_status)
 
-            return self.build_action(parsed_data, completion, action_name, action_version, task.task_id)
+            return self.build_action(parsed_data, self.prepare_ui(parsed_data), completion, action_name, action_version, task.task_id)
 
         except Exception as e:
             return self.handle_error(e, task, task.run_id)
 
-    def build_action(self, data: Any, completion: Any, action_name: str, action_version: int, task_id: int) -> Action:
+    def build_action(self, data: Any, ui_message, completion: Any, action_name: str, action_version: int, task_id: int) -> Action:
         return Action(
             action=ActionMetadata(
                 action_version=action_version,
@@ -76,6 +76,7 @@ class BaseAction(ABC):
                 action_time=round(completion.completion_time_ms, 0),
                 action_status=StatusType.Passed.value,
             ),
+            ui_message=ui_message,
             data=data,
             metadata=Metadata(
                 completion_cost_usd=round(completion.usage_cost_usd, 3),
@@ -88,6 +89,9 @@ class BaseAction(ABC):
     @classmethod
     def get_action_name(cls):
         return __class__.__name__
+
+    def prepare_ui(self, output):
+        return None
 
     def handle_error(self, exc, task, run_id):
         error_message = f"Failed to process action [{self.get_action_name()}]: {str(exc)}"

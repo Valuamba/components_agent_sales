@@ -27,6 +27,12 @@ class DiscountProcessingAction(BaseAction):
     def get_action_name(cls):
         return "discount_processing"
 
+    def prepare_ui(self, output):
+        return f"""
+Discount state: {output.state}
+Justification: {output.justification}
+"""
+
     def discount_processing(self, run_id: int, conversation: str) -> Action:
         prompt = f"""
 Analyze the messages and try to figure out discount state at conversation.
