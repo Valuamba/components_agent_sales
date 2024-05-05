@@ -120,8 +120,8 @@ def make_decision_about_discount(request: DiscountHandlingDto,
     # messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
     #                                        f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
 
-    prepared_messages = filter_messages(messages, 8, 3)
-    prepared_conversation = prepare_conversation_to_prompt(prepared_messages)
+    # prepared_messages = filter_messages(messages, 8, 3)
+    prepared_conversation = prepare_conversation_to_prompt(messages)
 
     discount_processing = DiscountProcessingAction(openai_client, task_repository, telegram_bot, logger)
     document_selection = DocumentSelectionAction(openai_client, task_repository, telegram_bot, logger)
@@ -133,7 +133,7 @@ def make_decision_about_discount(request: DiscountHandlingDto,
     discount_messages = ''
     for id in sorted(discount_result.data.messages_ids, reverse=True):
         discount_messages += f'Message: {id}\n'
-        discount_messages += f'```\n' + prepared_messages[-id] + '\n```\n\n'
+        discount_messages += f'```\n' + messages[-id] + '\n```\n\n'
 
     offer_info = client.list_offers_by_deal_id(deal_id)
     offer_id = offer_info['content'][0]['request']['id']
