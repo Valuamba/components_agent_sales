@@ -24,3 +24,5 @@ oauth2client
 tqdm
 langchain
 langchainhub
+redis
+aioredis
