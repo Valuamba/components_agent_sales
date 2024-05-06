@@ -1,17 +1,19 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 from fastapi.openapi.models import Response
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
 from core.actions.classify_contacts import ClassifyContactsAction
 from core.actions.classify_intents import ClassifyIntentsAction
 from core.bot import TelegramBotClient
 from core.dispatcher import Task, dispatch
 from core.models.action import Action
+from database import get_db
 from dependencies import get_run_repository, get_deal_repository, get_openai_client, get_task_repository, get_logger, \
     get_telegram_bot_client
-from models.deal import LLMRun, StatusType, Deal
+from models.deal import LLMRun, StatusType, Deal, TaskFeedback
 from repositories import DealRepository, TaskRepository
 from repositories.run_repository import RunRepository
 from services import OpenAIClient, LoggingService
@@ -35,6 +37,28 @@ class Run(BaseModel):
     run: RunDetails | None = None
     tasks: List[Task]
 
+
+class RunFeedbackCreate(BaseModel):
+    run_id: Optional[int] = None
+    feedback: Optional[str] = None
+    is_like: int = 0
+    issues: List[int] = []
+
+    class Config:
+        orm_mode = True
+
+@v2_group.post("/run/feedback/")
+def create_task_feedback(run_feedback: RunFeedbackCreate, db: Session = Depends(get_db)):
+    task_feedback_obj = TaskFeedback(
+        run_id=run_feedback.run_id,
+        feedback=run_feedback.feedback,
+        is_like=run_feedback.is_like
+    )
+    db.add(task_feedback_obj)
+    db.commit()
+    db.refresh(task_feedback_obj)
+
+    db.commit()
 
 @v2_group.post("/agent/handle_messages/html")
 def classify_intents(request: ClassifyMessageIntentsDto,

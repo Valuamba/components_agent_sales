@@ -59,6 +59,7 @@ class LLMRun(Base):
     deal = relationship("Deal", back_populates="runs")
 
     agent_tasks = relationship("AgentTask", back_populates="run")
+    run_feedbacks = relationship("TaskFeedback", back_populates="run")
 
 
 class AgentTask(Base):
@@ -91,11 +92,13 @@ class TaskFeedback(Base):
     uuid = Column(UUID(as_uuid=True), unique=True, nullable=False, default=uuid.uuid4)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-    task_id = Column(Integer, ForeignKey('agent_task.task_id'))
+    task_id = Column(Integer, ForeignKey('agent_task.task_id'), nullable=True)
+    run_id = Column(Integer, ForeignKey('runs.run_id'), nullable=True)
     feedback = Column(String, nullable=True)
     is_like = Column(Integer, nullable=False)
 
     agent_task = relationship("AgentTask", back_populates="task_feedbacks")
+    run = relationship("LLMRun", back_populates="run_feedbacks")
     issues = relationship("Issue", secondary="taskfeedback_issue_link")
 
 

@@ -6,25 +6,38 @@ import traceback
 from os import getenv
 
 import requests
+from aiogram.filters.callback_data import CallbackData
+from aiogram.fsm.context import FSMContext
 from aiogram import Bot, Dispatcher, html, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.filters import CommandStart, Command
+from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, CallbackQuery
 
 from dotenv import load_dotenv
 
 import logger
+from bot.utils import get_user_id
 
 load_dotenv()
 
 TOKEN = getenv("BOT_TOKEN")
 
 # All handlers should be attached to the Router (or Dispatcher)
-dp = Dispatcher()
+
+storage = MemoryStorage()  #
+dp = Dispatcher(storage=storage)
 
 logger.setup_logger()
 
+
+class Form(StatesGroup):
+    leave_feedback = State()
+
+class FeedbackCallback(CallbackData, prefix="feedback"):
+    run_id: int
 
 def format_response(details):
     """
@@ -83,13 +96,57 @@ def format_response(details):
     return response_message
 
 
+@dp.message(Command("help"))
+async def send_welcome(message: types.Message):
+    """
+    This handler will be called when user sends `/start` or `/help` command
+    """
+    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.",
+                        reply_markup=InlineKeyboardMarkup(inline_keyboard=
+                                                          [
+                                                              [InlineKeyboardButton(
+                                                                  text=' 💬 Leave Feedback',
+                                                                  callback_data=FeedbackCallback(
+                                                                      run_id=118).pack())]
 
+                                                          ]))
+
+
+@dp.message(Command("start"))
+async def send_start(message: types.Message, state: FSMContext):
+    await state.clear()
+    await state.update_data({})
+    await message.reply("Hi!\nPlease send me deal ID.")
+
+
+@dp.message(Form.leave_feedback)
+async def handle_leave_feedback_query(message: Message,  bot: Bot, state: FSMContext):
+    data = await state.get_data()
+    await message.answer(text=f"Feedback leaved {data['run_id']}")
+    send_feedback(data['run_id'], message.text, 0, [])
+    await state.clear()
+    await state.update_data({})
 # @dp.message(CommandStart())
 # async def command_start_handler(message: types.Message) -> None:
 
+
+def send_feedback(run_id, feedback, is_like, issues):
+    url = f'{os.getenv('AGENT_URL')}/v2/run/feedback/'
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'run_id': run_id,
+        'feedback': feedback,
+        'is_like': is_like,
+        'issues': issues
+    }
+    response = requests.post(url, headers=headers, json=data)
+    return response
+
 @dp.message()
 async def echo_handler(message: Message) -> None:
-
     storage_domain = os.getenv("STORAGE_DOMAIN")
     """
     This handler receives messages with `/start` command.
@@ -111,7 +168,6 @@ async def echo_handler(message: Message) -> None:
             directory_path = os.getenv('MESSAGES_DIRECTORY_PATH', os.path.join(os.getcwd(), 'messages'))
             os.makedirs(directory_path, exist_ok=True)
 
-
             for email_msg in messaging_history['content']:
                 file_path = os.path.join(directory_path, f'{email_msg["uid"]}.html')
                 with open(file_path, 'w') as file:
@@ -129,14 +185,20 @@ async def echo_handler(message: Message) -> None:
                     formatted_response = format_response(intents_details)
                     await message.answer(formatted_response, parse_mode='HTML',
                                          reply_markup=InlineKeyboardMarkup(inline_keyboard=
-                                             [
-                                                 [InlineKeyboardButton(
-                                                     text=email_msg['subject'] + (" ⭐️" if index == 0 else ""),
-                                                     url=f"{storage_domain}/deals/{email_msg['uid']}"
-                                                 )]
-                                                 for index, email_msg in enumerate(messaging_history['content'])
-                                             ]
-                    ))
+                                                        [
+                                                                               [InlineKeyboardButton(
+                                                                                   text=email_msg['subject'] + (
+                                                                                       " ⭐️" if index == 0 else ""),
+                                                                                   url=f"{storage_domain}/deals/{email_msg['uid']}"
+                                                                               )]
+                                                                               for index, email_msg in
+                                                                               enumerate(messaging_history['content'])
+                                                                           ] + [
+                                                                               [InlineKeyboardButton(
+                                                                                   text=' 💬 Leave Feedback',
+                                                                                   callback_data=FeedbackCallback(run_id=intents_details['run']['run_id']).pack())]
+                                                                           ]
+                                                                           ))
                 except KeyError:
                     await message.answer(
                         "There was an error processing the intents. Please check the log for more details.")
@@ -150,7 +212,24 @@ async def echo_handler(message: Message) -> None:
     else:
         await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
 
-    # Function to fetch the email message body using the request ID
+
+# @dp.message(Form.leave_feedback)
+# async def handle_leave_feedback_query(ctx: Message,  bot: Bot, state: State):
+#     ctx.
+
+
+@dp.callback_query(FeedbackCallback.filter())
+async def handle_feedback_message(ctx: CallbackQuery, callback_data: FeedbackCallback, bot: Bot, state: FSMContext):
+    await state.update_data(run_id=callback_data.run_id)
+    await state.set_state(Form.leave_feedback)
+    # logger.info(f'User: {get_user_id(ctx)}. Handler: feedback message.')
+    await bot.send_message(get_user_id(ctx), "Please leave feedback or input /start to cancel.")
+                           # reply_markup=InlineKeyboardMarkup(inline_keyboard=
+                           #      [
+                           #          [InlineKeyboardButton(text=' 💬 Submit', callback_data="feedback:")],
+                           #          [InlineKeyboardButton(text=' 💬 Cancel', callback_data="canceled")],
+                           #      ]))
+    # ctx.
 
 
 def process_request(request_id):
@@ -163,7 +242,6 @@ def process_request(request_id):
     response = requests.get(url, headers=headers)
     logging.info(f"Response status code: {response.status_code}")
     return response.json()
-
 
 
 def classify_intents(deal_id, body):
@@ -192,6 +270,15 @@ def discount_processing(deal_id, body):
 
 async def main() -> None:
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
+    # MemoryStorage
+
+    # storage = MongoStorage.from_url(
+    #     Config.MONGODB_URI,
+    #     f"{Config.MONGODB_DATABASE}",
+    # )
+    # dp = Dispatcher(storage=storage)
+
     await dp.start_polling(bot)
 
 
