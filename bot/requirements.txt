@@ -2,3 +2,6 @@ loguru
 aiogram
 requests
 python-dotenv
+httpx
+redis
+aioredis

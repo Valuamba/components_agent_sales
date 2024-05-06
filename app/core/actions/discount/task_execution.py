@@ -25,6 +25,11 @@ class TaskExecutionAction(BaseAction):
         super().__init__(task_repository, telegram_bot, logger, openai_client, redis)
         self.ghconv = ghconv
 
+    def prepare_ui(self, output):
+        return f"""
+Task: {output.output}
+"""
+
     @classmethod
     def get_action_name(cls):
         return "task_execution"
