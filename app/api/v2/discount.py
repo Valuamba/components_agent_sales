@@ -1,4 +1,7 @@
+import redis
+
 from api.v2.api import Run, RunDetails, v2_group
+from configs.config import AppSettings
 from core.actions.discount.discount_processing import DiscountProcessingAction
 from core.actions.discount.document_selection import DocumentSelection, DocumentSelectionAction
 from core.actions.discount.query_builder_action import QueryBuilderAction
@@ -33,6 +36,9 @@ from utils.sign import remove_sign_from_message
 from utils.html_messages_parser import get_messages_from_html_file
 import pandas as pd
 import os
+
+from configs.config import app_settings
+
 
 discount = APIRouter()
 
@@ -82,6 +88,7 @@ def filter_messages(messages_from_latest, skip: int, lenght: int):
 
 
 class DiscountHandlingDto(BaseModel):
+    run_uuid: str
     deal_id: str
     messages_html: str
 
@@ -95,14 +102,29 @@ def make_decision_about_discount(request: DiscountHandlingDto,
                                  run_repository: RunRepository = Depends(get_run_repository),
                                  deal_repository: DealRepository = Depends(get_deal_repository)
                                  ):
+    redis_client = redis.Redis(host=app_settings.redis_host, port=6379, db=1)
     deal = deal_repository.get_or_create_deal(request.deal_id, Deal(deal_id=request.deal_id))
 
     run = run_repository.create_run(run=LLMRun(
         status=StatusType.InProgress.value,
-        deal_id=deal.deal_id
+        deal_id=deal.deal_id,
+        uuid=request.run_uuid
     ))
 
-    project_root = os.environ.get('PYTHONPATH', os.getcwd())
+    if app_settings.environment == 'local':
+        project_root = '/Users/valuamba/projs/components_agent_sales/notebooks/famaga'
+        file_name = '410158_CAFidWpS2O2JN6fPtwQ0SiqdsSG+y9qDr0xEWeZj_c==rEhG62g@mail.gmail.com'
+        deal_id, message_id = parse_file_name(file_name)
+        messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
+                                               f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
+        prepared_messages = filter_messages(messages, 8, 3)
+        prepared_conversation = prepare_conversation_to_prompt(prepared_messages)
+    else:
+        project_root = os.environ.get('PYTHONPATH', os.getcwd())
+        deal_id = deal.deal_id
+
+        messages = split_email_html_on_messages(request.messages_html)
+        prepared_conversation = prepare_conversation_to_prompt(messages)
 
     api_key = "YXBpZmFtYWdhcnU6RHpJVFd1Lk1COUV4LjNmdERsZ01YYlcvb0VFcW9NLw"
     session_id = "085qpt4eflu39a0dg7hjhr5mdu"
@@ -112,23 +134,12 @@ def make_decision_about_discount(request: DiscountHandlingDto,
         spreadsheet='Famaga Knowledge Map',
         credentials_path=os.path.join(project_root, 'langchain-400510-06936d0d30b5.json'))
 
-    file_name = '410158_CAFidWpS2O2JN6fPtwQ0SiqdsSG+y9qDr0xEWeZj_c==rEhG62g@mail.gmail.com'
+    discount_processing = DiscountProcessingAction(openai_client, task_repository, telegram_bot, logger, redis_client)
+    document_selection = DocumentSelectionAction(openai_client, task_repository, telegram_bot, logger, redis_client)
+    task_execution = TaskExecutionAction(openai_client, task_repository, telegram_bot, logger, ghconv, redis_client)
+    query_builder = QueryBuilderAction(openai_client, task_repository, telegram_bot, logger, ghconv, redis_client)
 
-    deal_id = deal.deal_id
-    # deal_id, message_id = parse_file_name(file_name)
-    messages = split_email_html_on_messages(request.messages_html)
-    # messages = get_messages_from_html_file(f'/Users/valuamba/projs/components_agent_sales'
-    #                                        f'/notebooks/famaga/deals_html/discount_v3/{file_name}.html')
-
-    # prepared_messages = filter_messages(messages, 8, 3)
-    prepared_conversation = prepare_conversation_to_prompt(messages)
-
-    discount_processing = DiscountProcessingAction(openai_client, task_repository, telegram_bot, logger)
-    document_selection = DocumentSelectionAction(openai_client, task_repository, telegram_bot, logger)
-    task_execution = TaskExecutionAction(openai_client, task_repository, telegram_bot, logger, ghconv)
-    query_builder = QueryBuilderAction(openai_client, task_repository, telegram_bot, logger, ghconv)
-
-    discount_result = discount_processing.discount_processing(run.run_id, prepared_conversation)
+    discount_result = discount_processing.discount_processing(run, prepared_conversation)
 
     discount_messages = ''
     for id in sorted(discount_result.data.messages_ids, reverse=True):
@@ -143,12 +154,12 @@ def make_decision_about_discount(request: DiscountHandlingDto,
 
     current_offer = client.list_current_offer_details(offer_id)
 
-    document_selection_result = document_selection.document_selection(run.run_id,
+    document_selection_result = document_selection.document_selection(run,
                                           discount_messages=discount_messages,
                                           purchase_history=purchase_history,
                                           current_offer=current_offer)
 
-    query_result = query_builder.build_query(run.run_id,
+    query_result = query_builder.build_query(run,
                               document_name=document_selection_result.data.document_name,
                               discount_messages=discount_messages,
                               purchase_history=purchase_history
@@ -162,7 +173,7 @@ def make_decision_about_discount(request: DiscountHandlingDto,
     result = df.query(query_result.data.query)
     instruction = result['instruction'].iloc[0]
 
-    task_execution_result = task_execution.execute_task(run.run_id,
+    task_execution_result = task_execution.execute_task(run,
                                 instruction=instruction,
                                 discount_messages=discount_messages,
                                 purchase_history=purchase_history,

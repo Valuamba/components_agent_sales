@@ -31,7 +31,7 @@ if config.config_file_name is not None:
 
 def include_object(object, name, type_, reflected, compare_to):
     # List of table names to be ignored
-    excluded_tables = ('embeddings', 'details', 'detail_brands', 'details_info', 'feedback')
+    excluded_tables = ('embeddings', 'details', 'detail_brands', 'details_info', 'feedback', 'alembic_version')
 
     if type_ == "table" and name in excluded_tables:
         return False

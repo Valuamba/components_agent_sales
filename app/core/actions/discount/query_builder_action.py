@@ -20,8 +20,9 @@ class QueryBuilderAction(BaseAction):
                  task_repository: TaskRepository,
                  telegram_bot: TelegramBotClient,
                  logger: LoggingService,
-                 ghconv: GoogleSheet):
-        super().__init__(task_repository, telegram_bot, logger, openai_client)
+                 ghconv: GoogleSheet,
+                 redis):
+        super().__init__(task_repository, telegram_bot, logger, openai_client, redis)
         self.ghconv = ghconv
 
     @classmethod

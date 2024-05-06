@@ -7,6 +7,27 @@ STATUS_CHOICES = (
     ('Passed', 'Passed'),
 )
 
+
+class LLMRun(models.Model):
+    run_id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField()
+    created_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+
+    deal_id = models.CharField(max_length=200, blank=True, null=True)
+    # deal = models.ForeignKey("Deal", on_delete=models.CASCADE, related_name="runs")
+
+    # agent_tasks = models.ManyToManyField("AgentTask", related_name="runs")
+    # run_feedbacks = models.ManyToManyField("TaskFeedback", related_name="runs")
+
+    class Meta:
+        db_table = 'runs'
+
+    def __str__(self):
+        return f"LLMRun {self.uuid}"
+
+
 class AgentTask(models.Model):
     run_id = models.IntegerField(null=True)
     task_id = models.AutoField(primary_key=True)
@@ -47,6 +68,7 @@ class TaskFeedback(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     task = models.ForeignKey('AgentTask', related_name='task_feedbacks', on_delete=models.CASCADE)
+    run = models.ForeignKey('LLMRun', related_name='run_feedbacks', on_delete=models.CASCADE)
     feedback = models.TextField(null=True, blank=True)
     is_like = models.IntegerField(choices=((0, 'Dislike'), (1, 'Like')))
     # is_like = models.BooleanField(default=False)

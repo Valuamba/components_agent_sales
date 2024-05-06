@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AgentTask
+from .models import AgentTask, LLMRun
 from django.urls import reverse
 
 from .models import AgentTask, Issue, TaskFeedback, TaskFeedbackIssueLink, IssueGroup
@@ -89,6 +89,50 @@ class AgentTaskAdminForm(forms.ModelForm):
             'completion_cost': forms.TextInput(attrs={'class': 'completion-field'}),
         }
         fields = '__all__'
+
+
+class LLMRunAdmin(admin.ModelAdmin):
+    list_display = (
+        'run_id', 'uuid', 'status_boolean', 'display_like',  'deal_id', 'display_feedback', 'created_at', 'updated_at'
+    )
+    list_filter = ('status', 'created_at', 'updated_at')
+    search_fields = ('uuid', 'status', 'deal_id')
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
+    readonly_fields = ('deal_id',)
+    inlines = (TaskFeedbackInline,)
+
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 20, 'cols': 180})},
+    }
+
+    def get_queryset(self, request):
+        """Optimize queryset by prefetching related data."""
+        queryset = super().get_queryset(request)
+        feedback_prefetch = Prefetch('run_feedbacks', queryset=TaskFeedback.objects.prefetch_related('issues'))
+        queryset = queryset.prefetch_related(feedback_prefetch)
+        return queryset
+
+    def status_boolean(self, obj):
+        return obj.status == 'Passed'
+
+    def display_like(self, obj):
+        """Display if the feedback is like or not as a boolean icon."""
+        feedback = next(iter(obj.run_feedbacks.all()), None)
+        return feedback.is_like if feedback else None
+    display_like.short_description = 'Like'
+    display_like.boolean = True  # Tells Django admin to display as a boolean icon
+
+    def display_feedback(self, obj):
+        """Display the feedback text."""
+        feedback = next(iter(obj.run_feedbacks.all()), None)
+        return feedback.feedback if feedback and feedback.feedback else '-'
+
+    status_boolean.short_description = 'Status'
+    status_boolean.boolean = True  # Render as boolean icon
+
+
+admin.site.register(LLMRun, LLMRunAdmin)
 
 
 class AgentTaskAdmin(admin.ModelAdmin):

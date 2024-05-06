@@ -1,3 +1,4 @@
+import redis
 from pydantic import BaseModel, Field
 from typing import List, Optional, Type, Any
 from core.actions.base import BaseAction
@@ -20,8 +21,9 @@ class DiscountProcessingAction(BaseAction):
                  openai_client: OpenAIClient,
                  task_repository: TaskRepository,
                  telegram_bot: TelegramBotClient,
-                 logger: LoggingService):
-        super().__init__(task_repository, telegram_bot, logger, openai_client)
+                 logger: LoggingService,
+                 redis_client: redis.Redis):
+        super().__init__(task_repository, telegram_bot, logger, openai_client, redis_client)
 
     @classmethod
     def get_action_name(cls):

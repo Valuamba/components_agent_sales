@@ -11,6 +11,8 @@ class AppSettings(BaseSettings):
     serper_api_key: str = Field(env="SERPER_API_KEY")
     famaga_db_url: str = Field(env="FAMAGA_DB_URL")
     bot_token: str = Field(env="BOT_TOKEN")
+    redis_host: str = Field(env="REDIS_HOST")
+    environment: str = Field(env="ENVIRONMENT", default="local")
     notify_users_ids: List[int] = [6102292898]
 
     vector_collection_name: str = "details"

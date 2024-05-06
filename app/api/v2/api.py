@@ -3,7 +3,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from fastapi.openapi.models import Response
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.orm import Session, session
 
 from core.actions.classify_contacts import ClassifyContactsAction
 from core.actions.classify_intents import ClassifyIntentsAction
@@ -39,7 +40,7 @@ class Run(BaseModel):
 
 
 class RunFeedbackCreate(BaseModel):
-    run_id: Optional[int] = None
+    run_uuid: Optional[str] = None
     feedback: Optional[str] = None
     is_like: int = 0
     issues: List[int] = []
@@ -49,8 +50,12 @@ class RunFeedbackCreate(BaseModel):
 
 @v2_group.post("/run/feedback/")
 def create_task_feedback(run_feedback: RunFeedbackCreate, db: Session = Depends(get_db)):
+    stmt = select(LLMRun).where(LLMRun.uuid == run_feedback.run_uuid)
+    result = db.execute(stmt)
+    run = result.scalar_one_or_none()
+
     task_feedback_obj = TaskFeedback(
-        run_id=run_feedback.run_id,
+        run_id=run.run_id,
         feedback=run_feedback.feedback,
         is_like=run_feedback.is_like
     )

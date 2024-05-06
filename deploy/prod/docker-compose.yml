@@ -29,7 +29,9 @@ services:
               source: /var/www/messages
               target: /app/messages
         environment:
+            - REDIS_HOST=redis
             - DIRECTORY_PATH=/app/messages
+            - ENVIRONMENT=prod
             - AGENT_URL=http://fastapi-app:80  # Overriding AGENT_URL to point to the famaga-app service
         networks:
             - famaga-net
@@ -39,6 +41,9 @@ services:
         build:
             context: ../../
             dockerfile: ./docker/Dockerfile
+        environment:
+            - REDIS_HOST=redis
+            - ENVIRONMENT=prod
         ports:
         - "45045:80"
         networks:
@@ -53,6 +58,15 @@ services:
             - "9027:8000"
         networks:
             - famaga-net
+
+    redis:
+        image: redis:latest
+        restart: always
+        ports:
+            - "6379:6379"
+        networks:
+            - famaga-net
+
 
 networks:
   famaga-net:

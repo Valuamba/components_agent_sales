@@ -6,7 +6,7 @@ from core.models.action import Action, ActionMetadata, Metadata
 from core.bot import TelegramBotClient
 from repositories import TaskRepository
 from services import OpenAIClient, LoggingService
-from models.deal import AgentTask, StatusType
+from models.deal import AgentTask, StatusType, LLMRun
 from utility import select_json_block
 
 
@@ -20,15 +20,16 @@ class TaskExecutionAction(BaseAction):
                  task_repository: TaskRepository,
                  telegram_bot: TelegramBotClient,
                  logger: LoggingService,
-                 ghconv: GoogleSheet):
-        super().__init__(task_repository, telegram_bot, logger, openai_client)
+                 ghconv: GoogleSheet,
+                 redis):
+        super().__init__(task_repository, telegram_bot, logger, openai_client, redis)
         self.ghconv = ghconv
 
     @classmethod
     def get_action_name(cls):
         return "task_execution"
 
-    def execute_task(self, run_id: int, instruction: str, discount_messages: str, purchase_history: str, current_offer: str) -> Action:
+    def execute_task(self, run: LLMRun, instruction: str, discount_messages: str, purchase_history: str, current_offer: str) -> Action:
         prompt = f"""
 You are sales manager. Please do task by instruction:
 {instruction}
@@ -57,4 +58,4 @@ Put result of task into ```json``` format, like this:
 """
         model = "gpt-4"
         action_version = 1
-        return self.execute_action(run_id, prompt, model, TaskExecutionOutput, self.get_action_name(), action_version)
+        return self.execute_action(run, prompt, model, TaskExecutionOutput, self.get_action_name(), action_version)

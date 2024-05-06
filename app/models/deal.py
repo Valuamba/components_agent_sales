@@ -51,6 +51,7 @@ class LLMRun(Base):
     __tablename__ = 'runs'
 
     run_id = Column(Integer, primary_key=True, autoincrement=True)
+    uuid = Column(String, unique=True, nullable=True, default=uuid.uuid4)
     status = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())

@@ -1,15 +1,20 @@
+import datetime
 from abc import ABC
 from typing import Any, Optional, Type
 
+import redis
 from pydantic import BaseModel
 
 from core.bot import TelegramBotClient
 from core.models.action import ActionMetadata, Action, Metadata
-from models.deal import StatusType, AgentTask
+from models.deal import StatusType, AgentTask, LLMRun
 from repositories import TaskRepository
 from services import LoggingService
 from utility import select_json_block
 
+
+passed_emoji = "\U0001F7E2"  # Green circle
+failed_emoji = "\U0001F534"  # Red circle
 
 class BaseAction(ABC):
 
@@ -17,12 +22,14 @@ class BaseAction(ABC):
                  task_repository: TaskRepository,
                  telegram_bot: TelegramBotClient,
                  logger_service: LoggingService,
-                 openai_client):
+                 openai_client,
+                 redis_client: redis.Redis = None):
         self.logger = logger_service
         self.telegram_bot = telegram_bot
         self.task_repository = task_repository
         self.db_session = task_repository.session
         self.openai_client = openai_client
+        self.redis_client = redis_client
 
 
     def create_task(self, run_id: int, prompt: str, action_name: str) -> AgentTask:
@@ -39,8 +46,22 @@ class BaseAction(ABC):
         task.status = status.name
         self.task_repository.session.commit()
 
-    def execute_action(self, run_id: int, prompt: str, model: str, schema: Optional[Type[BaseModel]], action_name: str, action_version: int) -> Action:
-        task = self.create_task(run_id, prompt, action_name)
+    def _add_to_list_with_ttl(self, list_name: str, value: str, ttl_hours: int = 24):
+        try:
+            list_exists = self.redis_client.exists(list_name)
+            # Add the value to the list
+            self.redis_client.rpush(list_name, value)
+            if not list_exists:
+                # Set the TTL if the list is created
+                self.redis_client.expire(list_name, datetime.timedelta(hours=ttl_hours))
+                self.logger.info(f"Created list '{list_name}' and added value '{value}' with TTL set to {ttl_hours} hours")
+            else:
+                self.logger.info(f"Appended value '{value}' to existing list '{list_name}'")
+        except Exception as e:
+            self.logger.error(f"Failed to add to list '{list_name}': {e}")
+
+    def execute_action(self, run: LLMRun, prompt: str, model: str, schema: Optional[Type[BaseModel]], action_name: str, action_version: int) -> Action:
+        task = self.create_task(run.run_id, prompt, action_name)
         try:
             completion = self.openai_client.create_completion(
                 model,
@@ -62,12 +83,23 @@ class BaseAction(ABC):
             actual_status = StatusType.Passed
             self.update_task_status(task, actual_status)
 
-            return self.build_action(parsed_data, self.prepare_ui(parsed_data), completion, action_name, action_version, task.task_id)
+            return self.build_action(run,
+                                     parsed_data,
+                                     self.prepare_ui(parsed_data),
+                                     completion,
+                                     action_name,
+                                     action_version,
+                                     task.task_id)
 
         except Exception as e:
-            return self.handle_error(e, task, task.run_id)
+            return self.handle_error(run, e, task, task.run_id)
 
-    def build_action(self, data: Any, ui_message, completion: Any, action_name: str, action_version: int, task_id: int) -> Action:
+    def build_action(self, run: LLMRun, data: Any, ui_message, completion: Any, action_name: str, action_version: int, task_id: int) -> Action:
+        ui_message = f"<b>Action {task_id} - {self.get_action_name()}</b> {passed_emoji} Passed\n{ui_message}"
+
+        self._add_to_list_with_ttl(f'{run.uuid}_actions', ui_message)
+        self.redis_client.publish("workflow_updates", run.uuid)
+
         return Action(
             action=ActionMetadata(
                 action_version=action_version,
@@ -93,8 +125,14 @@ class BaseAction(ABC):
     def prepare_ui(self, output):
         return None
 
-    def handle_error(self, exc, task, run_id):
+    def handle_error(self, run: LLMRun, exc, task, run_id):
+        ui_message = f"<b>Action {task.task_id} - {self.get_action_name()}</b> {failed_emoji} Failed\n{str(exc)}"
+
         error_message = f"Failed to process action [{self.get_action_name()}]: {str(exc)}"
+
+        self._add_to_list_with_ttl(f'{run.uuid}_actions', ui_message)
+        self.redis_client.publish("workflow_updates", run.uuid)
+
         self.logger.error(error_message)
         self.telegram_bot.notify_admins(error_message, **{
             'action': self.get_action_name(),
