@@ -19,7 +19,7 @@ from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, W
 from dotenv import load_dotenv
 
 import logger
-from bot.utils import get_user_id
+from utils import get_user_id
 
 load_dotenv()
 
