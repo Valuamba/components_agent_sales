@@ -3,9 +3,9 @@ from pydantic import BaseModel
 
 
 class DetailRequest(BaseModel):
-    amount: int | None
-    brand_name: str | None
-    part_number: str | None
+    amount: Optional[int] = None
+    brand_name: Optional[str] = None
+    part_number: Optional[str] = None
 
 
 class ClientInfo(BaseModel):

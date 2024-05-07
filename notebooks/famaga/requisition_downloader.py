@@ -20,7 +20,7 @@ logging.basicConfig(
     ]
 )
 
-def fetch_requisitions(limit, offset):
+def fetch_requisitions(limit, page):
     url = 'http://api.famaga.org/requisition'
     headers = {
         'Authorization': 'Bearer YXBpZmFtYWdhcnU6RHpJVFd1Lk1COUV4LjNmdERsZ01YYlcvb0VFcW9NLw',
@@ -28,7 +28,7 @@ def fetch_requisitions(limit, offset):
     }
     params = {
         'limit': limit,
-        'offset': offset
+        'page': page
     }
     response = requests.get(url, headers=headers, params=params)
     return response.json()
@@ -122,12 +122,12 @@ def handle_result(result, csv_writer, csv_lock):
 
 
 if __name__ == "__main__":
-    limit = 500
-    offset = 0
-    results_path = 'concurrent_requisition_results.csv'
+    limit = 1000
+    page = 1
+    results_path = 'concurrent_requisition_results_v2.csv'
     csv_lock = threading.Lock()
     processed_ids = set()
-    max_workers = 20
+    max_workers = 40
 
     # Set up initial CSV file with headers
     with open(results_path, 'w', newline='') as csvfile:
@@ -138,10 +138,10 @@ if __name__ == "__main__":
         executor = ThreadPoolExecutor(max_workers=max_workers)
 
         while True:
-            requisitions = fetch_requisitions(limit, offset)
+            requisitions = fetch_requisitions(limit, page)
             if not requisitions['content']:
                 break
-            logging.info(f'Processing requisitions from offset {offset}')
+            logging.info(f'Processing requisitions from page {page}')
 
             content = requisitions['content']
             chunk_size = (len(content) // max_workers) + 1
@@ -159,6 +159,6 @@ if __name__ == "__main__":
             for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures)):
                 future.result()  # wait for all threads to complete
 
-            offset += limit
+            page += 1
 
     logging.info(f"Results have been written incrementally to '{results_path}'.")
