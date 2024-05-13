@@ -123,17 +123,17 @@ def handle_result(result, csv_writer, csv_lock):
 
 if __name__ == "__main__":
     limit = 1000
-    page = 1
+    page = 80
     results_path = 'concurrent_requisition_results_v2.csv'
     csv_lock = threading.Lock()
     processed_ids = set()
-    max_workers = 40
+    max_workers = 50
 
     # Set up initial CSV file with headers
-    with open(results_path, 'w', newline='') as csvfile:
+    with open(results_path, 'a', newline='') as csvfile:
         fieldnames = ['request_id', 'total', 'error', 'subject', 'body', 'plain_body', 'mailbox', 'mail', 'host', 'full', 'date', 'uid', 'messageId', 'is_attachments_exists']
         csv_writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        csv_writer.writeheader()
+        # csv_writer.writeheader()
 
         executor = ThreadPoolExecutor(max_workers=max_workers)
 

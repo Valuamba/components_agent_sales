@@ -17,7 +17,10 @@ The output should be a markdown code snippet formatted in the following adr, inc
         "country": string // This is the country of detail,
         "domain": string // customer company domain
         "email": string // customer email,
-        "office_country": string // country of customer office
+        "office_country": string // country of customer office,
+        "mobile_phone": string // customer phone number (only one number!)
+        "office_phone": string // the customer office phone number (only one number!)
+        "fax": string // the fax phone number (only one number!)
     }
 }
 ```
@@ -45,7 +48,10 @@ Answer could contain comma separated list of json objects, like in following exa
         "country": "Romania",
         "domain": "epno.com.mx",
         "email": "roberto.sosa@epno.com.mx",
-        "office_country": "Mexico"
+        "office_country": "Mexico",
+        "phone": "+5215512345678",
+        "fax": "+525534567890",
+        "office_phone": "+525523456789"
     }
 }
 ```
@@ -62,7 +68,8 @@ From: {from_client}
 <<<>>>
 
 If you cannot recognize specified parameters please put `null` value.
-
+If there is multiple phones please write random phone number into field value, do not put array separated by comma. 
+Also format phone number to default form, please allow only numbers at output string.
 ---
 {response_format}
 

@@ -13,6 +13,9 @@ class ClientInfo(BaseModel):
     domain: Optional[str] = None
     email: Optional[str] = None
     office_country: Optional[str] = None
+    mobile_phone: Optional[str] = None
+    office_phone: Optional[str] = None
+    fax: Optional[str] = None
 
 
 class ClassifyAgentResponse(BaseModel):
