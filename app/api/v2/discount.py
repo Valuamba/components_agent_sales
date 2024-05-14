@@ -143,7 +143,7 @@ def make_decision_about_discount_raw(request: DiscountHandlingRawDto,
 
     discount_messages = ''
     for idx, msg in enumerate(classify_result.data):
-        discount_messages += f'Message: {len(classify_result.data) - idx}\nSender: {msg['sender']}\n'
+        discount_messages += f"Message: {len(classify_result.data) - idx}\nSender: {msg['sender']}\n"
         discount_messages += f'```\n' + msg['message'] + '\n```\n\n'
 
     offer_info = client.list_offers_by_deal_id(deal_id)
