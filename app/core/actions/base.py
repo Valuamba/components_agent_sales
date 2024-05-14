@@ -9,7 +9,7 @@ from core.bot import TelegramBotClient
 from core.models.action import ActionMetadata, Action, Metadata
 from models.deal import StatusType, AgentTask, LLMRun
 from repositories import TaskRepository
-from services import LoggingService
+from services import LoggingService, OpenAIClient
 from utility import select_json_block
 
 
@@ -22,7 +22,7 @@ class BaseAction(ABC):
                  task_repository: TaskRepository,
                  telegram_bot: TelegramBotClient,
                  logger_service: LoggingService,
-                 openai_client,
+                 openai_client: OpenAIClient,
                  redis_client: redis.Redis = None):
         self.logger = logger_service
         self.telegram_bot = telegram_bot
@@ -60,7 +60,14 @@ class BaseAction(ABC):
         except Exception as e:
             self.logger.error(f"Failed to add to list '{list_name}': {e}")
 
-    def execute_action(self, run: LLMRun, prompt: str, model: str, schema: Optional[Type[BaseModel]], action_name: str, action_version: int) -> Action:
+    def execute_action(self,
+                       run: LLMRun,
+                       prompt: str,
+                       model: str,
+                       schema: Optional[Type[BaseModel]],
+                       action_name: str,
+                       action_version: int,
+                       temperature: float = 0) -> Action:
         task = self.create_task(run.run_id, prompt, action_name)
         try:
             completion = self.openai_client.create_completion(
@@ -68,6 +75,7 @@ class BaseAction(ABC):
                 [
                     {"role": "user", "content": prompt}
                 ],
+                temperature=temperature
             )
 
             task.response = completion.content  # Store raw output

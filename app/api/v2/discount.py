@@ -1,4 +1,5 @@
 import redis
+from bs4 import BeautifulSoup
 
 from api.v2.api import Run, RunDetails, v2_group
 from configs.config import AppSettings
@@ -237,17 +238,30 @@ def make_decision_about_discount(request: DiscountHandlingDto,
         spreadsheet='Famaga Knowledge Map',
         credentials_path=os.path.join(project_root, 'langchain-400510-06936d0d30b5.json'))
 
-    discount_processing = DiscountProcessingAction(openai_client, task_repository, telegram_bot, logger, redis_client)
+    # discount_processing = DiscountProcessingAction(openai_client, task_repository, telegram_bot, logger, redis_client)
     document_selection = DocumentSelectionAction(openai_client, task_repository, telegram_bot, logger, redis_client)
     task_execution = TaskExecutionAction(openai_client, task_repository, telegram_bot, logger, ghconv, redis_client)
     query_builder = QueryBuilderAction(openai_client, task_repository, telegram_bot, logger, ghconv, redis_client)
 
-    discount_result = discount_processing.discount_processing(run, prepared_conversation)
+    # discount_result = discount_processing.discount_processing(run, prepared_conversation)
+
+    # discount_messages = ''
+    # for id in sorted(discount_result.data.messages_ids, reverse=True):
+    #     discount_messages += f'Message: {id}\n'
+    #     discount_messages += f'```\n' + messages[-id] + '\n```\n\n'
+
+    soup = BeautifulSoup(request.messages_html, "html.parser")
+    root_element = soup.find('body') if soup.find('body') else soup
+    raw_text = root_element.text
+
+    classify_discount = ClassifyDiscountMessages(openai_client, task_repository, telegram_bot, logger, redis_client)
+
+    classify_result = classify_discount.classify_discount_messages(run, raw_text)
 
     discount_messages = ''
-    for id in sorted(discount_result.data.messages_ids, reverse=True):
-        discount_messages += f'Message: {id}\n'
-        discount_messages += f'```\n' + messages[-id] + '\n```\n\n'
+    for idx, msg in enumerate(classify_result.data):
+        discount_messages += f"Message: {len(classify_result.data) - idx}\nSender: {msg['sender']}\n"
+        discount_messages += f'```\n' + msg['message'] + '\n```\n\n'
 
     offer_info = client.list_offers_by_deal_id(deal_id)
     offer_id = offer_info['content'][0]['request']['id']
@@ -285,7 +299,7 @@ def make_decision_about_discount(request: DiscountHandlingDto,
 
     run_data = Run(
         actions=[
-            discount_result,
+            classify_result,
             document_selection_result,
             query_result,
             task_execution_result
