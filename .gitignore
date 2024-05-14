@@ -10,7 +10,8 @@ notebooks/famaga/*.db
 **/cache/**
 
 **/staticfiles/**
-
+**/discount_v4/**
+**/discount_v3/**
 **/*.sqlite3
 
 **/autogen_config.json

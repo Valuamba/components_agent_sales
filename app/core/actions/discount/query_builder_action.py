@@ -12,6 +12,7 @@ from utility import select_json_block
 
 class QueryBuilderOutput(BaseModel):
     query: str
+    details: str
 
 
 class QueryBuilderAction(BaseAction):
@@ -31,7 +32,9 @@ class QueryBuilderAction(BaseAction):
 
     def prepare_ui(self, output):
         return f"""
-Query: {output.query}
+<b>Query:</b> {output.query}
+
+<b>Notes:</b>\n{output.details}
 """
 
     def build_query(self, run_id: int, document_name, discount_messages: str, purchase_history: str) -> Action:
@@ -49,7 +52,7 @@ Query: {output.query}
         possible_values_section = "#### 2. **Possible Values**:\n"
         possible_values_section += "   - **TRUE**: The condition is met.\n"
         possible_values_section += "   - **FALSE**: The condition is not met.\n"
-        possible_values_section += "   - **ANY**: The condition is not relevant or any value is acceptable.\n"
+        possible_values_section += "   - **NONE**: The condition cannot be validated.\n"
 
         # Combine sections to form the final instruction
         final_instruction = f"{field_names_section}\n{possible_values_section}"
@@ -70,12 +73,27 @@ Messages about discount at conversation:
    - Use only field names that listed at instruction with possible values
    - Use the `query()` method in Pandas to filter the table based on the conditions.
    - Format each condition as a string using the field names and their desired values.
+   - put at details field your decision process notes. Please use pretty formatting and use new lines '\\n' chars to make it more human readable.
+   - if field value not specified use FALSE value
+   - if field value cannot be specified due to some reasons please put 'NONE' value and do not put to the query, 
+     for example if client have no purchase history we cannot compare previous margin and current.
+
+
+USE ONLY \\n symbols for make new lines!
 
 #### 5. **Example Queries**:
 
 ```json
 {{
-    "query": "`Is margin still above 10%?` == 'TRUE' and `Is the same margin on product as previous?` == 'TRUE'"
+    "query": "`Is margin still above 10%?` == 'TRUE' and `Is the same margin on product as previous?` == 'NONE'",
+    "details": "Note 1. Client didn't bought product before and field `Is the same margin on product as previous?`\\ncannot be identified and was ignored at final query"
+}}
+```
+
+```json
+{{
+    "query": "`Is margin still above 10%?` == 'TRUE' and `Is the same margin on product as previous?` == 'FALSE'",
+    "details": "Note 1. Client have been bough part 'Endress+Hausee' 70000123 earlier.\\n\\nNote 2. Margin on previous product not the same as it is."
 }}
 ```
 """

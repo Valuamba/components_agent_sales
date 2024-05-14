@@ -49,6 +49,8 @@ Messages about discount at conversation:
 Deal offer:
 {current_offer}
 
+Please present full path to document name, like: "Discount -> Some doc"
+
 Put the response into ```json``` format like this:
 ```json
 {{

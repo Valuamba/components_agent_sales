@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import sys
 import traceback
 import uuid
@@ -46,8 +47,10 @@ logger.setup_logger()
 class Form(StatesGroup):
     leave_feedback = State()
 
+
 class FeedbackCallback(CallbackData, prefix="feedback"):
     run_uuid: str
+
 
 def format_response(details):
     """
@@ -234,21 +237,89 @@ def send_feedback(run_uuid, feedback, is_like, issues):
     response = requests.post(url, headers=headers, json=data)
     return response
 
+# def execute_run()
+
 @dp.message()
 async def echo_handler(message: Message, bot: Bot) -> None:
+
+
+    directory_path = os.getenv('MESSAGES_DIRECTORY_PATH', os.path.join(os.getcwd(), 'messages'))
+    os.makedirs(directory_path, exist_ok=True)
+
     redis_client = redis.from_url(REDIS_URI, encoding="utf-8")
     storage_domain = os.getenv("STORAGE_DOMAIN")
     """
     This handler receives messages with `/start` command.
     If the message is numeric, it processes it as a request ID to fetch an email message body.
     """
+
+    if message.document:
+        document = message.document
+        file_id = document.file_id
+        file_name = document.file_name
+
+        # Extract the base name without extension
+        def extract_part(filename):
+            if '_' in filename:
+                # Extracts the part before the first '_' if present
+                return re.match(r"(\d+)_", filename).group(1)
+            else:
+                # Extracts the name without extension
+                return re.match(r"(\d+)\.html", filename).group(1)
+
+        base_name = extract_part(file_name)
+        # Get the file from Telegram servers
+        file = await bot.get_file(file_id)
+
+        save_path = os.path.join(directory_path, f'{base_name}.html')
+
+        await bot.download_file(file.file_path, save_path)
+        # file.download(save_path)
+
+        # Check if the file is HTML
+        if document.mime_type == "text/html" or file_name.endswith(".html"):
+            with open(save_path, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+        else:
+            file_content = "This file is not an HTML file."
+
+        body = file_content
+        logging.info("Email content successfully retrieved")
+
+        run_uuid = uuid.uuid4()
+
+        data = {"subject": base_name, "url": f"{storage_domain}/deals/{base_name}"}
+        await redis_client.rpush(f'{run_uuid}_subjects_urls', json.dumps(data))
+
+        await redis_client.expire(f'{run_uuid}_subjects_urls', 3000)
+
+        try:
+            msg = await message.reply("Start processing...", reply_markup=InlineKeyboardMarkup(inline_keyboard=
+            [
+                [
+                    InlineKeyboardButton(text=file_name, url=f"{storage_domain}/deals/{base_name}")
+                ]
+            ]
+            ))
+
+            await redis_client.set(str(run_uuid), f"{get_user_id(message)}:{msg.message_id}")
+
+            intents_details = await discount_processing(run_uuid, base_name, body)
+            if 'error' in intents_details:
+                raise ValueError(intents_details['error']['message'])
+        except KeyError:
+            await message.answer(
+                "There was an error processing the intents. Please check the log for more details.")
+            logging.error("Key error in handling the response from classify_intents.")
+
+
     # await message.answer("kek", reply_markup=InlineKeyboardMarkup(inline_keyboard=[
     #     [
     #         InlineKeyboardButton(text="test", web_app=WebAppInfo(url="https://neon-dev.us/deals/397966"))
     #     ]
     # ]))
 
-    if message.text.isdigit():  # Check if the message text is numeric
+    if message.text and message.text.isdigit():  # Check if the message text is numeric
         request_id = int(message.text)  # Convert text to an integer as request ID
         logging.info(f"Received numeric request ID: {request_id}")
         try:

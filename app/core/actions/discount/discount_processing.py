@@ -6,7 +6,7 @@ from core.models.action import Action, ActionMetadata, Metadata
 from core.bot import TelegramBotClient
 from repositories import TaskRepository
 from services import OpenAIClient, LoggingService
-from models.deal import AgentTask, StatusType
+from models.deal import AgentTask, StatusType, LLMRun
 from utility import select_json_block
 
 
@@ -35,7 +35,7 @@ Discount state: {output.state}
 Justification: {output.justification}
 """
 
-    def discount_processing(self, run_id: int, conversation: str) -> Action:
+    def discount_processing(self, run: LLMRun, conversation: str) -> Action:
         prompt = f"""
 Analyze the messages and try to figure out discount state at conversation.
 
@@ -58,4 +58,4 @@ Put the response into ```json``` format like this:
 """
         model = "gpt-4"
         action_version = 1
-        return self.execute_action(run_id, prompt, model, DiscountState, self.get_action_name(), action_version)
+        return self.execute_action(run, prompt, model, DiscountState, self.get_action_name(), action_version)

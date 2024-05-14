@@ -1,6 +1,9 @@
 from typing import List
 
 from bs4 import BeautifulSoup
+import re
+import json
+
 
 specific_style = "border:none;border-top:solid"
 
@@ -12,6 +15,16 @@ def check_presence_of_keys(element, keys):
     text = element.get_text()  # Extract all text from the HTML
     missing_keys = [key for key in keys if key not in text]
     return missing_keys
+
+
+def select_json_block(text: str):
+    match = re.search(r"```json\n([\s\S]*?)\n```", text)
+    if match:
+        json_data = match.group(1)
+    else:
+        raise ValueError("No valid JSON data found in the string.")
+
+    return json.loads(json_data)
 
 
 def get_element_messages(element) -> List[str]:
