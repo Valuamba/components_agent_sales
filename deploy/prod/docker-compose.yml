@@ -36,6 +36,14 @@ services:
         networks:
             - famaga-net
 
+    email_spam:
+        container_name: email-spam
+        build:
+            context: ../../imap  # Set the context to the 'bot' folder
+            dockerfile: ./docker/Dockerfile
+        networks:
+            - famaga-net
+
     fastapi-app:
         container_name: famaga-app
         build:

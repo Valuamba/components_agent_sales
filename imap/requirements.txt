@@ -1,0 +1,7 @@
+beautifulsoup4
+langchain_community  # If available as a package, otherwise specify the exact package name
+langchain_openai  # If available as a package, otherwise specify the exact package name
+python-dotenv
+sqlalchemy
+psycopg2-binary
+python-dateutil
