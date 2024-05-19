@@ -171,11 +171,9 @@ def process_message(mailbox, message_id, llm, prompt, processed_ids):
 
         gpt_spam_flag = response.content.strip().lower() == 'true'
 
-        if spam_flag and not gpt_spam_flag:
+        if spam_flag and not gpt_spam_flag and mailbox != 'INBOX':
             mail.select(mailbox)
             mail.copy(message_id_str, 'INBOX')
-            mail.store(message_id_str, '+FLAGS', '\\Deleted')
-            mail.expunge()
             logging.info(f"Message {message_id_str} moved to INBOX.")
 
         created_at = datetime.now()

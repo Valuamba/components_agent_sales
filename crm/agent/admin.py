@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AgentTask, LLMRun
+from .models import AgentTask, LLMRun, Email
 from django.urls import reverse
 
 from .models import AgentTask, Issue, TaskFeedback, TaskFeedbackIssueLink, IssueGroup
@@ -64,6 +64,55 @@ class IssuesFilter(admin.SimpleListFilter):
             # Filter queryset to include only those with the selected issue(s)
             return queryset.filter(task_feedbacks__issues__issue_id__in=[self.value()])
 
+class IsErrorFilter(admin.SimpleListFilter):
+    title = 'Is Error'
+    parameter_name = 'is_error'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yes', 'Yes'),
+            ('no', 'No'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(is_error=True)
+        if self.value() == 'no':
+            return queryset.filter(is_error=False)
+        return queryset
+
+# Custom filter for "spam flag true but GPT flag false"
+class SpamFlagGPTMismatchFilter(admin.SimpleListFilter):
+    title = 'Spam Flag True but GPT Flag False'
+    parameter_name = 'spam_gpt_mismatch'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('mismatch', 'Mismatch'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'mismatch':
+            return queryset.filter(spam_flag=True, gpt_spam_flag=False)
+        return queryset
+
+@admin.register(Email)
+class EmailAdmin(admin.ModelAdmin):
+    list_display = ('id', 'imap_server', 'imap_user', 'subject', 'from_address', 'to_address', 'date', 'spam_flag', 'spam_score', 'gpt_spam_flag', 'created_at', 'is_error')
+    search_fields = ('subject', 'from_address', 'to_address', 'message_id')
+    list_filter = ('spam_flag', 'gpt_spam_flag', 'is_error', 'imap_server', 'imap_user', IsErrorFilter, SpamFlagGPTMismatchFilter)
+    ordering = ('-created_at',)
+    readonly_fields = ('created_at',)
+
+    fieldsets = (
+        (None, {
+            'fields': ('imap_server', 'imap_user', 'subject', 'body', 'from_address', 'to_address', 'date', 'message_id', 'spam_flag', 'spam_score', 'gpt_spam_flag', 'cost', 'folder', 'body_hash', 'is_error', 'error_msg', 'created_at')
+        }),
+    )
+
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 20, 'cols': 180})},
+    }
 
 class TaskFeedbackInline(admin.StackedInline):
     model = TaskFeedback

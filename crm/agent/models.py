@@ -8,6 +8,37 @@ STATUS_CHOICES = (
 )
 
 
+class Email(models.Model):
+    imap_server = models.CharField(max_length=255)
+    imap_user = models.CharField(max_length=255)
+    subject = models.TextField(null=True, blank=True)
+    body = models.TextField(null=True, blank=True)
+    from_address = models.CharField(max_length=255, null=True, blank=True)
+    to_address = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateTimeField(null=True, blank=True)
+    message_id = models.CharField(max_length=255, unique=True)
+    spam_flag = models.BooleanField(null=True, blank=True)
+    spam_score = models.FloatField(null=True, blank=True)
+    gpt_spam_flag = models.BooleanField(null=True, blank=True)
+    cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    folder = models.CharField(max_length=255, null=True, blank=True)
+    body_hash = models.CharField(max_length=255, null=True, blank=True)
+    is_error = models.BooleanField(default=False)
+    error_msg = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'emails'
+        constraints = [
+            models.UniqueConstraint(fields=['message_id'], name='emails_message_id_key')
+        ]
+        verbose_name = "Email"
+        verbose_name_plural = "Emails"
+
+    def __str__(self):
+        return f"{self.subject} - {self.from_address}"
+
+
 class LLMRun(models.Model):
     run_id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
