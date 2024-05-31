@@ -79,6 +79,7 @@ class ClassifyEmailAgent:
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": prompt},
                 ],
+                temperature=0
             )
 
             task.response = completion.content  # Store raw output
