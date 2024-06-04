@@ -102,6 +102,42 @@ class BaseAction(ABC):
         except Exception as e:
             return self.handle_error(run, e, task, task.run_id)
 
+    def execute_action_raw(self,
+                       run: LLMRun,
+                       prompt: str,
+                       model: str,
+                       action_name: str,
+                       action_version: int,
+                       temperature: float = 0) -> Action:
+        task = self.create_task(run.run_id, prompt, action_name)
+        try:
+            completion = self.openai_client.create_completion(
+                model,
+                [
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=temperature
+            )
+
+            task.response = completion.content  # Store raw output
+            self.task_repository.session.commit()
+
+            parsed_data = completion.content
+
+            actual_status = StatusType.Passed
+            self.update_task_status(task, actual_status)
+
+            return self.build_action(run,
+                                     parsed_data,
+                                     self.prepare_ui(parsed_data),
+                                     completion,
+                                     action_name,
+                                     action_version,
+                                     task.task_id)
+
+        except Exception as e:
+            return self.handle_error(run, e, task, task.run_id)
+
     def build_action(self, run: LLMRun, data: Any, ui_message, completion: Any, action_name: str, action_version: int, task_id: int) -> Action:
         ui_message = f"<b>Action {task_id} - {self.get_action_name()}</b> {passed_emoji} Passed\n{ui_message}"
 

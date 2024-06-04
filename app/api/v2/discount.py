@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 from api.v2.api import Run, RunDetails, v2_group
 from configs.config import AppSettings
 from core.actions.discount.classify_discount_messages import ClassifyDiscountMessages
+from core.actions.discount.discount_decision import DiscountDecision
+from core.actions.discount.discount_decision_cmd import APIClientV2, YES_DECISIONS, get_products_history, \
+    get_calculations, get_discounted_deals, get_requests_dict, prettify_deal
+from core.actions.discount.discount_metadata import DiscountMetadata, prettify_customer_data
 from core.actions.discount.discount_processing import DiscountProcessingAction
 from core.actions.discount.document_selection import DocumentSelection, DocumentSelectionAction
 from core.actions.discount.query_builder_action import QueryBuilderAction
@@ -43,6 +47,8 @@ from configs.config import app_settings
 
 
 discount = APIRouter()
+discount_v3 = APIRouter()
+
 
 
 def get_conversation_html(file_name: str):
@@ -307,6 +313,106 @@ def make_decision_about_discount(request: DiscountHandlingDto,
         run=RunDetails(run_id=run.run_id),
         tasks=[
             Task(summary=task_execution_result.data.output)
+        ]
+    )
+
+    return run_data
+
+
+@discount_v3.post("/agent/discount/html")
+def make_decision_about_discount(request: DiscountHandlingDto,
+                                 openai_client: OpenAIClient = Depends(get_openai_client),
+                                 logger: LoggingService = Depends(get_logger),
+                                 telegram_bot: TelegramBotClient = Depends(get_telegram_bot_client),
+                                 task_repository: TaskRepository = Depends(get_task_repository),
+                                 run_repository: RunRepository = Depends(get_run_repository),
+                                 deal_repository: DealRepository = Depends(get_deal_repository)
+                                 ):
+    redis_client = redis.Redis(host=app_settings.redis_host, port=6379, db=1)
+    deal = deal_repository.get_or_create_deal(request.deal_id, Deal(deal_id=request.deal_id))
+
+    run = run_repository.create_run(run=LLMRun(
+        status=StatusType.InProgress.value,
+        deal_id=deal.deal_id,
+        uuid=request.run_uuid
+    ))
+
+    deal_id = deal.deal_id
+
+    api_key = "YXBpZmFtYWdhcnU6RHpJVFd1Lk1COUV4LjNmdERsZ01YYlcvb0VFcW9NLw"
+    session_id = "085qpt4eflu39a0dg7hjhr5mdu"
+    client = FamagaClient(api_key, session_id)
+
+    soup = BeautifulSoup(request.messages_html, "html.parser")
+    root_element = soup.find('body') if soup.find('body') else soup
+    raw_text = root_element.text
+
+    discount_metadata = DiscountMetadata(openai_client, task_repository, telegram_bot, logger, redis_client)
+
+    discount_meta = discount_metadata.get_discount_meta(run, raw_text)
+
+    # discount_messages = ''
+    # for idx, msg in enumerate(discount_meta.discount_messages):
+    #     discount_messages += f"Message: {len(discount_meta.discount_messages) - idx}\nSender: {msg['sender']}\n"
+    #     discount_messages += f'```\n' + msg['message'] + '\n```\n\n'
+
+
+    discount_decision = DiscountDecision(openai_client, task_repository, telegram_bot, logger, redis_client)
+
+    client = APIClientV2('YXBpZmFtYWdhcnU6RHpJVFd1Lk1COUV4LjNmdERsZ01YYlcvb0VFcW9NLw')
+
+    # Example usage
+    current_deal = client.offers_by_deal_id(deal_id)
+    current_deal_products = client.offer_products(deal_id)
+
+    client_id = int(current_deal.loc[0]['request_firm_id'])
+
+    all_customer_offers = client.offers_by_client_id(client_id)
+
+    customer_offers = all_customer_offers[~(all_customer_offers['request_id'] == deal_id)]
+    customer_offers = customer_offers[customer_offers['decision'].isin(YES_DECISIONS)]
+
+    purchase_history_str = ''
+    unique_request_ids = customer_offers['request_id'].unique()
+    customer_calculations = None
+
+    if len(unique_request_ids) > 0:
+        customer_products_df = get_products_history(client, unique_request_ids)
+        customer_calculations = get_calculations(client, unique_request_ids)
+
+        discounted_deals = get_discounted_deals(customer_calculations, unique_request_ids)
+
+        bought_earlier_products_df = customer_products_df[
+            customer_products_df['articul'].isin(current_deal_products['articul'])
+        ]
+
+        purchase_history_dict = get_requests_dict(bought_earlier_products_df, discounted_deals)
+
+        purchase_history_str = prettify_deal(customer_offers, customer_calculations, purchase_history_dict,
+                                             customer_products_df)
+
+    current_deal_dict = get_requests_dict(get_products_history(client, current_deal['request_id']), pd.DataFrame())
+    current_deal_str = prettify_deal(current_deal, customer_calculations, current_deal_dict, current_deal_products)
+
+    # ui_message = f"<b>Action purchase_history</b>  Passed\n{ui_message}"
+    #
+    # self._add_to_list_with_ttl(f'{run.uuid}_actions', ui_message)
+    # redis_client.publish("workflow_updates", run.uuid)
+
+    customer_data = discount_meta.data.metadata
+
+    customer_data.deals_without_purchase = all_customer_offers[~(all_customer_offers['decision'].isin(YES_DECISIONS))].drop_duplicates().shape[0]
+    customer_data.deals_with_purchases = all_customer_offers[(all_customer_offers['decision'].isin(YES_DECISIONS))].drop_duplicates().shape[0]
+
+    document_selection_result = discount_decision.discount_decision(run, prettify_customer_data(customer_data), current_deal_str, purchase_history_str)
+
+    run_data = Run(
+        actions=[
+            discount_meta
+        ],
+        run=RunDetails(run_id=run.run_id),
+        tasks=[
+            Task(summary=document_selection_result.data)
         ]
     )
 

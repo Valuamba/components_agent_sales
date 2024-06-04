@@ -447,7 +447,7 @@ def classify_intents(deal_id, body):
 
 
 async def discount_processing(run_uuid, deal_id, body):
-    url = f'{os.getenv("AGENT_URL")}/v2/agent/discount/html'
+    url = f'{os.getenv("AGENT_URL")}/v3/agent/discount/html'
     data = {
         "run_uuid": str(run_uuid),
         "deal_id": str(deal_id),
