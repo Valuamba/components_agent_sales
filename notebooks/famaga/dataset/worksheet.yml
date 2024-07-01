@@ -1,0 +1,336 @@
+subjects:
+  personal_info:
+    description: "Personal information about the individual"
+    fields:
+      - name: first_names
+        description: 'First names (can be multiple in Hispanic cultures)'
+        required: true
+        schema:
+          type: string
+        example: 'Hose Los Jose'
+      - name: last_names
+        description: 'Last name of security guard'
+        required: true
+        schema:
+          type: string
+      - name: gender
+        description: 'Gender (Male or Female)'
+        required: true
+        schema:
+          type: string
+      - name: id_number
+        description: 'ID number. Format ###-########-#, last digit is a checksum'
+        required: true
+        schema:
+          type: string
+        example: '123-45678901-2'
+      - name: has_drivers_license
+        description: "Do you have a driver's license?"
+        required: true
+        schema:
+          type: boolean
+        example: true
+      - name: license_category
+        description: "Driver's license category"
+        required: false
+        schema:
+          type: string
+          enum: ['A', 'B', 'C', 'D', 'E', 'F']
+        example: 'B'
+      - name: birth_date
+        description: 'Date of birth'
+        required: true
+        schema:
+          type: string
+      - name: birth_place
+        description: 'Place of birth'
+        required: true
+        schema:
+          type: string
+        example: 'San Jose'
+      - name: nationality
+        description: 'Nationality (non-citizens cannot be security guards)'
+        required: true
+        schema:
+          type: string
+        example: 'Costa Rican'
+      - name: marital_status
+        description: 'Marital status: Married, Single, Civil union'
+        required: true
+        schema:
+          type: string
+          enum: ['Married', 'Single', 'Civil union']
+        example: 'Married'
+
+  contact_info:
+    description: "Contact information for the individual"
+    fields:
+      - name: address
+        description: 'Address (street and house number)'
+        required: true
+        schema:
+          type: string
+        example: '123 Main St'
+      - name: sector
+        description: 'Sector (city district)'
+        required: true
+        schema:
+          type: string
+        example: 'Centro'
+      - name: city
+        description: 'City'
+        required: true
+        schema:
+          type: string
+        example: 'San Jose'
+      - name: home_phone
+        description: 'Home phone (obsolete)'
+        required: false
+        schema:
+          type: string
+        example: '123456789'
+      - name: mobile_phone
+        description: 'Mobile phone'
+        required: true
+        schema:
+          type: string
+        example: '987654321'
+
+  physical_attributes:
+    description: "Physical attributes of the individual"
+    fields:
+      - name: height
+        description: 'Height'
+        required: true
+        schema:
+          type: number
+          format: float
+        example: 175.3
+      - name: weight
+        description: 'Weight'
+        required: true
+        schema:
+          type: number
+          format: float
+        example: 70.5
+      - name: handedness
+        description: 'Handedness (Right or Left)'
+        required: true
+        schema:
+          type: string
+          enum: ['Right', 'Left']
+        example: 'Right'
+      - name: shirt_size
+        description: 'Shirt size: M, L, XL, XXL'
+        required: true
+        schema:
+          type: string
+          enum: ['M', 'L', 'XL', 'XXL']
+        example: 'M'
+      - name: pant_size
+        description: 'Pant size'
+        required: true
+        schema:
+          type: string
+        example: '32'
+      - name: shoe_size
+        description: 'Shoe size'
+        required: true
+        schema:
+          type: string
+        example: '42'
+
+  family_info:
+    description: "Information about the individual's family"
+    fields:
+      - name: father_name
+        description: 'Father: Name'
+        required: true
+        schema:
+          type: string
+        example: 'Pedro Rodriguez'
+      - name: father_address
+        description: 'Father: Address'
+        required: true
+        schema:
+          type: string
+        example: '456 Elm St'
+      - name: father_phone
+        description: 'Father: Phone'
+        required: true
+        schema:
+          type: string
+        example: '987654321'
+      - name: mother_name
+        description: 'Mother: Name'
+        required: true
+        schema:
+          type: string
+        example: 'Maria Lopez'
+      - name: mother_address
+        description: 'Mother: Address'
+        required: true
+        schema:
+          type: string
+        example: '456 Elm St'
+      - name: mother_phone
+        description: 'Mother: Phone'
+        required: true
+        schema:
+          type: string
+        example: '987654321'
+      - name: children
+        description: 'Children (up to 4), Name, address, phone'
+        required: false
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Ana Rodriguez'
+              address:
+                type: string
+                example: '123 Main St'
+              phone:
+                type: string
+                example: '123456789'
+      - name: number_of_dependents
+        description: 'Number of dependents'
+        required: true
+        schema:
+          type: integer
+        example: 2
+
+  emergency_contact_info:
+    description: "Emergency contact information"
+    fields:
+      - name: emergency_contact_name
+        description: 'Emergency contact: Full name'
+        required: true
+        schema:
+          type: string
+        example: 'Laura Rodriguez'
+      - name: emergency_contact_relationship
+        description: 'Emergency contact: Relationship status (e.g., wife, friend, brother)'
+        required: true
+        schema:
+          type: string
+        example: 'Wife'
+      - name: emergency_contact_home_phone
+        description: 'Emergency contact: Home phone (obsolete)'
+        required: false
+        schema:
+          type: string
+        example: '123456789'
+      - name: emergency_contact_address
+        description: 'Emergency contact: Address'
+        required: true
+        schema:
+          type: string
+        example: '123 Main St'
+      - name: emergency_contact_mobile_phone
+        description: 'Emergency contact: Mobile phone'
+        required: true
+        schema:
+          type: string
+        example: '987654321'
+
+  education_info:
+    description: "Educational background of the individual"
+    fields:
+      - name: education
+        description: 'Education: Table with rows for school, college, university and columns for institution name, degree obtained'
+        required: false
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              institution:
+                type: string
+                example: 'School A'
+              degree:
+                type: string
+                example: 'High School'
+      - name: is_student
+        description: 'Are you currently a student: Yes or No'
+        required: true
+        schema:
+          type: boolean
+        example: false
+
+  work_experience_info:
+    description: "Work experience of the individual"
+    fields:
+      - name: work_experience
+        description: 'Previous workplaces: Table with rows for up to 3 previous workplaces and columns for company name, phone, position, supervisor, duration, salary'
+        required: false
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              company:
+                type: string
+                example: 'Company A'
+              phone:
+                type: string
+                example: '123456789'
+              position:
+                type: string
+                example: 'Worker'
+              supervisor:
+                type: string
+                example: 'John Doe'
+              duration:
+                type: string
+                example: '2010-2015'
+              salary:
+                type: number
+                example: 1000
+
+  references_info:
+    description: "References for the individual"
+    fields:
+      - name: references
+        description: 'Non-family references: Table with rows for up to 3 references and columns for name, position, phone'
+        required: false
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Referee A'
+              position:
+                type: string
+                example: 'Manager'
+              phone:
+                type: string
+                example: '123456789'
+
+  consent_info:
+    description: "Consent information"
+    fields:
+      - name: consent_check
+        description: 'Formal consent allowing background checks'
+        required: true
+        schema:
+          type: boolean
+        example: true
+      - name: date
+        description: ‘Date’
+        required: true
+        schema:
+            type: string
+            format: date
+        example: ‘2024-06-23’
+      - name: signature
+        description: ‘Signature’
+        required: true
+        schema:
+            type: string
+        example: ‘Juan Carlos’
